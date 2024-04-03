@@ -4,9 +4,11 @@
     top: 0%;
     backdrop-filter: blur(5px); 
     z-index: 1000;
-    padding: 0.6em 0rem;
+    padding: 0.8em 0rem;
     background-color: rgba(5, 31, 44, 0.938);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    align-content: center;
+    text-align: center;
 }
 
 .navbar-container {
@@ -14,6 +16,9 @@
     gap: 2rem;
     justify-content: space-between; 
     align-items: center;
+   
+   
+
     margin: 0 1.5rem;
    
 }

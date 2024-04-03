@@ -34,7 +34,7 @@ const Navbar = () => {
                         />
                         <a href="/" className="home-icon">                
                             <IconButton aria-label="home" style={{padding:'0rem'}}>
-                                <img style={{height: '2rem'}} src="/assets/LogoWhiteHouse.png" alt="WhatsApp" />
+                                <img style={{height: '2rem', margin:'0'}} src="/assets/LogoWhiteHouse.png" alt="WhatsApp" />
 
                             </IconButton>
                         </a>
@@ -42,7 +42,7 @@ const Navbar = () => {
                 <div className="nav-options"> 
                     <AccountCircleIcon 
                         onClick={handleClickSeButtons}
-                        style={{  color: '#e0e0e0', fontSize: '2rem', cursor:'pointer', marginTop:'0.6rem', marginBottom:'0' }}                     
+                        style={{  color: '#e0e0e0', fontSize: '2rem', cursor:'pointer' }}                     
                     />
                 </div>                
             </div>

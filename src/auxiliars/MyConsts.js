@@ -17,7 +17,7 @@ const segmentsData = [
 
 const properties = [  
     {      
-        category: "department", 
+        category: "Departamento", 
         cardimage: "/assets/hero-bg.png",
         district: "Pueblo Libre",
         address: "Abraham Valdelomar 522",
@@ -27,7 +27,7 @@ const properties = [
         longitude: "-77.06683609730793",       
     },
     {      
-        category: "department",  
+        category: "Departamento",  
         cardimage: "/assets/hero-bg.png",
         district: "Magdalena",
         address: "Torres Matos 160",
@@ -37,7 +37,7 @@ const properties = [
         longitude: "-77.058574261341",      
     },
     {       
-        category: "office", 
+        category: "Oficina", 
         cardimage: "/assets/hero-bg.png",
         district: "San Miguel",
         address: "Prolongación Ayacucho 1240",
@@ -47,7 +47,7 @@ const properties = [
         longitude: "-77.08707786805587",      
     },
     {     
-        category: "office",   
+        category: "Oficina",   
         cardimage: "/assets/hero-bg.png",
         district: "Jesús María",
         address: "Av. Gregorio Escobedo 849",
@@ -57,7 +57,7 @@ const properties = [
         longitude: "-77.0568907554405",       
     }, 
     {       
-        category: "house", 
+        category: "Casa", 
         cardimage: "/assets/hero-bg.png",
         district: "San Isidro",
         address: "Av. Gral. Salaverry 1004",
@@ -67,7 +67,7 @@ const properties = [
         longitude: "-77.04237157554505",       
     },
     {     
-        category: "room",  
+        category: "Habitacion",  
         cardimage: "/assets/hero-bg.png",
         district: "Miraflores",
         address: "Calle Bolivar 131",
