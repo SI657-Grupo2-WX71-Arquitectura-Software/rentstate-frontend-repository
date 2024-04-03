@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Navbar.css";
-import { Divider, IconButton, ListItemIcon, MenuItem, Paper, Popper, Typography } from "@mui/material";
+import { IconButton, ListItemIcon, MenuItem, Paper, Popper, Typography } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -62,7 +62,7 @@ const Navbar = () => {
                                 </ListItemIcon>
                                 <Typography variant="inherit">Mi Cuenta</Typography>
                             </MenuItem>
-                            <Divider style={{margin:'0'}} />
+                            {/* <Divider style={{margin:'0'}} /> */}
                             <MenuItem style={{padding:'0.7rem 1rem', fontSize:'0.96rem'}}>
                                 <ListItemIcon>
                                     <LogoutIcon fontSize="small" style={{ fill: 'grey', height:'25px' }}/>
