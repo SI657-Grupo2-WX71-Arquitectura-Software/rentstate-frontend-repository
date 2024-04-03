@@ -1,0 +1,107 @@
+#home {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  cursor: default;
+  background-image: url('/public/assets/rentstateSquare.png'); /* Agrega la imagen de fondo */
+  background-size: cover; 
+  background-position: center;
+  color: #fff;
+}
+
+
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  
+ 
+}
+
+.home-avatar img {
+  width: auto;
+  height: 24rem;
+
+  transition: all 0.2s;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.home-avatar img:hover {
+  transition: all 0.2s;
+  transform: translateY(-5px);
+}
+
+.home-title {
+  font-size: 50px;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.home-desc {  
+  font-size: 20px;
+  margin: 1rem 4% 0rem 4%;
+  color: var(--text)
+}
+
+.home-desc img {
+  height: auto;
+  width: 20px;
+  padding-left: 10px;
+}
+
+
+.home-button {
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0 30px;
+  border-radius: 30px;
+  transition: all 0.3s;
+  cursor: pointer;
+  background-color: #00334B;
+  border: 2px solid #00334B;
+  color: white;
+  width: max-content;
+ 
+}
+
+.home-button:hover {
+  background-color: #043d58;
+  border: 2px solid #043d58;
+  transition: all 0.3s;   
+  color: white;
+}
+
+@media (max-width: 800px) {
+  .home-avatar img {
+    height: 50vw;
+  }
+}
+
+@media (max-width: 550px) {
+  .home-title {
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+ 
+  .home-desc {
+    font-size: 16px;
+    margin: 20px 8%;
+  }
+
+  .home-desc img {
+    width: 15px;
+  }  
+  .home-button {
+    margin-top: 8px;
+    font-size: 1rem; 
+}
+}
