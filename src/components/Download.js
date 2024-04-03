@@ -12,14 +12,26 @@ import PlaceIcon from '@mui/icons-material/Place';
 
 const Download = () => {    
     const [searchValue, setSearchValue] = useState("");
-   
+    const [filteredProperties, setFilteredProperties] = useState(properties);
+
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
     };
-   
+
     const handleSearchIconClick = () => {
-        console.log("El user buscó:", searchValue);
-        setSearchValue("");
+        console.log("El usuario buscó:", searchValue);
+        const filtered = properties.filter((property) =>
+            Object.values(property).some((value) =>
+                value.toLowerCase().includes(searchValue.toLowerCase())
+            )
+        );
+        setFilteredProperties(filtered);
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSearchIconClick();
+        }
     };
 
    
@@ -43,6 +55,7 @@ const Download = () => {
                         placeholder="Buscar Inmueble"
                         value={searchValue}
                         onChange={handleTextFieldChange}
+                        onKeyDown={handleKeyDown}
                         sx={{
                             width: '30rem',                                               
                             '& .MuiOutlinedInput-root': {
@@ -91,21 +104,23 @@ const Download = () => {
 
 
                 <div className="grid-properties">
-                    {properties.map((project, index) => (
+
+                    {filteredProperties.map((project, index) => (
                         <div key={index} className="card">
                             <img src={project.cardimage} alt="Property" />
                             <div className="card-details">
-                                <p style={{fontSize:'1.2rem', fontWeight:'bold', marginBottom:'0.5rem'}}>{project.district}</p>
-                                <p>{project.address}</p>                            
-                                <p>{project.details}</p>
-                                <p style={{color:'#7a7a7a'}}>S/ {project.price}</p>
-                                <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer">
-                                    Ver Mapa 
-                                    <PlaceIcon style={{fontSize:'1.2rem'}}/>
-                                </a>
+                            <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{project.district}</p>
+                            <p>{project.address}</p>
+                            <p>{project.details}</p>
+                            <p style={{ color: '#7a7a7a' }}>S/ {project.price}</p>
+                            <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer">
+                                Ver Mapa
+                                <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                            </a>
                             </div>
                         </div>
                     ))}
+
                 </div>
 
 
