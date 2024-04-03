@@ -1,0 +1,94 @@
+#goRentstate{
+    padding: 8rem 0rem 3rem 0rem;    
+    cursor:default;
+    max-width: 1400px;   
+    box-sizing: border-box;  
+    align-items: center;
+    justify-content: center;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.goRentstate-container {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+}
+
+.download-img {
+    transition: all 0.2s;
+}
+
+.download-img img {
+    height: 30vw;
+}
+
+.download-img:hover {
+    transition: all 0.2s;
+    transform: translateY(-5px);
+}
+
+.buttons-download {  
+    display: flex;
+    gap: 1rem;    
+}
+
+.buttons-download img {
+    height: 4rem;
+    cursor: pointer;
+}
+
+.buttons-download2 {
+    display: none;
+}
+
+@media (max-width: 900px) {   
+
+    .goRentstate-container {
+        display: flex;
+        flex-direction: column; 
+        gap: 0;
+    }       
+    .i {
+        order: 2; 
+    }
+    .download-img {
+        order: 1; 
+    }
+    .download-img {
+        padding-top: 1rem;          
+    }
+    .buttons-download {
+        display: none;      
+    }     
+    .download-img img {
+        height: 50vw;
+    }  
+    .home-button{
+        margin: 1rem;
+    }
+    .buttons-download2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding-top: 1.3rem;
+    }
+    .buttons-download2 img {  
+        height: 8vw;
+    }   
+} 
+
+@media (max-width: 600px) {        
+    .download-img img {
+        height: 65vw;
+    }  
+    .i p {
+        font-size: 5vw;
+    }
+    .home-button p{
+        font-size: 3vw;
+    } 
+} 
