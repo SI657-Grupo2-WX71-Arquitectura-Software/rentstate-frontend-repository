@@ -1,5 +1,5 @@
 import './App.css';
-import Download from './components/Download';
+import HomeRentState from './components/HomeRentState';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 
@@ -7,12 +7,9 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-
 				<Navbar/>				
-				<Download/>			
-				<Footer/>
-			
-			
+				<HomeRentState/>			
+				<Footer/>			
 			</header>
 		</div>
 	);

@@ -29,9 +29,7 @@ const Navbar = () => {
         <div className="navbar">            
             <div className="navbar-container">
                 <div style={{display:'flex', gap:'0.5rem'}}>
-                        <MenuIcon 
-                            style={{ fontSize: '1.5rem', cursor:'pointer', color:'#cecece', marginTop:'0.6rem' }}                     
-                        />
+                       
                         <a href="/" className="home-icon">                
                             <IconButton aria-label="home" style={{padding:'0rem'}}>
                                 <img style={{height: '2rem', margin:'0'}} src="/assets/LogoWhiteHouse.png" alt="WhatsApp" />
