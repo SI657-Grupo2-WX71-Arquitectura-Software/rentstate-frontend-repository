@@ -5,6 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     const [anchorElSeButtons, setAnchorElSeButtons] = useState(null);
@@ -18,7 +19,7 @@ const Navbar = () => {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (anchorElSeButtons && !anchorElSeButtons.contains(event.target)) {
-                setOpenSeButtons(false);
+                // setOpenSeButtons(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -45,7 +46,7 @@ const Navbar = () => {
                 </div>                
             </div>
 
-            {handleClickSeButtons && (  
+          
                 <Popper
                     open={openSeButtons}
                     anchorEl={anchorElSeButtons}
@@ -54,12 +55,14 @@ const Navbar = () => {
                 >
                     {() => (
                         <Paper elevation={4}>
-                            <MenuItem style={{padding:'0.7rem 1rem', fontSize:'0.96rem'}}>
-                                <ListItemIcon>
-                                    <DirectionsWalkIcon fontSize="small" style={{ fill: 'grey', height:'23px' }}/>
-                                </ListItemIcon>
-                                <Typography variant="inherit">Mi Cuenta</Typography>
-                            </MenuItem>
+                           <Link to="/MiCuenta" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <MenuItem style={{padding:'0.7rem 1rem', fontSize:'0.96rem'}}>
+                                    <ListItemIcon>
+                                        <DirectionsWalkIcon fontSize="small" style={{ fill: 'grey', height:'23px' }}/>
+                                    </ListItemIcon>
+                                    <Typography variant="inherit">Mi Cuenta</Typography>
+                                </MenuItem>
+                            </Link>
                             {/* <Divider style={{margin:'0'}} /> */}
                             <MenuItem style={{padding:'0.7rem 1rem', fontSize:'0.96rem'}}>
                                 <ListItemIcon>
@@ -70,7 +73,7 @@ const Navbar = () => {
                         </Paper>
                     )}
                 </Popper>
-            )}
+      
         </div>
     );
 }
