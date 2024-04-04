@@ -102,6 +102,24 @@
     border-top-right-radius: 10px;
 }
 
-@media (max-width: 600px) {        
-  
+@media (max-width: 600px) {    
+    .search-categories {
+        gap: 3vw;
+    }    
+    .filter-opt, .category-opt {
+      font-size: 2.5vw;
+      gap: 0 0;
+
+    }
+    .filter-opt {
+        padding: 0.4rem 0.6rem;
+    }
+    .category-opt {
+        padding: 0.5rem 1rem;
+    }
+    .category-text {
+        display: none;
+    }
+    
+   
 } 

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import "../styles/GoRentstate.css";
-import SearchIcon from '@mui/icons-material/Search';
+import "../styles/HomeRentState.css";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme } from "@mui/material";
+import { useMediaQuery } from '@mui/material';
+import { properties } from "../auxiliars/MyConsts";
+import SearchIcon from '@mui/icons-material/Search';
+import ChairIcon from '@mui/icons-material/Chair';
+import TuneIcon from '@mui/icons-material/Tune';
+import PlaceIcon from '@mui/icons-material/Place';
+import CloseIcon from '@mui/icons-material/Close';
 import CottageIcon from '@mui/icons-material/Cottage';
 import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import ChairIcon from '@mui/icons-material/Chair';
-import TuneIcon from '@mui/icons-material/Tune';
-import { properties } from "../auxiliars/MyConsts";
-import PlaceIcon from '@mui/icons-material/Place';
-import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme({
     palette: {
@@ -17,16 +18,16 @@ const theme = createTheme({
         main: '#225E7C',
       },
     },
-  });
+});
 
-
-const Download = () => {    
+const HomeRentState = () => {    
     const [searchValue, setSearchValue] = useState("");
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(300000);
+    const isMobile = useMediaQuery('(max-width:600px)');
 
  
     const handleTextFieldChange = (event) => {
@@ -100,20 +101,20 @@ const Download = () => {
                     }}
                 >                   
                     <TextField
-                        id="outlined-textarea"                          
+                        id="outlined-textarea"
                         placeholder="Buscar Inmueble"
                         value={searchValue}
                         onChange={handleTextFieldChange}
                         onKeyDown={handleKeyDown}
                         sx={{
-                            width: '30rem',                                               
+                            width: isMobile ? '70vw' : '30rem', 
                             '& .MuiOutlinedInput-root': {
-                                borderRadius: '200px',                              
+                                borderRadius: '200px',
                                 '& fieldset': {
-                                    borderColor: '#ececec !important',                                   
+                                    borderColor: '#ececec !important',
                                 },
                             },
-                            '& .MuiInputBase-input': { fontSize: '0.8rem',  padding:'0.8rem 1.3rem' }                          
+                            '& .MuiInputBase-input': { fontSize: '0.8rem', padding: '0.8rem 1.3rem' }
                         }}
                     />
                     <SearchIcon 
@@ -129,19 +130,19 @@ const Download = () => {
                 <div className="search-categories">
                     <div className={`category-opt ${selectedCategory === 'Departamento' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Departamento')}>
                         <EmojiTransportationIcon/>
-                        <div>Departamento</div>
+                        <div className="category-text">Departamento</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Oficina' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Oficina')}>
                         <HomeRepairServiceIcon/>
-                        <div>Oficina</div>
+                        <div className="category-text">Oficina</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Casa' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Casa')}>
                         <CottageIcon/>
-                        <div>Casa</div>
+                        <div className="category-text">Casa</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Habitacion' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Habitacion')}>
                         <ChairIcon/>
-                        <div>Habitacion</div>
+                        <div className="category-text">Habitacion</div>
                     </div> 
                     <div className={'filter-opt'} onClick={handleClickOpen}>
                         <TuneIcon style={{fontSize:'1.2rem'}}/>                    
@@ -265,4 +266,4 @@ const Download = () => {
     );
 };
 
-export default Download;
+export default HomeRentState;
