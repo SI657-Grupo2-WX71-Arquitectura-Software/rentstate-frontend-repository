@@ -10,10 +10,8 @@ const segmentsData = [
         description: "Propietarios de inmuebles que quieren arrendar",
         image: "assets/propietarios.png",  
         imagetype: "assets/vendedoresLetters.png"         
-    },    
-   
+    },      
 ];
-
 
 const properties = [  
     {      
@@ -62,7 +60,7 @@ const properties = [
         district: "San Isidro",
         address: "Av. Gral. Salaverry 1004",
         details: "104 m², 3 dorm, 2 baños",
-        price:"250,000",   
+        price:"260,000",   
         latitude: "-12.075446193181135",
         longitude: "-77.04237157554505",       
     },
@@ -72,7 +70,7 @@ const properties = [
         district: "Miraflores",
         address: "Calle Bolivar 131",
         details: "104 m², 3 dorm, 2 baños",
-        price:"250,000",  
+        price:"260,000",  
         latitude: "-12.125347466164694",
         longitude: "-77.02905908181769",        
     }, 
