@@ -11,7 +11,7 @@ const MyAccount = () => {
             <div className="findProperty-container">
                     Hola
     
-
+ok
               
 
             </div>
