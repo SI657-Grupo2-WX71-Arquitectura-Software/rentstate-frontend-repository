@@ -14,7 +14,8 @@ const segmentsData = [
 ];
 
 const properties = [  
-    {      
+    {   
+        id: 1,   
         category: "Departamento", 
         cardimage: "/assets/hero-bg.png",
         district: "Pueblo Libre",
@@ -24,7 +25,8 @@ const properties = [
         latitude: "-12.070915286566354",
         longitude: "-77.06683609730793",       
     },
-    {      
+    {   
+        id: 2,  
         category: "Departamento",  
         cardimage: "/assets/hero-bg.png",
         district: "Magdalena",
@@ -34,7 +36,8 @@ const properties = [
         latitude: "-12.09516166400188",
         longitude: "-77.058574261341",      
     },
-    {       
+    {    
+        id: 3,   
         category: "Oficina", 
         cardimage: "/assets/hero-bg.png",
         district: "San Miguel",
@@ -44,7 +47,8 @@ const properties = [
         latitude: "-12.08118129359087",
         longitude: "-77.08707786805587",      
     },
-    {     
+    {    
+        id: 4,   
         category: "Oficina",   
         cardimage: "/assets/hero-bg.png",
         district: "Jesús María",
@@ -54,7 +58,8 @@ const properties = [
         latitude: "-12.089381789828575",
         longitude: "-77.0568907554405",       
     }, 
-    {       
+    {      
+        id: 5, 
         category: "Casa", 
         cardimage: "/assets/hero-bg.png",
         district: "San Isidro",
@@ -64,7 +69,8 @@ const properties = [
         latitude: "-12.075446193181135",
         longitude: "-77.04237157554505",       
     },
-    {     
+    {  
+        id: 6,     
         category: "Habitacion",  
         cardimage: "/assets/hero-bg.png",
         district: "Miraflores",
