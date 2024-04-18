@@ -168,19 +168,15 @@ const HomeRentState = () => {
                     </div>                    
                 </div>  
 
-                
                 <div className="grid-properties">
-    {property && (
-        <div className="card">
-            <div className="card-details">
-                <p>{property.location}</p>
-                <p>{property.characteristics}</p>
-                <p style={{ color: '#7a7a7a' }}>S/ {property.price}</p>
-            </div>
-        </div>
-    )}
-</div>
-
+                            <div className="card">
+                                <div className="card-details">
+                                    <p>{property.location}</p>
+                                    <p>{property.characteristics}</p>
+                                    <p style={{ color: '#7a7a7a' }}>S/ {property.price}</p>
+                                </div>
+                            </div>
+                </div>
 
             </div>
 
