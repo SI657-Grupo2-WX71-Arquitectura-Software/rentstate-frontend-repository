@@ -1,11 +1,21 @@
 import React, { useState } from "react";
-import "../styles/MyAccount.css";
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button, IconButton } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import "../styles/MyAccount.css";
 
 const MyAccount = () => {
+  const [isEditing, setIsEditing] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    console.log("Saving changes...");
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -16,11 +26,6 @@ const MyAccount = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const handleDeleteAccount = () => {
-    // Lógica para eliminar la cuenta
-    console.log("Deleting account...");
   };
 
   return (
@@ -43,24 +48,56 @@ const MyAccount = () => {
       <div className="info-container">
         <div className="info-header">
           <h2>Información del usuario</h2>
-          <IconButton className="edit-icon" aria-label="edit">
-            <EditIcon />
-          </IconButton>
+          {!isEditing && (
+            <IconButton className="edit-icon" aria-label="edit" onClick={handleEdit}>
+              <EditIcon />
+            </IconButton>
+          )}
         </div>
         <div className="info-form">
           <div className="form-row">
-            <TextField label="Name" variant="outlined" fullWidth />
-            <TextField label="Last Name" variant="outlined" fullWidth />
+            <TextField
+              label="Name"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
+            <TextField
+              label="Last Name"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
           </div>
           <div className="form-row">
-            <TextField label="Email" variant="outlined" fullWidth />
-            <TextField label="Password" type="password" variant="outlined" fullWidth />
+            <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
           </div>
           <div className="form-row">
-            <TextField label="Address" variant="outlined" fullWidth />
+            <TextField
+              label="Address"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
             <FormControl variant="outlined" fullWidth>
               <InputLabel>Gender</InputLabel>
-              <Select label="Gender" defaultValue="">
+              <Select
+                label="Gender"
+                defaultValue=""
+                disabled={!isEditing}
+              >
                 <MenuItem value="">Select Gender</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
                 <MenuItem value="male">Male</MenuItem>
@@ -70,10 +107,20 @@ const MyAccount = () => {
             </FormControl>
           </div>
           <div className="form-row">
-            <TextField label="Age" type="number" variant="outlined" fullWidth />
+            <TextField
+              label="Age"
+              type="number"
+              variant="outlined"
+              fullWidth
+              disabled={!isEditing}
+            />
             <FormControl variant="outlined" fullWidth>
               <InputLabel>Description</InputLabel>
-              <Select label="Description" defaultValue="">
+              <Select
+                label="Description"
+                defaultValue=""
+                disabled={!isEditing}
+              >
                 <MenuItem value="">Select an option</MenuItem>
                 <MenuItem value="tenant">Inquilino</MenuItem>
                 <MenuItem value="landlord">Propietario</MenuItem>
@@ -81,17 +128,29 @@ const MyAccount = () => {
             </FormControl>
           </div>
         </div>
+        {isEditing && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSave}
+            fullWidth
+            style={{ marginTop: 20 }}
+          >
+            Guardar Cambios
+          </Button>
+        )}
       </div>
       <div className="delete-account-container">
         <Button
           className="delete-account-button"
           variant="outlined"
-          onClick={handleDeleteAccount}
+          color="error"
+          onClick={() => console.log("Deleting account...")}
+          fullWidth
         >
           Eliminar cuenta
         </Button>
       </div>
-
     </div>
   );
 };

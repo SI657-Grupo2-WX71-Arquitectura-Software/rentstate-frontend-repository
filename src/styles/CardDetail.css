@@ -1,0 +1,32 @@
+.cardDetails {
+    min-height: 120vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .cardDetails .MuiCard-root {
+    box-shadow: none;
+  }
+  
+  .propertyImage {
+    width: 60%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cardActions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+.buttonIcon {
+  margin-right: 8px;
+}
