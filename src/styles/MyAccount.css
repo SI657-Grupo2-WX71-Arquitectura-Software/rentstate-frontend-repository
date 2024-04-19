@@ -1,5 +1,3 @@
-/* Estilos para MyAccount.js */
-
 .myAccount-container {
   min-height: 100vh;
   display: flex;
@@ -71,9 +69,13 @@
   color: gray;
 }
 
+.delete-account-container{
+  margin-top: 20px;
+}
+
 .delete-account-button {
-  color: red !important; /* Asegura que el color del texto sea rojo */
-  border-color: red !important; /* Asegura que el color del borde sea rojo */
+  color: red !important;
+  border-color: red !important;
   border-radius: 4px;
   padding: 10px 20px;
   background-color: white;
@@ -84,7 +86,8 @@
   color: white;
 }
 
-
-.delete-account-container {
-  margin-top: 20px;
+@media(max-width:600px){
+  .myAccount-container{
+    min-height: 120vh;
+  }
 }
