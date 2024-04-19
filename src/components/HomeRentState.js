@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../styles/HomeRentState.css";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme } from "@mui/material";
 import { useMediaQuery } from '@mui/material';
@@ -11,7 +11,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import CottageIcon from '@mui/icons-material/Cottage';
 import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import PropertyService from '../hooks/usePropertyService';
 
 const theme = createTheme({
     palette: {
@@ -22,24 +21,6 @@ const theme = createTheme({
 });
 
 const HomeRentState = () => {    
-
-    const [property, setProperty] = useState(null);
-    useEffect(() => {
-        // Llama al servicio para obtener la propiedad por su ID al cargar el componente
-        const fetchPropertyById = async () => {
-          try {
-            const propertyData = await PropertyService.getPropertyById(1);
-            setProperty(propertyData); // Actualiza el estado con los datos de la propiedad obtenida
-          } catch (error) {
-            console.error(`Error al obtener la propiedad con ID ${1}:`, error);
-          }
-        };
-    
-        fetchPropertyById(); // Invoca la función para obtener la propiedad por su ID
-      }); 
-
-     
-
     const [searchValue, setSearchValue] = useState("");
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -169,13 +150,23 @@ const HomeRentState = () => {
                 </div>  
 
                 <div className="grid-properties">
-                            <div className="card">
+                    {filteredProperties
+                        .filter(project => !selectedCategory || project.category === selectedCategory)
+                        .map((project, index) => (
+                            <div key={index} className="card">
+                                <img src={project.cardimage} alt="Property" />
                                 <div className="card-details">
-                                    <p>{property.location}</p>
-                                    <p>{property.characteristics}</p>
-                                    <p style={{ color: '#7a7a7a' }}>S/ {property.price}</p>
+                                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{project.district}</p>
+                                    <p>{project.address}</p>
+                                    <p>{project.details}</p>
+                                    <p style={{ color: '#7a7a7a' }}>S/ {project.price}</p>
+                                    <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer">
+                                        Ver Mapa
+                                        <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                    </a>
                                 </div>
                             </div>
+                        ))}
                 </div>
 
             </div>
