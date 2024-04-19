@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MyAccount from './components/MyAccount';
 import Login from './components/Login';
 import List from './components/List';
+import Register from './components/Register';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                         <Route path="/MiCuenta" element={<MyAccount />} />
                         <Route path="/" element={<HomeRentState />} />
                         <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
                         <Route path="/list" element={<List/>}/>
                     </Routes>
                     <Footer/>			

@@ -1,6 +1,5 @@
 html {
   scroll-behavior: smooth;
-
 }
 
 body {
@@ -10,23 +9,24 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 .App {
   text-align: center;
-  
+ 
 }
 
 
 .App-header {
-  min-height: 100vh;
+  min-height: 100vh; /* Mínimo alto de la pantalla completa */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  margin: 0 auto; /* Centra el contenido horizontalmente */
   color: var(--text);
-  width: 100%;
+  width: 100%; /* Ocupa todo el ancho disponible */
 }
 
 .App-link {
