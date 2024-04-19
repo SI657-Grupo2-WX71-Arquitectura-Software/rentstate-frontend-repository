@@ -1,0 +1,117 @@
+/* Variables de color */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #66b3ff;
+  --background-color: white;
+  --error-color: #dc3545;
+}
+
+/* Estilos del contenedor principal */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+}
+  
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box; /* Incluye el padding en el ancho */
+  }
+  
+  .register-title {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .register-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    width: 100%; /* Asegura que los campos ocupen el ancho completo */
+  }
+  
+  .form-label {
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 8px;
+  }
+  
+  .form-control {
+    width: 100%; /* Haz que los inputs ocupen el ancho completo */
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .form-control::placeholder {
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    padding: 14px;
+    font-size: 18px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #66b3ff;
+  }
+  
+  .btn-primary.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .login-link {
+    font-size: 14px;
+    color: #66b3ff;
+    margin-top: 10px;
+  }
+  
+  .link-info {
+    color: #66b3ff;
+    text-decoration: none;
+  }
+  
+  .link-info:hover {
+    text-decoration: underline;
+  }
+  
+  /* Ajusta el ancho de los inputs para que sean más largos */
+  @media (min-width: 600px) {
+    .form-control {
+      width: 300px; /* Ancho más amplio para los inputs en pantallas más grandes */
+    }
+  }
+  
