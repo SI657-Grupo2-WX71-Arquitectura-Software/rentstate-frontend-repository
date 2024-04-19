@@ -1,76 +1,90 @@
-/* Estilos específicos para MyAccount */
+/* Estilos para MyAccount.js */
 
-.my-account-container {
-    display: flex;
-    height: 100%;
-  
-    @media (max-width: 600px) {
-      flex-direction: column;
-    }
-  }
-  
-  .details {
-    flex: 3;
-    overflow-y: auto;
-    padding-right: 20px;
-    padding-bottom: 50px;
-    background-color: #f5f5f5;
-  
-    @media (max-width: 600px) {
-      flex: none;
-      height: max-content;
-      overflow: hidden;
-      padding-right: 0;
-      padding-bottom: 20px;
-    }
-  }
-  
-  .chat-container {
-    flex: 2;
-    padding: 20px;
-    background-color: #fcf5f3;
-  
-    @media (max-width: 600px) {
-      flex: none;
-      height: max-content;
-      margin-top: 20px;
-    }
-  }
-  
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .title h1 {
-    font-weight: 300;
-  }
-  
-  button {
-    padding: 12px 24px;
-    background-color: #fece51;
-    cursor: pointer;
-    border: none;
-  }
-  
-  .information {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .information span {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .information img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
+.myAccount-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.info-form {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.edit-icon {
+  color: gray;
+}
+
+.delete-account-button {
+  color: red !important; /* Asegura que el color del texto sea rojo */
+  border-color: red !important; /* Asegura que el color del borde sea rojo */
+  border-radius: 4px;
+  padding: 10px 20px;
+  background-color: white;
+}
+
+.delete-account-button:hover {
+  background-color: red;
+  color: white;
+}
+
+
+.delete-account-container {
+  margin-top: 20px;
+}
