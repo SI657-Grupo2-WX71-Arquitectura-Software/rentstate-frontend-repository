@@ -1,51 +1,93 @@
-import React from "react";
-import "../styles/Login.css"
-import { useNavigate } from "react-router-dom";
+  import React, { useState } from "react";
+
+  import "../styles/Login.css"
+  import { Link, useNavigate } from "react-router-dom";
 
 
-const Login = () => {
+  const Login = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-    const handleLogin = (e) => {
-      e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-  
-      // Aquí podrías realizar la lógica de autenticación o guardar información en el localStorage
-  
-      // Redirigir al usuario a la página Home después del inicio de sesión exitoso
-      navigate("/");
-    };
-    
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
-    return(
-        <div className="app-container">
+    // Validar campos antes de proceder al inicio de sesión
+    if (email.trim() === "") {
+      setEmailError("Email is required");
+      return;
+    } else {
+      setEmailError("");
+    }
+
+    if (password.trim() === "") {
+      setPasswordError("Password is required");
+      return;
+    } else {
+      setPasswordError("");
+    }
+    navigate("/");
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailError(""); // Limpiar el mensaje de error al cambiar el email
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError(""); // Limpiar el mensaje de error al cambiar la contraseña
+  };
+
+  // Determinar si el botón de login debe estar habilitado
+  const isLoginButtonEnabled = email.trim() !== "" && password.trim() !== "";  
+
+  return (
+    <div className="app-container">
       <div className="content-container">
         <div className="login-form-container">
           <h3 className="login-title fw-normal mb-3">Log in</h3>
           <form onSubmit={handleLogin}>
             <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email address
-              </label>
+              <div className="labels">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+              </div>
               <input
                 id="email"
-                className="form-control"
+                className={`form-control ${emailError && "invalid"}`}
                 type="email"
                 placeholder="Enter your email address"
+                value={email}
+                onChange={handleEmailChange}
               />
+              {emailError && <p className="error-message">{emailError}</p>}
             </div>
             <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
+              <div className="labels">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+              </div>
               <input
                 id="password"
-                className="form-control"
+                className={`form-control ${passwordError && "invalid"}`}
                 type="password"
                 placeholder="Enter your password"
+                value={password}
+                onChange={handlePasswordChange}
               />
+              {passwordError && <p className="error-message">{passwordError}</p>}
             </div>
-            <button type="submit" className="btn btn-primary w-100">
+            <button
+              type="submit"
+              className={`btn btn-primary w-100 ${!isLoginButtonEnabled && "disabled"}`}
+              disabled={!isLoginButtonEnabled}
+            >
               Login
             </button>
             <p className="forgot-password text-muted mt-3">
@@ -53,15 +95,16 @@ const Login = () => {
             </p>
             <p className="register-link">
               Don't have an account?{" "}
-              <a href="#!" className="link-info">
+              <Link to="/register" className="link-info">
                 Register here
-              </a>
+              </Link>
             </p>
           </form>
         </div>
       </div>
     </div>
-      );
+  );
+
 };
 
-export default Login;
+  export default Login;
