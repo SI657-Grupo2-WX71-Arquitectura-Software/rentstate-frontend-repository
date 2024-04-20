@@ -11,16 +11,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import CottageIcon from '@mui/icons-material/Cottage';
 import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import { Link } from 'react-router-dom';
+
 
 const theme = createTheme({
     palette: {
-      rentstateblue: {
-        main: '#225E7C',
-      },
+        rentstateblue: {
+            main: '#225E7C',
+        },
     },
 });
 
-const HomeRentState = () => {    
+const HomeRentState = () => {
     const [searchValue, setSearchValue] = useState("");
     const [filteredProperties, setFilteredProperties] = useState(properties);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -29,7 +31,7 @@ const HomeRentState = () => {
     const [maxValue, setMaxValue] = useState(300000);
     const isMobile = useMediaQuery('(max-width:600px)');
 
- 
+
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
     };
@@ -53,12 +55,12 @@ const HomeRentState = () => {
     const handleCategoryClick = (category) => {
         if (selectedCategory !== 'Filtro') {
             if (selectedCategory === category) {
-                setSelectedCategory(null); 
+                setSelectedCategory(null);
             } else {
-                setSelectedCategory(category); 
+                setSelectedCategory(category);
             }
-        }   
-    }; 
+        }
+    };
 
     const handleChange = (event, newValue) => {
         const [min, max] = newValue;
@@ -71,35 +73,35 @@ const HomeRentState = () => {
             const price = parseFloat(property.price.replace(",", ""));
             return price >= minValue && price <= maxValue;
         }));
-        setOpen(false); 
+        setOpen(false);
     };
-    
+
     const handleClearFilters = () => {
         setMinValue(0);
         setMaxValue(300000);
     };
-    
+
 
     const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
+        setOpen(true);
     };
 
-    return (       
-        <div id="findProperty"> 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <div id="findProperty">
 
             <div className="findProperty-container">
-                    
-                <div className="search-system" 
+
+                <div className="search-system"
                     style={{
-                        display:'flex',                       
-                        alignItems:'center',
-                        gap:'0.5rem'
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
                     }}
-                >                   
+                >
                     <TextField
                         id="outlined-textarea"
                         placeholder="Buscar Inmueble"
@@ -107,7 +109,7 @@ const HomeRentState = () => {
                         onChange={handleTextFieldChange}
                         onKeyDown={handleKeyDown}
                         sx={{
-                            width: isMobile ? '70vw' : '30rem', 
+                            width: isMobile ? '70vw' : '30rem',
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '200px',
                                 '& fieldset': {
@@ -117,64 +119,67 @@ const HomeRentState = () => {
                             '& .MuiInputBase-input': { fontSize: '0.8rem', padding: '0.8rem 1.3rem' }
                         }}
                     />
-                    <SearchIcon 
+                    <SearchIcon
                         style={{
-                            height:'1.5rem',   
-                            color:'gray',   
-                            cursor:'pointer'                         
+                            height: '1.5rem',
+                            color: 'gray',
+                            cursor: 'pointer'
                         }}
                         onClick={handleSearchIconClick}
-                    />   
-                </div>  
-        
+                    />
+                </div>
+
                 <div className="search-categories">
                     <div className={`category-opt ${selectedCategory === 'Departamento' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Departamento')}>
-                        <EmojiTransportationIcon/>
+                        <EmojiTransportationIcon />
                         <div className="category-text">Departamento</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Oficina' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Oficina')}>
-                        <HomeRepairServiceIcon/>
+                        <HomeRepairServiceIcon />
                         <div className="category-text">Oficina</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Casa' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Casa')}>
-                        <CottageIcon/>
+                        <CottageIcon />
                         <div className="category-text">Casa</div>
                     </div>
                     <div className={`category-opt ${selectedCategory === 'Habitacion' ? 'selected' : ''}`} onClick={() => handleCategoryClick('Habitacion')}>
-                        <ChairIcon/>
+                        <ChairIcon />
                         <div className="category-text">Habitacion</div>
-                    </div> 
+                    </div>
                     <div className={'filter-opt'} onClick={handleClickOpen}>
-                        <TuneIcon style={{fontSize:'1.2rem'}}/>                    
-                    </div>                    
-                </div>  
+                        <TuneIcon style={{ fontSize: '1.2rem' }} />
+                    </div>
+                </div>
 
                 <div className="grid-properties">
                     {filteredProperties
                         .filter(project => !selectedCategory || project.category === selectedCategory)
                         .map((project, index) => (
                             <div key={index} className="card">
-                                <img src={project.cardimage} alt="Property" />
-                                <div className="card-details">
-                                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{project.district}</p>
-                                    <p>{project.address}</p>
-                                    <p>{project.details}</p>
-                                    <p style={{ color: '#7a7a7a' }}>S/ {project.price}</p>
-                                    <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer">
-                                        Ver Mapa
-                                        <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                    </a>
-                                </div>
+                                <Link to={`/property/${project.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <img src={project.cardimage} alt="Property" />
+                                    <div className="card-details">
+                                        <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{project.district}</p>
+                                        <p>{project.address}</p>
+                                        <p>{project.details}</p>
+                                        <p style={{ color: '#7a7a7a' }}>S/ {project.price}</p>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <span>Ver Mapa</span>
+                                            <PlaceIcon style={{ fontSize: '1.2rem', marginLeft: '0.5rem' }} />
+                                        </div>
+                                    </div>
+                                </Link>
                             </div>
                         ))}
                 </div>
+
 
             </div>
 
             {
                 <Dialog open={open} onClose={handleClose} >
 
-                    <DialogTitle style={{fontSize:'1.1rem'}}>
+                    <DialogTitle style={{ fontSize: '1.1rem' }}>
                         <div >Filtros</div>
                         <IconButton
                             aria-label="close"
@@ -185,7 +190,7 @@ const HomeRentState = () => {
                         </IconButton>
                     </DialogTitle>
 
-                     <DialogContent dividers style={{ padding: "0rem 4rem 2rem 4rem" }}>
+                    <DialogContent dividers style={{ padding: "0rem 4rem 2rem 4rem" }}>
                         <p>Rango de precio</p>
                         <Slider
                             value={[minValue, maxValue]}
@@ -204,12 +209,12 @@ const HomeRentState = () => {
                                 }
                             }}
                             sx={{
-                                color: theme.palette.rentstateblue.main, 
+                                color: theme.palette.rentstateblue.main,
                                 '& .MuiSlider-thumb': {
                                     backgroundColor: theme.palette.rentstateblue.main,
                                 },
                                 '& .MuiSlider-rail': {
-                                    backgroundColor: '#ccc', 
+                                    backgroundColor: '#ccc',
                                 },
                                 '& .MuiSlider-track': {
                                     backgroundColor: theme.palette.rentstateblue.main,
@@ -219,12 +224,12 @@ const HomeRentState = () => {
 
                         <div
                             style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            gap: "1rem",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                gap: "1rem",
                             }}
                         >
-                           <TextField
+                            <TextField
                                 label="Min"
                                 type="number"
                                 InputLabelProps={{
@@ -256,13 +261,13 @@ const HomeRentState = () => {
                     </DialogContent>
 
                     <DialogActions style={{ marginRight: '0.3rem' }}>
-                        <Button onClick={handleClearFilters} style={{ color: '#225E7C', padding:'0.5rem 1rem' }}>Limpiar</Button>
-                        <Button onClick={handleApplyFilters} style={{ color: 'white', backgroundColor:'#225E7C', padding:'0.5rem 1rem' }}>Filtrar</Button>
+                        <Button onClick={handleClearFilters} style={{ color: '#225E7C', padding: '0.5rem 1rem' }}>Limpiar</Button>
+                        <Button onClick={handleApplyFilters} style={{ color: 'white', backgroundColor: '#225E7C', padding: '0.5rem 1rem' }}>Filtrar</Button>
                     </DialogActions>
 
                 </Dialog>
             }
-        </div>      
+        </div>
     );
 };
 
