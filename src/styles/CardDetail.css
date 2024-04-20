@@ -1,32 +1,73 @@
 .cardDetails {
-    min-height: 120vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
+  min-height: 160vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.cardDetails .MuiCard-root {
+  box-shadow: none;
+}
+
+.propertyImage {
+  width: 50%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column; /* Cambiamos a columna para apilar los botones */
+  align-items: center; /* Centramos los elementos horizontalmente */
+  margin-top: 20px;
+}
+
+/* Estilo específico para los botones */
+.cardActions Button {
+  width: 40%; /* Ajusta el ancho al 100% del contenedor (la tarjeta) */
+  margin-bottom: 10px; /* Añade espacio entre los botones */
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente los elementos */
+  flex-direction: column; /* Alinea los elementos en columna */
+  text-align: center; /* Alinea el texto al centro */
   
-  .cardDetails .MuiCard-root {
-    box-shadow: none;
-  }
-  
+}
+
+.grid_container{
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.avatarName {
+  margin-top: 8px; /* Espacio adicional entre el avatar y el nombre */
+}
+
+.commentContainer {
+  display: flex;
+  align-items: flex-start; /* Alinea el contenido hacia arriba (arriba del avatar) */
+  margin-bottom: 12px;
+}
+
+.commentText {
+  margin-left: 12px; /* Espacio entre el avatar y el texto del comentario */
+  text-align: left; /* Alinea el texto del comentario a la izquierda */
+}
+
+@media(max-width:600px){
   .propertyImage {
-    width: 60%;
+    width: 80%;
     height: auto;
     margin-bottom: 20px;
   }
-  
-  .cardContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .cardActions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-.buttonIcon {
-  margin-right: 8px;
 }
