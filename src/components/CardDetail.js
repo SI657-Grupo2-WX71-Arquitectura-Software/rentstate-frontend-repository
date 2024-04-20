@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardHeader, CardContent, Typography, Button, Avatar, Grid } from '@mui/material';
+import { Card, CardHeader, CardContent, Typography, Button, Avatar, Grid, Snackbar } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';
 import MapIcon from '@mui/icons-material/Map';
+import Booking from '../components/Booking';
 import '../styles/CardDetail.css';
 import { properties } from '../auxiliars/MyConsts';
 import Comments from '../components/Comments'; // Importa el componente Comments
@@ -11,6 +12,14 @@ function CardDetail() {
   const { id } = useParams(); // Obtener propertyId de la URL
   const propertyId = parseInt(id);
 
+  const [rentSuccess, setRentSuccess] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleBookingSuccess = () => {
+    setRentSuccess(true);
+    setSnackbarOpen(true); // Abrir el Snackbar al aceptar la reserva exitosa
+  };
+
   const selectedProperty = properties.find((property) => property.id === propertyId);
 
   if (!selectedProperty) {
@@ -18,6 +27,10 @@ function CardDetail() {
   }
 
   const { cardimage, category, district, address, details, price } = selectedProperty;
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false); // Cerrar el Snackbar
+  };
 
   return (
     <div className="cardDetails">
@@ -49,6 +62,20 @@ function CardDetail() {
             <Button variant="outlined" color="primary" startIcon={<MapIcon />} fullWidth>
               Ver en Mapa
             </Button>
+
+            {/* Renderiza el componente Booking para seleccionar fechas */}
+            <Booking onBookingSuccess={handleBookingSuccess} />
+
+            {/* Snackbar para mostrar "Renta exitosa" */}
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={6000} // Duración en milisegundos
+              onClose={handleSnackbarClose}
+              message="¡Renta exitosa!"
+              ContentProps={{
+                style: { backgroundColor: 'green', color: 'white' },
+              }}
+            />
           </div>
           <Comments />
         </CardContent>
