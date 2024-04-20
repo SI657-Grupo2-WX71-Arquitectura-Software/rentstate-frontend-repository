@@ -1,5 +1,5 @@
 .cardDetails {
-  min-height: 160vh;
+  height: 200vh;
   display: flex;
   justify-content: center;
   align-items: center;
