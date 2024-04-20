@@ -86,6 +86,21 @@
   color: white;
 }
 
+.list-rent-button{
+  background-color: #2196f3;
+  color: white;
+}
+
+.list-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.client-button{
+  margin-top: 20px;
+}
+
+
 @media(max-width:600px){
   .myAccount-container{
     min-height: 120vh;
