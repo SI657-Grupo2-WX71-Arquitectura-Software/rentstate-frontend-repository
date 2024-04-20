@@ -1,0 +1,44 @@
+.bookingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .bookingContainer h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para el calendario DatePicker */
+  .react-datepicker {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .react-datepicker__header {
+    background-color: #225e7c;
+    color: #fff;
+  }
+  
+  .react-datepicker__day {
+    color: #000;
+  }
+  
+  .react-datepicker__day--selected {
+    background-color: #225e7c;
+    color: #fff;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #225e7c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #16415e;
+  }
+  
