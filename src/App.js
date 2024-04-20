@@ -8,37 +8,43 @@ import Login from './components/Login';
 import List from './components/List';
 import Register from './components/Register';
 import CardDetail from './components/CardDetail';
+import ListRentedProperties from './components/ListRentedProperties';
+import Chat from './components/Chat';
+import Clients from './components/Clients';
 
 function NotFound() {
-    return (
-      <div>
-        <h1>404 - Not Found</h1>
-        <p>The page you are looking for does not exist.</p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>404 - Not Found</h1>
+      <p>The page you are looking for does not exist.</p>
+    </div>
+  );
+}
 
 function App() {
-    return (
-        <Router>
+  return (
+    <Router>
       <div className="App">
         <header className="App-header">
-          <Navbar />				
+          <Navbar />
           <Routes>
             <Route path="/MiCuenta" element={<MyAccount />} />
             <Route path="/" element={<HomeRentState />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/list" element={<List />} />
-            <Route path="/properties/:id" element={<CardDetail />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/property/:id" element={<CardDetail />} />
+            <Route path="/property_rented" element={<ListRentedProperties />} />
             {/* Ruta para manejar cualquier otra URL no encontrada */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />			
+          <Footer />
         </header>
       </div>
     </Router>
-    );
+  );
 }
 
 export default App;
