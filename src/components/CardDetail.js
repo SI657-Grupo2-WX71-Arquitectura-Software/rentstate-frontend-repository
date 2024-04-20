@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardHeader, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardHeader, CardContent, Typography, Button, Avatar, Grid } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';
 import MapIcon from '@mui/icons-material/Map';
 import '../styles/CardDetail.css';
 import { properties } from '../auxiliars/MyConsts';
+import Comments from '../components/Comments'; // Importa el componente Comments
 
 function CardDetail() {
   const { id } = useParams(); // Obtener propertyId de la URL
@@ -23,6 +24,17 @@ function CardDetail() {
       <Card>
         <CardHeader title={category} subheader={`${district}, ${address}`} />
         <CardContent>
+          <Grid container spacing={2} className="grid_container">
+            <Grid item xs={6}>
+              <div className="avatarContainer">
+                <Avatar alt="Avatar" src="/path-to-your-avatar.jpg" />
+                <Typography variant="subtitle1" className="avatarName">
+                  John
+                </Typography>
+              </div>
+            </Grid>
+          </Grid>
+
           <img src={cardimage} alt="Property" className="propertyImage" />
           <Typography variant="body1" color="textSecondary" component="p">
             {details}
@@ -30,15 +42,16 @@ function CardDetail() {
           <Typography variant="h5" component="h2">
             $ {price}
           </Typography>
+          <div className="cardActions">
+            <Button variant="contained" color="primary" startIcon={<MessageIcon />} fullWidth>
+              Enviar Mensaje
+            </Button>
+            <Button variant="outlined" color="primary" startIcon={<MapIcon />} fullWidth>
+              Ver en Mapa
+            </Button>
+          </div>
+          <Comments />
         </CardContent>
-        <div className="cardActions">
-          <Button variant="contained" color="primary" startIcon={<MessageIcon />} fullWidth>
-            Send a Message
-          </Button>
-          <Button variant="outlined" color="primary" startIcon={<MapIcon />} fullWidth>
-            View on Map
-          </Button>
-        </div>
       </Card>
     </div>
   );
