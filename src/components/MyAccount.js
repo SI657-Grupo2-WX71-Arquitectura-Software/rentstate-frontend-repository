@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button, IconButton } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 import "../styles/MyAccount.css";
 
 const MyAccount = () => {
@@ -140,6 +140,27 @@ const MyAccount = () => {
           </Button>
         )}
       </div>
+      <div style={{ marginTop: 20 }}>
+        <Link to="/property_rented" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary" className="list-rent-button">
+            Rented Properties
+          </Button>
+        </Link>
+        <Link to="/list" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary" className="list-button" style={{ marginLeft: 10 }}>
+            List of Properties
+          </Button>
+        </Link>
+      </div>
+
+        <div style={{ marginTop: 20 }}>
+        <Link to="/clients">
+        <Button variant="contained" color="primary" className="client-button" style={{ marginLeft: 10 }}>
+          Clients
+        </Button>
+        </Link>
+        </div>
+
       <div className="delete-account-container">
         <Button
           className="delete-account-button"
