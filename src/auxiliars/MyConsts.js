@@ -17,7 +17,7 @@ const properties = [
     {
         id: 1,
         category: "Departamento",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa1.png",
         district: "Pueblo Libre",
         address: "Abraham Valdelomar 522",
         details: "104 m², 3 dorm, 2 baños",
@@ -29,7 +29,7 @@ const properties = [
     {
         id: 2,
         category: "Departamento",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa2.png",
         district: "Magdalena",
         address: "Torres Matos 160",
         details: "104 m², 3 dorm, 2 baños",
@@ -41,7 +41,7 @@ const properties = [
     {
         id: 3,
         category: "Oficina",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa3.png",
         district: "San Miguel",
         address: "Prolongación Ayacucho 1240",
         details: "104 m², 3 dorm, 2 baños",
@@ -53,7 +53,7 @@ const properties = [
     {
         id: 4,
         category: "Oficina",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa4.png",
         district: "Jesús María",
         address: "Av. Gregorio Escobedo 849",
         details: "104 m², 3 dorm, 2 baños",
@@ -65,7 +65,7 @@ const properties = [
     {
         id: 5,
         category: "Casa",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa2.png",
         district: "San Isidro",
         address: "Av. Gral. Salaverry 1004",
         details: "104 m², 3 dorm, 2 baños",
@@ -77,7 +77,7 @@ const properties = [
     {
         id: 6,
         category: "Habitacion",
-        cardimage: "/assets/hero-bg.png",
+        cardimage: "/assets/casa3.png",
         district: "Miraflores",
         address: "Calle Bolivar 131",
         details: "104 m², 3 dorm, 2 baños",
