@@ -1,10 +1,9 @@
 .myAccount-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
 }
 
 .avatar-container {
@@ -14,95 +13,31 @@
   margin-bottom: 20px;
 }
 
-.avatar {
+.avatar-container label {
   position: relative;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-}
-
-.avatar input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
   cursor: pointer;
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.avatar-container .MuiIconButton-root {
+  margin-left: 10px;
 }
 
 .info-container {
-  width: 100%;
-  max-width: 600px;
+  margin-top: 20px;
 }
 
 .info-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
 }
 
-.info-form {
-  display: grid;
-  grid-gap: 20px;
+.info-form .form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-}
-
-.edit-icon {
-  color: gray;
-}
-
-.delete-account-container{
+.delete-account-container {
   margin-top: 20px;
-}
-
-.delete-account-button {
-  color: red !important;
-  border-color: red !important;
-  border-radius: 4px;
-  padding: 10px 20px;
-  background-color: white;
-}
-
-.delete-account-button:hover {
-  background-color: red;
-  color: white;
-}
-
-.list-rent-button{
-  background-color: #2196f3;
-  color: white;
-}
-
-.list-button {
-  background-color: #4caf50;
-  color: white;
-}
-
-.client-button{
-  margin-top: 20px;
-}
-
-
-@media(max-width:600px){
-  .myAccount-container{
-    min-height: 120vh;
-  }
 }
