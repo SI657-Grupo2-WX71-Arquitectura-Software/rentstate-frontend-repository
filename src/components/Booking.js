@@ -12,7 +12,6 @@ const Booking = ({ onBookingSuccess }) => {
 
   const handleBookingConfirmation = () => {
     if (selectedDate) {
-      // Aquí podrías realizar alguna acción con la fecha seleccionada
       onBookingSuccess();
     }
   };
@@ -23,7 +22,7 @@ const Booking = ({ onBookingSuccess }) => {
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
-        minDate={new Date()} // Permite seleccionar fechas a partir de la fecha actual
+        minDate={new Date()} 
       />
       <button onClick={handleBookingConfirmation}>Aceptar</button>
     </div>

@@ -143,12 +143,12 @@ const MyAccount = () => {
       <div style={{ marginTop: 20 }}>
         <Link to="/property_rented" style={{ textDecoration: "none" }}>
           <Button variant="contained" color="primary" className="list-rent-button">
-            Rented Properties
+            Propiedades Rentadas
           </Button>
         </Link>
         <Link to="/list" style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="primary" className="list-button" style={{ marginLeft: 10 }}>
-            List of Properties
+            Lista de Propiedades
           </Button>
         </Link>
       </div>
@@ -156,7 +156,7 @@ const MyAccount = () => {
         <div style={{ marginTop: 20 }}>
         <Link to="/clients">
         <Button variant="contained" color="primary" className="client-button" style={{ marginLeft: 10 }}>
-          Clients
+          Mis Inquilinos
         </Button>
         </Link>
         </div>
