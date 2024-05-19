@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { properties } from "../auxiliars/MyConsts"; 
 import PlaceIcon from "@mui/icons-material/Place";
 import { Link } from "react-router-dom";
-
-import "../styles/MyProperties.css"; 
+import PropertyService from "../hooks/usePropertyService";
+import "../styles/MyProperties.css";
 
 const MyProperties = () => {
-    
     const [filteredProperties, setFilteredProperties] = useState([]);
+    const userId = 1; // Define el userId que deseas filtrar
 
     const handleClickMap = (e) => {
-        e.stopPropagation();           
+        e.stopPropagation();
     };
 
-    useEffect(() => {      
-        const filtered = properties.filter(property => property.userId === 1); // para yoru: este effect filtra por userId: 1
-        setFilteredProperties(filtered);
-    }, []);  
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const response = await PropertyService.getPropertiesByUserId(userId);
+                setFilteredProperties(response);
+            } catch (error) {
+                console.error("Error al obtener las propiedades del usuario:", error);
+            }
+        };
+
+        fetchProperties();
+    }, [userId]);
 
     return (
         <div className="list">
             <div style={{ fontSize: '2.5rem', fontWeight: 'lighter', margin: '4rem 1rem 2rem 1rem' }}>Mis Propiedades</div>
             <div className="grid-properties">
-                
                 {filteredProperties.map((project, index) => (
                     <div key={index} className="card">
                         <Link to={`/property/${project.id}`} style={{ textDecoration: "none", color: "inherit" }}>
@@ -43,7 +49,6 @@ const MyProperties = () => {
                         </Link>
                     </div>
                 ))}
-
             </div>
         </div>
     );
