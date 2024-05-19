@@ -1,13 +1,13 @@
-import './App.css';
+import './styles/App.css';
 import HomeRentState from './components/HomeRentState';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MyAccount from './components/MyAccount';
 import Login from './components/Login';
-import List from './components/List';
+import MyProperties from './components/MyProperties';
 import Register from './components/Register';
-import CardDetail from './components/CardDetail';
+import PropertyDetail from './components/PropertyDetail';
 import ListRentedProperties from './components/ListRentedProperties';
 import Chat from './components/Chat';
 import Clients from './components/Clients';
@@ -33,11 +33,11 @@ function App() {
             <Route path="/" element={<HomeRentState />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/list" element={<List />} />
+            <Route path="/list" element={<MyProperties />} />
             <Route path="/mensajes" element={<Chat />} />
-            <Route path="/nueva-propiedad" element={<AddProperty />} />
+            <Route path="/publicar" element={<AddProperty />} />
             <Route path="/clients" element={<Clients />} />
-            <Route path="/property/:id" element={<CardDetail />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
