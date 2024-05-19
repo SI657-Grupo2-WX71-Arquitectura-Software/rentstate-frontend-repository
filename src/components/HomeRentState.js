@@ -185,29 +185,29 @@ const HomeRentState = (project) => {
                 </div>
 
                 <div className="grid-properties">
-                {filteredProperties
-                    .filter((project) => !selectedCategory || project.category === selectedCategory)
-                    .map((project, index) => (
-                    <div key={index} className="card">
-                        <Link
-                        to={`/property/${project.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                        <img src={project.cardimage} alt="Property" />
-                        <div className="card-details">
-                            <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
-                            {project.district}
-                            </p>
-                            <p>{project.location}</p>
-                            <p>{project.characteristics}</p>
-                            <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
-                            <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
-                                Ver Mapa
-                                <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                            </a>
+                    {filteredProperties
+                        .filter((project) => !selectedCategory || project.category === selectedCategory)
+                        .map((project, index) => (
+                        <div key={index} className="card">
+                            <Link
+                            to={`/property/${project.id}`}
+                            style={{ textDecoration: "none", color: "inherit" }}
+                            >
+                            <img src={project.cardimage} alt="Property" />
+                            <div className="card-details">
+                                <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                                {project.district}
+                                </p>
+                                <p>{project.location}</p>
+                                <p>{project.characteristics}</p>
+                                <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
+                                <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
+                                    Ver Mapa
+                                    <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                </a>
+                            </div>
+                            </Link>
                         </div>
-                        </Link>
-                    </div>
                     ))}
                 </div>
             </div>
@@ -272,10 +272,10 @@ const HomeRentState = (project) => {
                     </div>
                 </DialogContent>
                 <DialogActions style={{ marginRight: "0.3rem" }}>
-                    <Button onClick={handleClearFilters} style={{ color: "#225E7C", padding: "0.5rem 1rem" }}>
+                    <Button onClick={handleClearFilters} style={{ color: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}> 
                         Limpiar
                     </Button>
-                    <Button onClick={handleApplyFilters} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
+                    <Button onClick={handleApplyFilters} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}>
                         Filtrar
                     </Button>
                 </DialogActions>

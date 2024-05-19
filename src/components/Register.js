@@ -153,7 +153,7 @@ const Register = () => {
                                 >
                                     <option value="">Select an option</option>
                                     <option value="tenant">Inquilino</option>
-                                    <option value="landlord">Propietario</option>
+                                    <option value="owner">Propietario</option>
                                 </select>
                             </div>
                         </div>

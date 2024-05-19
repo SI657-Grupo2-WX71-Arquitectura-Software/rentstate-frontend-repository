@@ -7,6 +7,7 @@ import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import EmailIcon from "@mui/icons-material/Email"; 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Link } from "react-router-dom";
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
 const Navbar = () => {
     const [anchorElSeButtons, setAnchorElSeButtons] = useState(null);
@@ -41,55 +42,29 @@ const Navbar = () => {
 
                 <div className="nav-options">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Link to="/nueva-propiedad">
-                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer" }}>
+                        <Link to="/publicar">
+                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight:'0.3rem' }}>
                                 <AddBoxIcon />
                             </IconButton>
                         </Link>
 
                         <Link to="/mensajes">
-                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer" }}>
-                                <EmailIcon />
+                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer"}}>
+                                <MarkUnreadChatAltIcon />
                             </IconButton>
-                        </Link>
+                        </Link>                     
 
-                        <AccountCircleIcon 
-                            onClick={handleClickSeButtons}
-                            style={{  color: '#e0e0e0', fontSize: '2rem', cursor:'pointer' }}                     
-                        />
+                        <Link to="/perfil" >
+                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer" }}>
+                            <AccountCircleIcon 
+                               
+                                style={{  color: '#e0e0e0', fontSize: '1.8rem', cursor:'pointer' }}                     
+                            />
+                            </IconButton>                           
+                        </Link>
                     </div>
                 </div>
-            </div>
-
-            <Popper
-                open={openSeButtons}
-                anchorEl={anchorElSeButtons}
-                placement="bottom-end"
-                style={{ zIndex: 1100 }}
-            >
-                {() => (
-                    <Paper elevation={4}>
-                         <Link to="/perfil" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <MenuItem style={{padding:'0.7rem 1rem', fontSize:'0.96rem'}}>
-                                    <ListItemIcon>
-                                        <DirectionsWalkIcon fontSize="small" style={{ fill: 'grey', height:'23px' }}/>
-                                    </ListItemIcon>
-                                    <Typography variant="inherit">Mi Cuenta</Typography>
-                                </MenuItem>
-                            </Link>
-
-                        <MenuItem style={{ padding: "0.7rem 1rem", fontSize: "0.96rem" }}>
-                            <ListItemIcon>
-                                <LogoutIcon
-                                    fontSize="small"
-                                    style={{ fill: "grey", height: "25px" }}
-                                />
-                            </ListItemIcon>
-                            <Typography variant="inherit">Cerrar Sesión</Typography>
-                        </MenuItem>
-                    </Paper>
-                )}
-            </Popper>
+            </div>    
         </div>
     );
 };

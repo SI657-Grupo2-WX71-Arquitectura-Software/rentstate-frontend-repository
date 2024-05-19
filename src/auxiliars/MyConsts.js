@@ -1,22 +1,39 @@
-const segmentsData = [
+const users = [   
     {
-        type: "Inquilinos",
-        description: "Interesados en alquilar Inmuebles",
-        image: "assets/inquilinos.png",
-        imagetype: "assets/otakusLetters.png"
-    },
+        userId: 1,     
+        name: "Nirvana",
+        lastName: "García",
+        birthDate: "2004-06-04", 
+        description: "Buena pagadora, interesada en alquilar habitaciones cerca a la UPC San Isidro",
+        email: "nirvagarciav@gmail.com",
+        username: "",
+        password: "123456789",
+        role: "owner", 
+        gender: "Female", 
+        address: "Av. Sucre 123456",   
+        photoUrl: '/assets/profilePicture.png'   
+    },  
     {
-        type: "Propietarios",
-        description: "Propietarios de inmuebles que quieren arrendar",
-        image: "assets/propietarios.png",
-        imagetype: "assets/vendedoresLetters.png"
-    },
+        userId: 2,     
+        name: "Gabriel",
+        lastName: "Bernal",
+        birthDate: "1945-20-01", 
+        description: "Buen propietario, interesado en ser millonario",
+        email: "gabrielito@gmail.com",
+        username: "",
+        password: "123456789",
+        role: "owner", 
+        gender: "Manel", 
+        address: "Av. Sucre 123456",   
+        photoUrl: '/assets/profilePicture.png'   
+    },  
 ];
 
 
 const properties = [   
     {
         id: 1,
+        userId: 1,
         category: "Departamento",
         district: "Pueblo Libre",  
         location: "Abraham Valdelomar 522",
@@ -30,6 +47,7 @@ const properties = [
     },
     {
         id: 2,
+        userId: 1,
         category: "Departamento",
         district: "Magdalena",  
         location: "Torres Matos 160",
@@ -43,6 +61,7 @@ const properties = [
     }, 
     {
         id: 3,
+        userId: 1,
         category: "Oficina",
         district: "San Miguel",
         location: "Prolongación Ayacucho 1240",
@@ -56,6 +75,7 @@ const properties = [
     },     
     {
         id: 4,
+        userId: 1,
         category: "Oficina",
         district: "Jesús María",
         location: "Av. Gregorio Escobedo 849",
@@ -63,12 +83,13 @@ const properties = [
         longitude: "-77.0568907554405",
         description: "Casa bonita en Pueblo Libre",
         characteristics: "104 m², 3 dorm, 2 baños",
-        available: true,
+        available: false,
         cardimage: "/assets/casa4.png",
         price: "250,000",  
     },   
     {
         id: 5,
+        userId: 2,
         category: "Casa",
         district: "San Isidro",
         location: "Av. Gral. Salaverry 1004",
@@ -82,6 +103,7 @@ const properties = [
     },
     {
         id: 6,
+        userId: 2,
         category: "Habitacion",
         district: "Miraflores",
         location: "Calle Bolivar 131",
@@ -95,7 +117,8 @@ const properties = [
     },   
 ];
 
-const interestedPeople = [
+
+const clients = [
     {
         id: 1,
         name: "Pepita",
@@ -117,4 +140,4 @@ const interestedPeople = [
 ];
 
 
-export { segmentsData, properties, interestedPeople };  
+export { users, properties, clients };  
