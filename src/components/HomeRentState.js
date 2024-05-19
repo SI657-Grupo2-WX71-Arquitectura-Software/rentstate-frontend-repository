@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
 import { Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,InputAdornment,Slider,TextField,createTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import { properties } from "../auxiliars/MyConsts";
+import { properties } from "../auxiliars/MyConsts"; //Uso de db
+import PropertyService from "../hooks/usePropertyService";
 import SearchIcon from "@mui/icons-material/Search";
 import ChairIcon from "@mui/icons-material/Chair";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -15,18 +16,34 @@ import { Link } from "react-router-dom";
 
 const theme = createTheme({
     palette: {
-        rentstateblue: { main: "#225E7C"},
+        rentstateblue: { main: "#225E7C" },
     },
 });
 
 const HomeRentState = (project) => {
     const [searchValue, setSearchValue] = useState("");
-    const [filteredProperties, setFilteredProperties] = useState(properties);
+    const [properties, setProperties] = useState([]); // Estado para guardar las propiedades obtenidas
+    const [filteredProperties, setFilteredProperties] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(300000);
     const isMobile = useMediaQuery("(max-width:600px)");
+
+    useEffect(() => {
+        // Función para obtener todas las propiedades desde el backend
+        const fetchProperties = async () => {
+            try {
+                const response = await PropertyService.getAllProperties(); // Ajusta según tu método
+                setProperties(response);
+                setFilteredProperties(response.filter(property => property.available !== false)); // Filtra propiedades disponibles
+            } catch (error) {
+                console.error("Error al obtener las propiedades:", error);
+            }
+        };
+
+        fetchProperties();
+    }, []);
 
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
@@ -35,14 +52,12 @@ const HomeRentState = (project) => {
     const handleSearchIconClick = () => {
         console.log("El usuario buscó:", searchValue);
         const filtered = properties.filter((property) =>
-        Object.values(property).some((value) => {
-            if (
-                typeof value === "string" || value instanceof String
-            ) {
-                return value.toLowerCase().includes(searchValue.toLowerCase());
-            }
-            return false; 
-        })
+            Object.values(property).some((value) => {
+                if (typeof value === "string" || value instanceof String) {
+                    return value.toLowerCase().includes(searchValue.toLowerCase());
+                }
+                return false;
+            })
         );
         setFilteredProperties(filtered);
     };
@@ -54,11 +69,7 @@ const HomeRentState = (project) => {
     };
 
     const handleCategoryClick = (category) => {
-        if (selectedCategory !== "Filtro") {
-            setSelectedCategory((prevCategory) =>
-                prevCategory === category ? null : category
-            );
-        }
+        setSelectedCategory((prevCategory) => prevCategory === category ? null : category);
     };
 
     const handleChange = (event, newValue) => {
@@ -91,124 +102,109 @@ const HomeRentState = (project) => {
     };
 
     const handleClickMap = (e) => {
-        e.stopPropagation();           
+        e.stopPropagation();
     };
-
-    useEffect(() => {  
-        const filteredNotRented = properties.filter(
-            (property) => property.available !== false
-        );
-        setFilteredProperties(filteredNotRented);
-    }, []);
 
     return (
         <div id="findProperty">
             <div className="findProperty-container">
                 <div
-                className="search-system"
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                }}
-                >
-                <TextField
-                    id="outlined-textarea"
-                    placeholder="Buscar Inmueble"
-                    value={searchValue}
-                    onChange={handleTextFieldChange}
-                    onKeyDown={handleKeyDown}
-                    sx={{
-                    width: isMobile ? "70vw" : "30rem",
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "200px",
-                        "& fieldset": {
-                        borderColor: "#ececec !important",
-                        },
-                    },
-                    "& .MuiInputBase-input": {
-                        fontSize: "0.8rem",
-                        padding: "0.8rem 1.3rem",
-                    },
-                    }}
-                />
-                <SearchIcon
+                    className="search-system"
                     style={{
-                    height: "1.5rem",
-                    color: "gray",
-                    cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
                     }}
-                    onClick={handleSearchIconClick}
-                />
+                >
+                    <TextField
+                        id="outlined-textarea"
+                        placeholder="Buscar Inmueble"
+                        value={searchValue}
+                        onChange={handleTextFieldChange}
+                        onKeyDown={handleKeyDown}
+                        sx={{
+                            width: isMobile ? "70vw" : "30rem",
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "200px",
+                                "& fieldset": {
+                                    borderColor: "#ececec !important",
+                                },
+                            },
+                            "& .MuiInputBase-input": {
+                                fontSize: "0.8rem",
+                                padding: "0.8rem 1.3rem",
+                            },
+                        }}
+                    />
+                    <SearchIcon
+                        style={{
+                            height: "1.5rem",
+                            color: "gray",
+                            cursor: "pointer",
+                        }}
+                        onClick={handleSearchIconClick}
+                    />
                 </div>
 
                 <div className="search-categories">
-                <div
-                    className={`category-opt ${
-                    selectedCategory === "Departamento" ? "selected" : ""
-                    }`}
-                    onClick={() => handleCategoryClick("Departamento")}
-                >
-                    <EmojiTransportationIcon />
-                    <div className="category-text">Departamento</div>
-                </div>
-                <div
-                    className={`category-opt ${
-                    selectedCategory === "Oficina" ? "selected" : ""
-                    }`}
-                    onClick={() => handleCategoryClick("Oficina")}
-                >
-                    <HomeRepairServiceIcon />
-                    <div className="category-text">Oficina</div>
-                </div>
-                <div
-                    className={`category-opt ${
-                    selectedCategory === "Casa" ? "selected" : ""
-                    }`}
-                    onClick={() => handleCategoryClick("Casa")}
-                >
-                    <CottageIcon />
-                    <div className="category-text">Casa</div>
-                </div>
-                <div
-                    className={`category-opt ${
-                    selectedCategory === "Habitacion" ? "selected" : ""
-                    }`}
-                    onClick={() => handleCategoryClick("Habitacion")}
-                >
-                    <ChairIcon />
-                    <div className="category-text">Habitacion</div>
-                </div>
-                <div className={"filter-opt"} onClick={handleClickOpen}>
-                    <TuneIcon style={{ fontSize: "1.2rem" }} />
-                </div>
+                    <div
+                        className={`category-opt ${selectedCategory === "Departamento" ? "selected" : ""}`}
+                        onClick={() => handleCategoryClick("Departamento")}
+                    >
+                        <EmojiTransportationIcon />
+                        <div className="category-text">Departamento</div>
+                    </div>
+                    <div
+                        className={`category-opt ${selectedCategory === "Oficina" ? "selected" : ""}`}
+                        onClick={() => handleCategoryClick("Oficina")}
+                    >
+                        <HomeRepairServiceIcon />
+                        <div className="category-text">Oficina</div>
+                    </div>
+                    <div
+                        className={`category-opt ${selectedCategory === "Casa" ? "selected" : ""}`}
+                        onClick={() => handleCategoryClick("Casa")}
+                    >
+                        <CottageIcon />
+                        <div className="category-text">Casa</div>
+                    </div>
+                    <div
+                        className={`category-opt ${selectedCategory === "Habitacion" ? "selected" : ""}`}
+                        onClick={() => handleCategoryClick("Habitacion")}
+                    >
+                        <ChairIcon />
+                        <div className="category-text">Habitacion</div>
+                    </div>
+                    <div className={"filter-opt"} onClick={handleClickOpen}>
+                        <TuneIcon style={{ fontSize: "1.2rem" }} />
+                    </div>
                 </div>
 
                 <div className="grid-properties">
                     {filteredProperties
                         .filter((project) => !selectedCategory || project.category === selectedCategory)
                         .map((project, index) => (
-                        <div key={index} className="card">
-                            <Link
-                            to={`/property/${project.id}`}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                            >
-                            <img src={project.cardimage} alt="Property" />
-                            <div className="card-details">
-                                <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
-                                {project.district}
-                                </p>
-                                <p>{project.location}</p>
-                                <p>{project.characteristics}</p>
-                                <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
-                                <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
-                                    Ver Mapa
-                                    <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                </a>
+                            <div key={index} className="card">
+                                <Link
+                                    to={`/property/${project.id}`}
+                                    style={{ textDecoration: "none", color: "inherit" }}
+                                >
+                                    <img src={project.cardimage} alt="Property" />
+                                    <div className="card-details">
+                                        <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                                            {project.district}
+                                        </p>
+                                        <p>{project.location}</p>
+                                        <p>{project.characteristics}</p>
+                                        <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
+                                        <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
+                                            Ver Mapa
+                                            <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                        </a>
+                                    </div>
+                                </Link>
                             </div>
-                            </Link>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </div>
 
@@ -229,50 +225,50 @@ const HomeRentState = (project) => {
                         max={300000}
                         step={1}
                         valueLabelFormat={(value) => {
-                        if (value === 0) {
-                            return `S/ ${value.toLocaleString()}`;
-                        } else if (value === 300000) {
-                            return `+ S/ ${value.toLocaleString()}`;
-                        } else {
-                            return `S/ ${value.toLocaleString()}`;
-                        }
+                            if (value === 0) {
+                                return `S/ ${value.toLocaleString()}`;
+                            } else if (value === 300000) {
+                                return `+ S/ ${value.toLocaleString()}`;
+                            } else {
+                                return `S/ ${value.toLocaleString()}`;
+                            }
                         }}
                         sx={{
-                        color: theme.palette.rentstateblue.main,
-                        "& .MuiSlider-thumb": {
-                            backgroundColor: theme.palette.rentstateblue.main,
-                        },
-                        "& .MuiSlider-rail": {
-                            backgroundColor: "#ccc",
-                        },
-                        "& .MuiSlider-track": {
-                            backgroundColor: theme.palette.rentstateblue.main,
-                        },
+                            color: theme.palette.rentstateblue.main,
+                            "& .MuiSlider-thumb": {
+                                backgroundColor: theme.palette.rentstateblue.main,
+                            },
+                            "& .MuiSlider-rail": {
+                                backgroundColor: "#ccc",
+                            },
+                            "& .MuiSlider-track": {
+                                backgroundColor: theme.palette.rentstateblue.main,
+                            },
                         }}
                     />
                     <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem" }}>
                         <TextField
-                        label="Min"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        InputProps={{ startAdornment: <InputAdornment position="start">S/</InputAdornment> }}
-                        variant="outlined"
-                        value={minValue}
-                        onChange={(e) => setMinValue(e.target.value)}
+                            label="Min"
+                            type="number"
+                            InputLabelProps={{ shrink: true }}
+                            InputProps={{ startAdornment: <InputAdornment position="start">S/</InputAdornment> }}
+                            variant="outlined"
+                            value={minValue}
+                            onChange={(e) => setMinValue(e.target.value)}
                         />
                         <TextField
-                        label="Max"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        InputProps={{ startAdornment: <InputAdornment position="start">S/</InputAdornment> }}
-                        variant="outlined"
-                        value={maxValue}
-                        onChange={(e) => setMaxValue(e.target.value)}
+                            label="Max"
+                            type="number"
+                            InputLabelProps={{ shrink: true }}
+                            InputProps={{ startAdornment: <InputAdornment position="start">S/</InputAdornment> }}
+                            variant="outlined"
+                            value={maxValue}
+                            onChange={(e) => setMaxValue(e.target.value)}
                         />
                     </div>
                 </DialogContent>
                 <DialogActions style={{ marginRight: "0.3rem" }}>
-                    <Button onClick={handleClearFilters} style={{ color: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}> 
+                    <Button onClick={handleClearFilters} style={{ color: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}>
                         Limpiar
                     </Button>
                     <Button onClick={handleApplyFilters} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
-import { properties, users } from '../auxiliars/MyConsts';
+import { properties, users } from '../auxiliars/MyConsts'; //Uso de db
 import "../styles/MyAccount.css";
 import { Avatar } from '@mui/material';
 

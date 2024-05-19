@@ -1,5 +1,5 @@
 import React from "react";
-import { properties } from "../auxiliars/MyConsts"; // Importa el array de propiedades desde el archivo de datos
+import { properties } from "../auxiliars/MyConsts"; // Importa el array de propiedades desde el archivo de datos //Uso de db
 import "../styles/ListRentedProperties.css"; // Importa los estilos CSS para ListRentedProperties
 
 function ListRentedProperties() {
