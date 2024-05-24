@@ -5,13 +5,13 @@ const Clients = () => {
 
   return (
     <div className="clients">
-      <Typography variant="h6">
+      <Typography variant="h6" gutterBottom>
         Clientes Interesados:
       </Typography>
 
       <div className="interestedClient">
         <Typography>Pepita</Typography>
-        <div  className="button">
+        <div  className="interest_button">
           <Button
             variant="outlined"
             color="primary"
