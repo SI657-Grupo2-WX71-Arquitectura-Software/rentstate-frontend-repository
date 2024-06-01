@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../hooks/api" // Asegúrate de que la ruta sea correcta
 import "../styles/Register.css"; // Estilos CSS para el formulario de registro
 
 const Register = () => {
@@ -13,20 +14,24 @@ const Register = () => {
     const [address, setAddress] = useState("");
     const [age, setAge] = useState("");
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        // Lógica para enviar los datos de registro al servidor o realizar acciones necesarias
-        console.log("Registering user:", {
-            email,
-            password,
-            name,
-            lastName,
-            gender,
-            description,
-            address,
-            age,
-        });
-        navigate("/");
+        try {
+            const response = await api.post('/auth/api/register', {
+                name,
+                lastName,
+                username: email, // Assuming username is email
+                email,
+                birthDate: new Date().toISOString(), // Placeholder value for birthDate
+                gender,
+                password,
+                role: description, // Assuming role is same as description
+            });
+            console.log("Registration successful:", response.data);
+            navigate("/");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
     };
 
     const isFormValid =
