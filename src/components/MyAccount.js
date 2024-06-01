@@ -1,40 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button, IconButton, Box, Avatar, Grid } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import { Link } from 'react-router-dom';
-import "../styles/MyAccount.css";
-import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { users } from "../auxiliars/MyConsts"; //Uso de db
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { Save } from "@mui/icons-material";
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import api from '../hooks/userService'; // Asegúrate de que la ruta sea correcta
+import "../styles/MyAccount.css";
 
 const MyAccount = () => {
-
-    const user = users[0]; // nota para yoru: jalamos el primer user de nuestra lista en MyConst.js
+    const [user, setUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [avatarImage, setAvatarImage] = useState(user.photoUrl); 
-    const [selectedDate, setSelectedDate] = useState(dayjs(user.birthDate));
-    const [name, setName] = useState(user.name);
-    const [lastName, setLastName] = useState(user.lastName);
-    const [role, setRole] = useState(user.role);
-    const [gender, setGender] = useState(user.gender.toLowerCase());
-    const [email, setEmail] = useState(user.email);
-    const [password, setPassword] = useState(user.password);
-    const [address, setAddress] = useState(user.address);
+    const [avatarImage, setAvatarImage] = useState(""); 
+    const [selectedDate, setSelectedDate] = useState(dayjs());
+    const [name, setName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [role, setRole] = useState("");
+    const [gender, setGender] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [address, setAddress] = useState("");
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const userId = localStorage.getItem('userId');
+            const token = localStorage.getItem('token');
+            if (!userId || !token) {
+                // Handle case where userId or token is missing
+                return;
+            }
+            try {
+                const response = await api.get(`/api/v1/users/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const userData = response.data;
+                setUser(userData);
+                setAvatarImage(userData.photoUrl);
+                setSelectedDate(dayjs(userData.birthDate));
+                setName(userData.name);
+                setLastName(userData.lastName);
+                setRole(userData.role);
+                setGender(userData.gender.toLowerCase());
+                setUsername(userData.username);
+                setPassword(userData.password);
+                setAddress(userData.address);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleEdit = () => {
         setIsEditing(true);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsEditing(false);
-        console.log("Guardando cambios jeje..."); //nota para yoru: enviamos api request para actualizar datos
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+        try {
+            await api.put(`/api/v1/users/${userId}`, {
+                name,
+                lastName,
+                gender,
+                description: user.description, // Assuming description is not being edited
+                birthDate: selectedDate.format("YYYY-MM-DD"),
+                photoUrl: avatarImage,
+                role,
+                username,
+                password,
+                address
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log("Changes saved successfully");
+        } catch (error) {
+            console.error("Error saving changes:", error);
+        }
     };
 
     const handleFileChange = (e) => {
@@ -48,9 +100,13 @@ const MyAccount = () => {
         }
     };
 
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div className="myAccount-container" style={{margin:'7rem 0'}}>
-            <div className="avatar-container" style={{display:'flex', gap:'1rem', justifyContent:'left'}}>
+        <div className="myAccount-container" style={{ margin: '7rem 0' }}>
+            <div className="avatar-container" style={{ display: 'flex', gap: '1rem', justifyContent: 'left' }}>
                 <div>
                     <input
                         accept="image/*"
@@ -70,15 +126,12 @@ const MyAccount = () => {
                     </label>
                 </div>
 
-                <div style={{fontSize:'2.2rem', fontWeight:'lighter'}}> 
-                    <p> ¡Hola <span style={{color:'#1E5181', fontWeight:'normal'}}>{name} {lastName}</span>!</p>
-                  
+                <div style={{ fontSize: '2.2rem', fontWeight: 'lighter' }}> 
+                    <p> ¡Hola <span style={{ color: '#1E5181', fontWeight: 'normal' }}>{name} {lastName}</span>!</p>
                 </div>
-                
             </div>
 
-            <Box sx={{ marginTop: 3 }}>              
-
+            <Box sx={{ marginTop: 3 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -131,11 +184,11 @@ const MyAccount = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            label="Email"
+                            label="Username"
                             variant="outlined"
                             fullWidth
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             disabled={!isEditing}
                         />
                     </Grid>
@@ -150,7 +203,7 @@ const MyAccount = () => {
                             disabled={!isEditing}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} style={{marginTop:'0.5rem'}}> 
+                    <Grid item xs={12} sm={6} style={{ marginTop: '0.5rem' }}> 
                         <TextField
                             label="Dirección"
                             variant="outlined"
@@ -162,14 +215,12 @@ const MyAccount = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={['DatePicker']} >
-                                <DatePicker 
-                                    label="Cumpleaños"
-                                    value={selectedDate}
-                                    onChange={(newValue) => setSelectedDate(newValue)}
-                                    disabled={!isEditing}                                
-                                /> 
-                            </DemoContainer>
+                            <DatePicker 
+                                label="Cumpleaños"
+                                value={selectedDate}
+                                onChange={(newValue) => setSelectedDate(newValue)}
+                                disabled={!isEditing}                                
+                            /> 
                         </LocalizationProvider>
                     </Grid>
                 </Grid>
@@ -177,28 +228,28 @@ const MyAccount = () => {
                 <Box display="flex" alignItems="center" justifyContent='right' margin='1rem 0'>                   
                     {!isEditing && (                     
                         <Button variant="contained" color="secondary" onClick={handleEdit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
-                            <EditNoteIcon style={{marginRight:'0.3rem', marginTop:'-0.18rem'}}/>  Editar perfil 
+                            <EditNoteIcon style={{ marginRight: '0.3rem', marginTop: '-0.18rem' }} />  Editar perfil 
                         </Button>
                     )}
                     {isEditing && (
                          <Button variant="contained" color="secondary" onClick={handleSave} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
-                            <Save style={{marginRight:'0.3rem', marginTop:'-0.18rem'}}/>  Guardar Cambios 
+                            <Save style={{ marginRight: '0.3rem', marginTop: '-0.18rem' }} />  Guardar Cambios 
                         </Button>                      
                     )}                   
                 </Box>
               
             </Box>
 
-            <div style={{display:'flex', gap:'1.8rem', width:'100%', justifyContent:'center', margin:'3rem 0rem 3rem 0rem'}}>
+            <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
                 <Link to="/list" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'} style={{padding:'1.5rem'}}>
+                    <div className={'category-opt'} style={{ padding: '1.5rem' }}>
                         <MapsHomeWorkIcon />
                         <div className="category-text">Mis Propiedades</div>
                     </div>
                 </Link>
 
                 <Link to="/clients" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'}  style={{padding:'1.5rem'}}>
+                    <div className={'category-opt'}  style={{ padding: '1.5rem' }}>
                         <Diversity3Icon />
                         <div className="category-text">Mis Inquilinos</div>
                     </div>
