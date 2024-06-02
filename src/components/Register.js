@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../hooks/api" // Asegúrate de que la ruta sea correcta
-import "../styles/Register.css"; // Estilos CSS para el formulario de registro
+import api from "../hooks/api" 
+import "../styles/Register.css";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -20,12 +20,12 @@ const Register = () => {
             const response = await api.post('/auth/api/register', {
                 name,
                 lastName,
-                username: email, // Assuming username is email
+                username: email,
                 email,
-                birthDate: new Date().toISOString(), // Placeholder value for birthDate
+                birthDate: new Date().toISOString(),
                 gender,
                 password,
-                role: description, // Assuming role is same as description
+                role: description, 
             });
             console.log("Registration successful:", response.data);
             navigate("/");
@@ -48,13 +48,10 @@ const Register = () => {
         <div className="app-container">
             <div className="content-container">
                 <div className="register-form-container">
-                    <h3 className="register-title fw-normal mb-3">Register</h3>
+                    <h3 style={{color:'white', fontWeight:'lighter', fontSize:'2rem' }}>Crea tu cuenta</h3>
                     <form onSubmit={handleRegister} className="register-form">
                         <div className="form-grid">
-                            <div className="form-group">
-                                <label htmlFor="name" className="form-label">
-                                    Name
-                                </label>
+                            <div className="form-group">                              
                                 <input
                                     id="name"
                                     className="form-control"
@@ -64,10 +61,7 @@ const Register = () => {
                                     placeholder="Enter your name"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="lastName" className="form-label">
-                                    Last Name
-                                </label>
+                            <div className="form-group">                               
                                 <input
                                     id="lastName"
                                     className="form-control"
@@ -77,10 +71,7 @@ const Register = () => {
                                     placeholder="Enter your last name"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="email" className="form-label">
-                                    Email
-                                </label>
+                            <div className="form-group">                               
                                 <input
                                     id="email"
                                     className="form-control"
@@ -90,10 +81,7 @@ const Register = () => {
                                     placeholder="Enter your email address"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password" className="form-label">
-                                    Password
-                                </label>
+                            <div className="form-group">                              
                                 <input
                                     id="password"
                                     className="form-control"
@@ -103,10 +91,7 @@ const Register = () => {
                                     placeholder="Enter your password"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="address" className="form-label">
-                                    Address
-                                </label>
+                            <div className="form-group">                             
                                 <input
                                     id="address"
                                     className="form-control"
@@ -116,10 +101,7 @@ const Register = () => {
                                     placeholder="Enter your address"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="gender" className="form-label">
-                                    Gender
-                                </label>
+                            <div className="form-group">                               
                                 <select
                                     id="gender"
                                     className="form-control"
@@ -133,10 +115,7 @@ const Register = () => {
                                     <option value="undisclosed">Prefer not to say</option>
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="age" className="form-label">
-                                    Age
-                                </label>
+                            <div className="form-group">                              
                                 <input
                                     id="age"
                                     className="form-control"
@@ -146,10 +125,7 @@ const Register = () => {
                                     placeholder="Enter your age"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="description" className="form-label">
-                                    Description
-                                </label>
+                            <div className="form-group">                              
                                 <select
                                     id="description"
                                     className="form-control"
@@ -164,16 +140,14 @@ const Register = () => {
                         </div>
                         <button
                             type="submit"
-                            className={`btn btn-primary ${!isFormValid ? "disabled" : ""}`}
+                            className={`custom-button ${!isFormValid ? "disabled" : ""}`}
                             disabled={!isFormValid}
                         >
-                            Register
-                        </button>
-                        <p className="login-link">
-                            Already have an account?{" "}
-                            <Link to="/login" className="link-info">
-                                Login here
-                            </Link>
+                            Registrar
+                        </button>                       
+                        <p style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
+                            ¿Ya tienes una cuenta?{" "}
+                            <Link to="/login" style={{fontSize:'0.9rem', color:'#E8E8E8'}}>   Inicia Sesión</Link>
                         </p>
                     </form>
                 </div>
