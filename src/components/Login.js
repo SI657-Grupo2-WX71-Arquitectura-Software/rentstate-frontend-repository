@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from '../hooks/api'; // Asegúrate de que la ruta sea correcta
+import api from '../hooks/api'; 
 import "../styles/Login.css";
 
 const Login = () => {
@@ -43,12 +43,12 @@ const Login = () => {
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
-        setUsernameError(""); // Limpiar el mensaje de error al cambiar el nombre de usuario
+        setUsernameError(""); 
     };
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
-        setPasswordError(""); // Limpiar el mensaje de error al cambiar la contraseña
+        setPasswordError("");
     };
 
     const isLoginButtonEnabled = username.trim() !== "" && password.trim() !== "";
@@ -57,35 +57,25 @@ const Login = () => {
         <div className="app-container">
             <div className="content-container">
                 <div className="login-form-container">
-                    <h3 className="login-title fw-normal mb-3">Log in</h3>
+                    <h3 style={{color:'white', fontWeight:'lighter', fontSize:'2rem' }}>Iniciar Sesión</h3>
                     <form onSubmit={handleLogin}>
-                        <div className="form-group">
-                            <div className="labels">
-                                <label htmlFor="username" className="form-label">
-                                    Username
-                                </label>
-                            </div>
+                        <div className="form-group">                           
                             <input
                                 id="username"
                                 className={`form-control ${usernameError && "invalid"}`}
                                 type="text"
-                                placeholder="Enter your username"
+                                placeholder="Usuario"
                                 value={username}
                                 onChange={handleUsernameChange}
                             />
                             {usernameError && <p className="error-message">{usernameError}</p>}
                         </div>
-                        <div className="form-group">
-                            <div className="labels">
-                                <label htmlFor="password" className="form-label">
-                                    Password
-                                </label>
-                            </div>
+                        <div className="form-group">                           
                             <input
                                 id="password"
                                 className={`form-control ${passwordError && "invalid"}`}
                                 type="password"
-                                placeholder="Enter your password"
+                                placeholder="Contraseña"
                                 value={password}
                                 onChange={handlePasswordChange}
                             />
@@ -93,19 +83,19 @@ const Login = () => {
                         </div>
                         <button
                             type="submit"
-                            className={`btn btn-primary w-100 ${!isLoginButtonEnabled && "disabled"}`}
+                            className={`custom-button ${!isLoginButtonEnabled ? "disabled" : ""}`}
+                            style={{ padding: '0.8rem 8rem' }}
                             disabled={!isLoginButtonEnabled}
                         >
-                            Login
+                            Ingresar
                         </button>
-                        <p className="forgot-password text-muted mt-3">
-                            <a href="#!">Forgot password?</a>
+
+                        <p >
+                            <a style={{fontSize:'0.9rem', color:'#E8E8E8', textDecoration:'none'}} href="#!">¿Olvidó su contraseña?</a>
                         </p>
-                        <p className="register-link">
-                            Don't have an account?{" "}
-                            <Link to="/register" className="link-info">
-                                Register here
-                            </Link>
+                        <p  style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
+                            ¿No tienes una cuenta?{" "}
+                            <Link to="/register"  style={{fontSize:'0.9rem', color:'#E8E8E8'}}> Registrate aquí </Link>
                         </p>
                     </form>
                 </div>
