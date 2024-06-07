@@ -51,10 +51,8 @@ const AddProperty = ({ onBookingSuccess }) => {
             // Llama a createProperty para enviar los datos al backend
             const createdProperty = await PropertyService.createProperty(propertyData, userId);
             console.log('Propiedad creada:', createdProperty);
-            // Aquí puedes hacer lo que necesites después de que se cree la propiedad, como redireccionar a otra página o mostrar un mensaje de éxito
             // onBookingSuccess(); // Si necesitas alguna acción adicional después de crear la propiedad
         } catch (error) {
-            // Manejar el error adecuadamente, como mostrar un mensaje de error al usuario
             console.error('Error al crear la propiedad:', error);
         }
     };
