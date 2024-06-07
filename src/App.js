@@ -12,6 +12,8 @@ import ListRentedProperties from './components/ListRentedProperties';
 import Chat from './components/Chat';
 import Clients from './components/Clients';
 import AddProperty from './components/AddProperty';
+import MyPublish from './components/MyPublish';
+import MyPosts from './components/MyPosts';
 
 function NotFound() {
   return (
@@ -35,7 +37,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/list" element={<MyProperties />} />
             <Route path="/mensajes" element={<Chat />} />
-            <Route path="/publicar" element={<AddProperty />} />
+            <Route path="/crear_propiedad" element={<AddProperty />} />
+            <Route path="/publicar" element={<MyPublish />} />
+            <Route path="/posts" element={<MyPosts />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />

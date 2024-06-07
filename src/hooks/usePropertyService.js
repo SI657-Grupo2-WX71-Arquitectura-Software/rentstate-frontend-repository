@@ -35,6 +35,26 @@ const PropertyService = {
       throw error; // Manejar el error adecuadamente en tu componente React
     }
   },
+   // Método para eliminar una propiedad por ID
+   deleteProperty: async (propertyId) => {
+    try {
+      await axios.delete(`${BASE_URL}/api/v1/properties/${propertyId}`);
+      // No necesitas devolver nada si el borrado es exitoso
+    } catch (error) {
+      console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
+      throw error; // Manejar el error adecuadamente en tu componente React
+    }
+  },
+
+  createProperty: async (propertyData, userId) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/api/v1/properties?userId=${userId}`, propertyData);
+      return response.data; // Retorna los datos de la propiedad creada
+    } catch (error) {
+      console.error('Error al crear la propiedad:', error);
+      throw error; // Manejar el error adecuadamente en tu componente React
+    }
+  },
 };
 
 export default PropertyService;
