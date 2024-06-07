@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
 import PropertyService from '../hooks/usePropertyService';
-import userService from '../hooks/userService'; // Importamos el userService
+import userService from '../hooks/userService';
 import { Avatar } from '@mui/material';
 
 const PropertyDetail = () => {
     const { id } = useParams();
     const propertyId = parseInt(id);
     const [property, setProperty] = useState(null);
-    const [owner, setOwner] = useState(null); // Estado para almacenar la información del propietario
+    const [owner, setOwner] = useState(null);
 
     useEffect(() => {
         const fetchProperty = async () => {
