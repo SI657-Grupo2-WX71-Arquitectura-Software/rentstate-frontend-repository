@@ -256,7 +256,7 @@ const MyAccount = () => {
                         <Diversity3Icon />
                         <div className="category-text">Mis Inquilinos</div>
                     </div>
-                </Link>
+                </Link> 
             </div>
         </div>
     );
