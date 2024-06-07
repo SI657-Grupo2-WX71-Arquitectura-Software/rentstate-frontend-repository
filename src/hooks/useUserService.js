@@ -1,6 +1,5 @@
-const BASE_URL = 'http://localhost:8091'; // Reemplaza esto con la URL de tu backend
+const BASE_URL = 'http://localhost:8091'; 
 
-// Función para obtener la información del usuario
 export async function getUserInfo(userId) {
   try {
     const response = await fetch(`${BASE_URL}/api/v1/users/${userId}`);

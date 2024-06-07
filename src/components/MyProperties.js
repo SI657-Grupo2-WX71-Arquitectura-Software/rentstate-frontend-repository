@@ -23,7 +23,6 @@ const MyProperties = () => {
         if (userId) {
             const fetchProperties = async () => {
                 try {
-                    // Obtener las propiedades del usuario actual
                     const response = await PropertyService.getPropertiesByUserId(userId);
                     setFilteredProperties(response);
                 } catch (error) {
@@ -38,7 +37,6 @@ const MyProperties = () => {
     const handleDeleteProperty = async (propertyId) => {
         try {
             await PropertyService.deleteProperty(propertyId);
-            // Si el borrado es exitoso, actualiza la lista de propiedades
             setFilteredProperties(filteredProperties.filter(property => property.id !== propertyId));
         } catch (error) {
             console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
@@ -65,7 +63,6 @@ const MyProperties = () => {
                                     Ver Mapa
                                     <PlaceIcon style={{ fontSize: '1.2rem' }} />
                                 </a>
-                                {/* Botón de eliminar propiedad */}
                                 <button onClick={() => handleDeleteProperty(project.id)}>Eliminar</button>
                             </div>
                         </Link>

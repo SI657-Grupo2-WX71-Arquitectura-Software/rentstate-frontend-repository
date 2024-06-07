@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextField, Select, MenuItem, Button, InputLabel, FormControl, IconButton } from '@mui/material';
 import '../styles/Booking.css';
 import { DeleteOutline, InsertPhoto } from '@mui/icons-material';
-import PropertyService from '../hooks/usePropertyService'; // Importa el servicio PropertyService
+import PropertyService from '../hooks/usePropertyService';
 
 const AddProperty = ({ onBookingSuccess }) => {
     const [category, setCategory] = useState('');
@@ -48,10 +48,9 @@ const AddProperty = ({ onBookingSuccess }) => {
                 price,
 
             };
-            // Llama a createProperty para enviar los datos al backend
+           
             const createdProperty = await PropertyService.createProperty(propertyData, userId);
-            console.log('Propiedad creada:', createdProperty);
-            // onBookingSuccess(); // Si necesitas alguna acción adicional después de crear la propiedad
+            console.log('Propiedad creada:', createdProperty);            
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
         }
@@ -126,7 +125,6 @@ const AddProperty = ({ onBookingSuccess }) => {
                     </div>
                 </div>
                 <div className="formColumn" style={{ backgroundColor: 'white', height: '60%', width: '40%', borderRadius: '1rem', justifyContent: 'center', display: 'block', alignContent: 'center', position: 'relative' }}>
-                {/* Eliminar el input de tipo file y reemplazarlo con un TextField */}
                 <TextField
                     label="URL de la imagen"
                     value={cardimage}
