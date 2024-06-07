@@ -14,10 +14,10 @@ const Comments = () => {
     if (comment.trim() !== '') {
       const newComment = {
         text: comment,
-        isOwner: false, // Indica si es un comentario del propietario (por ahora todos son de otros)
+        isOwner: false, 
       };
       setCommentsList([...commentsList, newComment]);
-      setComment(''); // Limpiar el campo de comentario después de enviar
+      setComment(''); 
     }
   };
 
@@ -25,8 +25,7 @@ const Comments = () => {
     <div>
       <Typography variant="h6" gutterBottom className="coment_container">
         Comentarios
-      </Typography>
-      {/* Formulario para ingresar un nuevo comentario */}
+      </Typography>  
       <TextField
         label="Escribe un comentario"
         variant="outlined"
@@ -41,7 +40,6 @@ const Comments = () => {
         Enviar
       </Button>
 
-      {/* Sección de Comentarios */}
       <Box mt={4} p={2}>
         <div>
           {commentsList.map((comment, index) => (

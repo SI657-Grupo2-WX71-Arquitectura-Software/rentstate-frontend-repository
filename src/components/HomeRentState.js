@@ -22,7 +22,7 @@ const theme = createTheme({
 
 const HomeRentState = (project) => {
     const [searchValue, setSearchValue] = useState("");
-    const [properties, setProperties] = useState([]); // Estado para guardar las propiedades obtenidas
+    const [properties, setProperties] = useState([]); 
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
@@ -31,12 +31,11 @@ const HomeRentState = (project) => {
     const isMobile = useMediaQuery("(max-width:600px)");
 
     useEffect(() => {
-        // Función para obtener todas las propiedades desde el backend
         const fetchProperties = async () => {
             try {
-                const response = await PropertyService.getAllProperties(); // Ajusta según tu método
+                const response = await PropertyService.getAllProperties();
                 setProperties(response);
-                setFilteredProperties(response.filter(property => property.available !== false)); // Filtra propiedades disponibles
+                setFilteredProperties(response.filter(property => property.available !== false));
             } catch (error) {
                 console.error("Error al obtener las propiedades:", error);
             }
