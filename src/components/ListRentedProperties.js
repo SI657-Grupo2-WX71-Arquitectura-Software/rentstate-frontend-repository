@@ -1,6 +1,6 @@
 import React from "react";
-import { properties } from "../auxiliars/MyConsts"; // Importa el array de propiedades desde el archivo de datos //Uso de db
-import "../styles/ListRentedProperties.css"; // Importa los estilos CSS para ListRentedProperties
+import { properties } from "../auxiliars/MyConsts";
+import "../styles/ListRentedProperties.css";
 
 function ListRentedProperties() {
   const rentedProperties = properties.filter((property) => property.rent === "rented");
