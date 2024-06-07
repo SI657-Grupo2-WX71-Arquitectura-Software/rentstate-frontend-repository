@@ -45,7 +45,7 @@ const Navbar = () => {
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Link to="/posts">
                             <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight:'0.3rem' }}>
-                                <FormatListBulletedIcon />
+                                <FormatListBulletedIcon /> 
                             </IconButton>
                         </Link>
                        
