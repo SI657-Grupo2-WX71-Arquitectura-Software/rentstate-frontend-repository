@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import { properties } from "../auxiliars/MyConsts"; //Uso de db
+import { properties } from "../auxiliars/MyConsts";
 import PropertyService from "../hooks/usePropertyService";
 import SearchIcon from "@mui/icons-material/Search";
 import ChairIcon from "@mui/icons-material/Chair";
