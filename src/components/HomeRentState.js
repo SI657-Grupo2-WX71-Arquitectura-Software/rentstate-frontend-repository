@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,InputAdornment,Slider,TextField,createTheme } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { properties } from "../auxiliars/MyConsts"; //Uso de db
 import PropertyService from "../hooks/usePropertyService";
@@ -81,12 +81,13 @@ const HomeRentState = (project) => {
     const handleApplyFilters = () => {
         setFilteredProperties(
             properties.filter((property) => {
-                const price = parseFloat(property.price.replace(",", ""));
+                const price = typeof property.price === 'string' ? parseFloat(property.price.replace(",", "")) : property.price;
                 return price >= minValue && price <= maxValue;
             })
         );
         setOpen(false);
     };
+    
 
     const handleClearFilters = () => {
         setMinValue(0);
@@ -185,10 +186,7 @@ const HomeRentState = (project) => {
                         .filter((project) => !selectedCategory || project.category === selectedCategory)
                         .map((project, index) => (
                             <div key={index} className="card">
-                                <Link
-                                    to={`/property/${project.id}`}
-                                    style={{ textDecoration: "none", color: "inherit" }}
-                                >
+                                <Link to={`/property/${project.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                                     <img src={project.cardimage} alt="Property" />
                                     <div className="card-details">
                                         <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
@@ -197,13 +195,13 @@ const HomeRentState = (project) => {
                                         <p>{project.location}</p>
                                         <p>{project.characteristics}</p>
                                         <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
-                                        <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
-                                            Ver Mapa
-                                            <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                        </a>
                                     </div>
                                 </Link>
+                                <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap} style={{ textDecoration: "none", color: "inherit" }}>
+                                    Ver Mapa <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                </a>
                             </div>
+
                         ))}
                 </div>
             </div>

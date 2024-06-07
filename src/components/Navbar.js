@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/Navbar.css";
 import { IconButton, ListItemIcon, MenuItem, Paper, Popper, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import EmailIcon from "@mui/icons-material/Email"; 
@@ -42,6 +43,12 @@ const Navbar = () => {
 
                 <div className="nav-options">
                     <div style={{ display: "flex", alignItems: "center" }}>
+                        <Link to="/posts">
+                            <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight:'0.3rem' }}>
+                                <FormatListBulletedIcon />
+                            </IconButton>
+                        </Link>
+                       
                         <Link to="/publicar">
                             <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight:'0.3rem' }}>
                                 <AddBoxIcon />

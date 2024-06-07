@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import api from '../hooks/userService'; // Asegúrate de que la ruta sea correcta
+import userService from '../hooks/userService'; // Asegúrate de que la ruta sea correcta
 import "../styles/MyAccount.css";
 
 const MyAccount = () => {
@@ -23,7 +23,7 @@ const MyAccount = () => {
     const [gender, setGender] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [address, setAddress] = useState("");
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -34,12 +34,7 @@ const MyAccount = () => {
                 return;
             }
             try {
-                const response = await api.get(`/api/v1/users/${userId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                const userData = response.data;
+                const userData = await userService.getUser(userId, token);
                 setUser(userData);
                 setAvatarImage(userData.photoUrl);
                 setSelectedDate(dayjs(userData.birthDate));
@@ -49,7 +44,7 @@ const MyAccount = () => {
                 setGender(userData.gender.toLowerCase());
                 setUsername(userData.username);
                 setPassword(userData.password);
-                setAddress(userData.address);
+                setDescription(userData.description);
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -67,7 +62,8 @@ const MyAccount = () => {
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
         try {
-            await api.put(`/api/v1/users/${userId}`, {
+            const userData = {
+                id: userId, // Es necesario para el backend
                 name,
                 lastName,
                 gender,
@@ -77,16 +73,23 @@ const MyAccount = () => {
                 role,
                 username,
                 password,
-                address
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+                description
+            };
+
+            await userService.updateUser(userData, token);
             console.log("Changes saved successfully");
         } catch (error) {
-            console.error("Error saving changes:", error);
-        }
+  if (error.response) {
+    // El servidor respondió con un estado de error
+    console.error("Error de servidor:", error.response.data);
+  } else if (error.request) {
+    // La solicitud fue realizada, pero no se recibió ninguna respuesta
+    console.error("No se recibió respuesta del servidor:", error.request);
+  } else {
+    // Ocurrió un error antes de enviar la solicitud
+    console.error("Error al enviar la solicitud:", error.message);
+  }
+}
     };
 
     const handleFileChange = (e) => {
@@ -208,8 +211,8 @@ const MyAccount = () => {
                             label="Dirección"
                             variant="outlined"
                             fullWidth
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             disabled={!isEditing}
                         />
                     </Grid>
@@ -225,8 +228,8 @@ const MyAccount = () => {
                     </Grid>
                 </Grid>
 
-                <Box display="flex" alignItems="center" justifyContent='right' margin='1rem 0'>                   
-                    {!isEditing && (                     
+                <Box display="flex" alignItems="center" justifyContent='right' margin='1rem 0'>  
+                    {!isEditing && (
                         <Button variant="contained" color="secondary" onClick={handleEdit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
                             <EditNoteIcon style={{ marginRight: '0.3rem', marginTop: '-0.18rem' }} />  Editar perfil 
                         </Button>

@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { TextField, Select, MenuItem, Button, InputLabel, FormControl, IconButton } from '@mui/material';
 import '../styles/Booking.css';
 import { DeleteOutline, InsertPhoto } from '@mui/icons-material';
+import PropertyService from '../hooks/usePropertyService'; // Importa el servicio PropertyService
 
 const AddProperty = ({ onBookingSuccess }) => {
-    const [imagePreview, setImagePreview] = useState(null);
-    const [distrito, setDistrito] = useState('');
-    const [caracteristicas, setCaracteristicas] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-    const [precio, setPrecio] = useState('');
-    const [categoria, setCategoria] = useState('');
-    const [direccion, setDireccion] = useState('');
+    const [category, setCategory] = useState('');
+    const [district, setDistrict] = useState('');
+    const [location, setLocation] = useState('');
+    const [description, setDescription] = useState('');
+    const [characteristics, setCharacteristics] = useState('');
+    const [cardimage, setCardImage] = useState('');    
+    const [price, setPrice] = useState('');
+    const userId = localStorage.getItem('userId');
 
     const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ const AddProperty = ({ onBookingSuccess }) => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                setImagePreview(event.target.result);
+                setCardImage(event.target.result);
             };
             reader.readAsDataURL(file);
         }
@@ -31,22 +33,35 @@ const AddProperty = ({ onBookingSuccess }) => {
     };
 
     const handleImageRemove = () => {
-        setImagePreview(null);
+        setCardImage('');
     };
 
-    const handleSubmit = () => {
-        console.log('Categoria:', categoria, 
-        '\nDistrito:', distrito, 
-        '\nPrecio:', precio, 
-        '\nDireccion:', direccion, 
-        '\nCaracteristicas:', caracteristicas, 
-        '\nDescripcion:', descripcion, 
-        '\nImagen:', imagePreview);
+    const handleSubmit = async () => {
+        try {
+            const propertyData = {
+                category,
+                district,
+                location,
+                description,
+                characteristics,
+                cardimage,
+                price,
+
+            };
+            // Llama a createProperty para enviar los datos al backend
+            const createdProperty = await PropertyService.createProperty(propertyData, userId);
+            console.log('Propiedad creada:', createdProperty);
+            // Aquí puedes hacer lo que necesites después de que se cree la propiedad, como redireccionar a otra página o mostrar un mensaje de éxito
+            // onBookingSuccess(); // Si necesitas alguna acción adicional después de crear la propiedad
+        } catch (error) {
+            // Manejar el error adecuadamente, como mostrar un mensaje de error al usuario
+            console.error('Error al crear la propiedad:', error);
+        }
     };
 
     return (
         <div className="bookingContainer" style={{ height: '90vh', display: 'flex', justifyContent: 'center', margin: '1rem 1rem' }}>
-            <div style={{ fontSize: '2.5rem', fontWeight: 'lighter', margin: '0rem 0 2rem 0' }}>Publica en <span style={{ fontWeight: 'normal', color: '#1E5181' }}>RENTSTATE</span></div>
+            <div style={{ fontSize: '2.5rem', fontWeight: 'lighter', margin: '0rem 0 2rem 0' }}>Crea en <span style={{ fontWeight: 'normal', color: '#1E5181' }}>RENTSTATE</span></div>
             <div style={{ display: 'flex', gap: '4rem', alignItems: 'center' }}>
                 <div style={{ display: 'block' }}>
                     <div className="formColumn">
@@ -55,9 +70,9 @@ const AddProperty = ({ onBookingSuccess }) => {
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={categoria}
+                                value={category}
                                 label="Categoria"
-                                onChange={(e) => setCategoria(e.target.value)}
+                                onChange={(e) => setCategory(e.target.value)}
                             >
                                 <MenuItem value="casa">Casa</MenuItem>
                                 <MenuItem value="departamento">Departamento</MenuItem>
@@ -67,8 +82,8 @@ const AddProperty = ({ onBookingSuccess }) => {
                         </FormControl>
                         <TextField
                             label="Distrito"
-                            value={distrito}
-                            onChange={(e) => setDistrito(e.target.value)}
+                            value={district}
+                            onChange={(e) => setDistrict(e.target.value)}
                             required
                             fullWidth
                             margin="normal"
@@ -76,8 +91,8 @@ const AddProperty = ({ onBookingSuccess }) => {
                         <TextField
                             label="Precio"
                             type="number"
-                            value={precio}
-                            onChange={(e) => setPrecio(e.target.value)}
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                             required
                             fullWidth
                             margin="normal"
@@ -86,24 +101,24 @@ const AddProperty = ({ onBookingSuccess }) => {
                     <div className="formColumn">
                         <TextField
                             label="Dirección"
-                            value={direccion}
-                            onChange={(e) => setDireccion(e.target.value)}
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
                             required
                             fullWidth
                             margin="normal"
                         />
                         <TextField
                             label="Características"
-                            value={caracteristicas}
-                            onChange={(e) => setCaracteristicas(e.target.value)}
+                            value={characteristics}
+                            onChange={(e) => setCharacteristics(e.target.value)}
                             required
                             fullWidth
                             margin="normal"
                         />
                         <TextField
                             label="Descripción"
-                            value={descripcion}
-                            onChange={(e) => setDescripcion(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             required
                             fullWidth
                             multiline
@@ -112,35 +127,23 @@ const AddProperty = ({ onBookingSuccess }) => {
                         />
                     </div>
                 </div>
-                <div className="formColumn" style={{ backgroundColor: '#EEEE', height: '60%', width: '40%', borderRadius: '1rem', justifyContent: 'center', display: 'block', alignContent: 'center', position: 'relative' }}>
-                    <input
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        id="upload-image"
-                        type="file"
-                        onChange={handleImageChange}
-                    />
-                    <label htmlFor="upload-image">
-                        <IconButton component="span" style={{ width: '100%', height: '100%', padding: 0 }}>
-                            {imagePreview ? (
-                                <img
-                                    alt="Imagen del Inmueble"
-                                    src={imagePreview}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '1rem' }}
-                                />
-                            ) : (
-                                <InsertPhoto
-                                    sx={{ width: '100%', height: '100%' }}
-                                />
-                            )}
-                        </IconButton>
-                    </label>
-                    {imagePreview && (
-                        <IconButton onClick={handleImageRemove} style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white' }}>
-                            <DeleteOutline />
-                        </IconButton>
-                    )}
-                </div>
+                <div className="formColumn" style={{ backgroundColor: 'white', height: '60%', width: '40%', borderRadius: '1rem', justifyContent: 'center', display: 'block', alignContent: 'center', position: 'relative' }}>
+                {/* Eliminar el input de tipo file y reemplazarlo con un TextField */}
+                <TextField
+                    label="URL de la imagen"
+                    value={cardimage}
+                    onChange={(e) => setCardImage(e.target.value)}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                {cardimage && (
+                    <IconButton onClick={() => setCardImage('')} style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white' }}>
+                        <DeleteOutline />
+                    </IconButton>
+                )}
+            </div>
+
             </div>
             <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
                 <Button onClick={handleBackToHome} sx={{ textTransform: 'none' }} style={{ color: "grey", padding: "0.5rem 1rem", backgroundColor: "#EEEE" }}>
