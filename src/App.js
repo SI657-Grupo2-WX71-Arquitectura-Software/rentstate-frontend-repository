@@ -39,7 +39,7 @@ function App() {
             <Route path="/mensajes" element={<Chat />} />
             <Route path="/crear_propiedad" element={<AddProperty />} />
             <Route path="/publicar" element={<MyPublish />} />
-            <Route path="/posts" element={<MyPosts />} />
+            <Route path="/posts" element={<MyPosts />} /> 
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
