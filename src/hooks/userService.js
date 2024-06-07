@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const userService = axios.create({
-  baseURL: 'http://localhost:8091', // Asegúrate de que esto coincida con tu backend
+  baseURL: 'http://localhost:8091',
   headers: {
     'Content-Type': 'application/json',
   },
