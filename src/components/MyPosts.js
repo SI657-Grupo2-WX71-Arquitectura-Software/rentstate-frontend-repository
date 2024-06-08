@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Card, CardContent, Typography, Button } from "@mui/material"; // Importamos componentes de Material-UI
+import { Card, CardContent, Typography, Button } from "@mui/material"; 
 import PostService from "../hooks/usePostService";
-import PropertyService from "../hooks/usePropertyService"; // Asegúrate de que este servicio está configurado correctamente
+import PropertyService from "../hooks/usePropertyService";
 
 const MyPosts = () => {
-    const [posts, setPosts] = useState([]); // Estado para almacenar las publicaciones
+    const [posts, setPosts] = useState([]); 
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const allPosts = await PostService.getAllPosts(); // Obtener todas las publicaciones
-                // Obtener las imágenes relacionadas con cada publicación
+                const allPosts = await PostService.getAllPosts(); 
                 const postsWithImages = await Promise.all(
                     allPosts.map(async (post) => {
                         const property = await PropertyService.getPropertyById(post.propertyId);
-                        return { ...post, image: property.image }; // Agregar la imagen de la propiedad al objeto de la publicación
+                        return { ...post, image: property.image };
                     })
                 );
-                setPosts(postsWithImages); // Actualizar el estado con las publicaciones obtenidas
+                setPosts(postsWithImages);
             } catch (error) {
                 console.error("Error al obtener las publicaciones:", error);
             }

@@ -1,15 +1,13 @@
 import React from "react";
-import { properties } from "../auxiliars/MyConsts";
 import "../styles/ListRentedProperties.css";
 
 function ListRentedProperties() {
-  const rentedProperties = properties.filter((property) => property.rent === "rented");
 
   return (
     <div className="list">
       <h1>List of Rented Properties</h1>
       <div className="properties-list">
-        {rentedProperties.map((property) => (
+        {/* {rentedProperties.map((property) => (
           <div className="property-card" key={property.id}>
             <img src={property.cardimage} alt={property.category} />
             <div className="property-details">
@@ -20,7 +18,7 @@ function ListRentedProperties() {
               <p>Price: {property.price}</p>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

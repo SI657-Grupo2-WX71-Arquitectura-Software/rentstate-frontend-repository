@@ -90,9 +90,9 @@ const Login = () => {
                             Ingresar
                         </button>
 
-                        <p >
+                        {/* <p >
                             <a style={{fontSize:'0.9rem', color:'#E8E8E8', textDecoration:'none'}} href="#!">¿Olvidó su contraseña?</a>
-                        </p>
+                        </p> */}
                         <p  style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
                             ¿No tienes una cuenta?{" "}
                             <Link to="/register"  style={{fontSize:'0.9rem', color:'#E8E8E8'}}> Registrate aquí </Link>
