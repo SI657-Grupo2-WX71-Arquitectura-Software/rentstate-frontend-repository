@@ -35,12 +35,7 @@ const Navbar = () => {
 
                 {!isAuthRoute && (
                     <div className="nav-options">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <Link to="/posts">
-                                <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight: '0.3rem' }}>
-                                    <FormatListBulletedIcon /> 
-                                </IconButton>
-                            </Link>
+                        <div style={{ display: "flex", alignItems: "center" }}>                          
                         
                             <Link to="/publicar">
                                 <IconButton aria-label="messages" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", marginRight: '0.3rem' }}>
