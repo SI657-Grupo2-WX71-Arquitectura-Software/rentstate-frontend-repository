@@ -283,7 +283,7 @@ const MyAccount = () => {
             </Box>
 
             <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
-                <Link to="/list" style={{ textDecoration: "none" }}>
+                <Link to="/posts" style={{ textDecoration: "none" }}>
                     <div className={'category-opt'} style={{ padding: '1.5rem' }}>
                         <MapsHomeWorkIcon />
                         <div className="category-text">Mis Propiedades</div>
