@@ -1,48 +1,44 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8093'; // Cambia la URL base según la configuración de tu backend
+const BASE_URL = 'http://localhost:8093'; 
 
 const PostService = {
-  // Método para obtener todas las propiedades
   getAllPosts: async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/posts`);
-      return response.data; // Retorna los datos de todas las propiedades
+      return response.data; 
     } catch (error) {
       console.error('Error al obtener todas los posts:', error);
-      throw error; // Manejar el error adecuadamente en tu componente React
+      throw error; 
     }
   },
 
-  // Método para obtener una propiedad por ID
   getPostByPropertyId: async (propertyId) => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/posts/${propertyId}`);
-      return response.data; // Retorna los datos de la propiedad específica
+      return response.data;
     } catch (error) {
       console.error(`Error al obtener la propiedad con ID ${propertyId}:`, error);
-      throw error; // Manejar el error adecuadamente en tu componente React
+      throw error; 
     }
   },
 
-   // Método para eliminar una propiedad por ID
    deletePost: async (propertyId) => {
     try {
       await axios.delete(`${BASE_URL}/api/v1/posts/${propertyId}`);
-      // No necesitas devolver nada si el borrado es exitoso
     } catch (error) {
       console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
-      throw error; // Manejar el error adecuadamente en tu componente React
+      throw error;
     }
   },
 
   createPost: async (postData) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/posts`, postData);
-      return response.data; // Retorna los datos de la publicación creada
+      return response.data; 
     } catch (error) {
       console.error('Error al crear la publicación:', error);
-      throw error; // Manejar el error adecuadamente en tu componente React
+      throw error; 
     }
   },
   

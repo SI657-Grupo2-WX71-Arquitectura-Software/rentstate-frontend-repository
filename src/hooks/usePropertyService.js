@@ -6,7 +6,7 @@ const PropertyService = {
   getAllProperties: async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/properties`);
-      return response.data; // Retorna los datos de todas las propiedades
+      return response.data;
     } catch (error) {
       console.error('Error al obtener todas las propiedades:', error);
       throw error; 
@@ -16,7 +16,7 @@ const PropertyService = {
   getPropertyById: async (propertyId) => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/properties/${propertyId}`);
-      return response.data; // Retorna los datos de la propiedad específica
+      return response.data; 
     } catch (error) {
       console.error(`Error al obtener la propiedad con ID ${propertyId}:`, error);
       throw error; 
@@ -26,7 +26,7 @@ const PropertyService = {
   getPropertiesByUserId: async (userId) => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/properties?userId=${userId}`);
-      return response.data; // Retorna los datos de las propiedades del usuario
+      return response.data; 
     } catch (error) {
       console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
       throw error; 
@@ -36,7 +36,6 @@ const PropertyService = {
   deleteProperty: async (propertyId) => {
     try {
       await axios.delete(`${BASE_URL}/api/v1/properties/${propertyId}`);
-      // No necesitas devolver nada si el borrado es exitoso
     } catch (error) {
       console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
       throw error; 
@@ -46,7 +45,7 @@ const PropertyService = {
   createProperty: async (propertyData, userId) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/properties?userId=${userId}`, propertyData);
-      return response.data; // Retorna los datos de la propiedad creada
+      return response.data;
     } catch (error) {
       console.error('Error al crear la propiedad:', error);
       throw error;

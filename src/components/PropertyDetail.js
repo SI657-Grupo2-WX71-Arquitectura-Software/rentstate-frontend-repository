@@ -3,13 +3,16 @@ import { useParams } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
 import PropertyService from '../hooks/usePropertyService';
 import userService from '../hooks/userService';
-import { Avatar } from '@mui/material';
+import { Avatar, Skeleton } from '@mui/material';
+
 
 const PropertyDetail = () => {
     const { id } = useParams();
     const propertyId = parseInt(id);
     const [property, setProperty] = useState(null);
     const [owner, setOwner] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchProperty = async () => {
@@ -17,7 +20,6 @@ const PropertyDetail = () => {
                 const response = await PropertyService.getPropertyById(propertyId);
                 setProperty(response);
 
-                // Obtenemos la información del propietario usando el userService
                 const ownerInfo = await userService.getUser(response.userId);
                 setOwner(ownerInfo);
             } catch (error) {
@@ -28,9 +30,48 @@ const PropertyDetail = () => {
         fetchProperty();
     }, [propertyId]);
 
-    if (!property || !owner) {
-        return <div>Cargando...</div>;
+    useEffect(() => {
+        const fetchProperty = async () => {
+            try {
+                const response = await PropertyService.getPropertyById(propertyId);
+                setProperty(response);
+    
+                const ownerInfo = await userService.getUser(response.userId);
+                setOwner(ownerInfo);
+                setLoading(false);
+            } catch (error) {
+                console.error(`Error al obtener la propiedad con ID ${propertyId}:`, error);
+            }
+        };
+    
+        fetchProperty();
+    }, [propertyId]);
+    
+
+    if (loading) {
+        return (
+            <div className="myAccount-container" style={{ margin: '7rem 0' }}>
+                <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                    <Skeleton variant="rectangular" width="60%" height={300} />
+                    <div style={{ display: 'block', textAlign: 'left' }}>
+                        <Skeleton variant="text" width="80%" height={30} />
+                        <Skeleton variant="text" width="60%" height={30} />
+                        <Skeleton variant="text" width="50%" height={30} />
+                        <Skeleton variant="text" width="40%" height={30} />
+    
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem', alignItems: 'center' }}>
+                            <Skeleton variant="circular" width={40} height={40} />
+                            <div>
+                                <Skeleton variant="text" width={100} height={30} />
+                                <Skeleton variant="text" width={150} height={30} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
+    
 
     const { cardimage, district, location, characteristics, price } = property;
     const { name, lastName } = owner;

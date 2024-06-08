@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify'; // Importa react-toastify
+import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
 import PostService from '../hooks/usePostService';
@@ -30,15 +30,12 @@ const MyPublish = () => {
             };
             const createdPost = await PostService.createPost(postData);
             console.log('Post creada:', createdPost);
-
-            // Muestra la notificación de éxito
             toast.success('Publicación creada exitosamente', {
                 position: 'top-right',
                 autoClose: 3000,
             });
 
         } catch (error) {
-            // Manejar el error adecuadamente, como mostrar un mensaje de error al usuario
             console.error('Error al crear la propiedad:', error);
             toast.error('Error al crear la publicación', {
                 position: toast.POSITION.TOP_RIGHT,

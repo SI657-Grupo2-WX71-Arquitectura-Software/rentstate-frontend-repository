@@ -32,9 +32,7 @@ const AddProperty = ({ onBookingSuccess }) => {
         navigate('/');
     };
 
-    const handleImageRemove = () => {
-        setCardImage('');
-    };
+
 
     const handleSubmit = async () => {
         try {

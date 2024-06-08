@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton} from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import { properties } from "../auxiliars/MyConsts";
 import PropertyService from "../hooks/usePropertyService";
 import SearchIcon from "@mui/icons-material/Search";
 import ChairIcon from "@mui/icons-material/Chair";
@@ -29,6 +28,8 @@ const HomeRentState = (project) => {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(300000);
     const isMobile = useMediaQuery("(max-width:600px)");
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -44,12 +45,27 @@ const HomeRentState = (project) => {
         fetchProperties();
     }, []);
 
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const response = await PropertyService.getAllProperties();
+                setProperties(response);
+                setFilteredProperties(response.filter(property => property.available !== false));
+                setLoading(false); 
+            } catch (error) {
+                console.error("Error al obtener las propiedades:", error);
+            }
+        };
+    
+        fetchProperties();
+    }, []);
+    
+
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
     };
 
     const handleSearchIconClick = () => {
-        console.log("El usuario buscó:", searchValue);
         const filtered = properties.filter((property) =>
             Object.values(property).some((value) => {
                 if (typeof value === "string" || value instanceof String) {
@@ -145,7 +161,7 @@ const HomeRentState = (project) => {
                         onClick={handleSearchIconClick}
                     />
                 </div>
-
+    
                 <div className="search-categories">
                     <div
                         className={`category-opt ${selectedCategory === "Departamento" ? "selected" : ""}`}
@@ -179,32 +195,45 @@ const HomeRentState = (project) => {
                         <TuneIcon style={{ fontSize: "1.2rem" }} />
                     </div>
                 </div>
-
+    
                 <div className="grid-properties">
-                    {filteredProperties
-                        .filter((project) => !selectedCategory || project.category === selectedCategory)
-                        .map((project, index) => (
+                    {loading ? (
+                        Array.from(new Array(6)).map((_, index) => (
+                            <div key={index} className="card">
+                                <Skeleton variant="rectangular" width="100%" height={140} />
+                                <div className="card-details">
+                                    <Skeleton variant="text" width="80%" />
+                                    <Skeleton variant="text" width="60%" />
+                                    <Skeleton variant="text" width="50%" />
+                                    <Skeleton variant="text" width="30%" />
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        filteredProperties.map((project, index) => (
                             <div key={index} className="card">
                                 <Link to={`/property/${project.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                                     <img src={project.cardimage} alt="Property" />
                                     <div className="card-details">
-                                        <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                                        <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: project.available ? "inherit" : "#C91A1A" }}>
                                             {project.district}
-                                        </p>
+                                        </p>                                      
                                         <p>{project.location}</p>
                                         <p>{project.characteristics}</p>
                                         <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
+                                        <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
+                                            Ver Mapa
+                                            <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                        </a>
                                     </div>
                                 </Link>
-                                <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap} style={{ textDecoration: "none", color: "inherit" }}>
-                                    Ver Mapa <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                </a>
                             </div>
-
-                        ))}
+                        ))
+                    )}
                 </div>
+    
             </div>
-
+    
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle style={{ fontSize: "1.1rem" }}>
                     <div>Filtros</div>
@@ -275,6 +304,7 @@ const HomeRentState = (project) => {
             </Dialog>
         </div>
     );
+    
 };
 
 export default HomeRentState;
