@@ -48,7 +48,8 @@ const AddProperty = ({ onBookingSuccess }) => {
             };
            
             const createdProperty = await PropertyService.createProperty(propertyData, userId);
-            console.log('Propiedad creada:', createdProperty);            
+            console.log('Propiedad creada:', createdProperty);
+            navigate('/');            
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
         }
