@@ -17,7 +17,7 @@ const ExternalProfileDetails = () => {
             try {
                 const ownerInfo = await userService.getUser(id);
                 setOwner(ownerInfo);
-                const userProperties = await PropertyService.getPropertiesByUserId(id); // Nueva llamada para obtener las propiedades del usuario
+                const userProperties = await PropertyService.getPropertiesByUserId(id);
                 setProperties(userProperties);
                 setLoading(false);
             } catch (error) {
