@@ -4,6 +4,30 @@
   align-items: center;
   height: 100vh;
 }
+.contactList {
+  width: 200px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  padding: 20px;
+}
+
+.contact {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.contact:hover {
+  background-color: #f0f0f0;
+}
+
+.contact.selected {
+  background-color: #4b8af7;
+  color: white;
+}
 
 .chatBox {
   width: 400px;
@@ -17,8 +41,7 @@
 
 .top {
   background-color: #4b8af7;
-  padding: 20px;
-  font-weight: bold;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,14 +56,10 @@
 }
 
 .user img {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-.property {
-  font-size: 0.9rem;
 }
 
 .center {
@@ -62,13 +81,6 @@
   margin-bottom: 10px;
 }
 
-.chatMessage {
-  max-width: 70%;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
 .chatMessage.own {
   align-self: flex-end;
   background-color: #99baf3;
@@ -80,7 +92,6 @@
   background-color: #f0f0f0;
   color: #333;
 }
-
 
 .bottom {
   border-top: 1px solid #4b8af7;

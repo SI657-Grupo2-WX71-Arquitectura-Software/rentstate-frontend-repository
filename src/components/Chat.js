@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/Chat.css";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -12,6 +12,7 @@ function Chat() {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -20,11 +21,9 @@ function Chat() {
       if (userId && token) {
         try {
           const userData = await userService.getUser(userId, token);
-          console.log("User data fetched:", userData);
           setUserName(userData.username);
           setLoading(false);
           
-          // Fetch contacts after setting username
           const contactsData = await fetchContacts(userId, token);
           setContacts(contactsData);
         } catch (error) {
@@ -44,7 +43,6 @@ function Chat() {
         }
       });
       const data = await response.json();
-      console.log("Contacts fetched:", data);
       return data;
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -63,9 +61,6 @@ function Chat() {
             }
           });
           const data = await response.json();
-          console.log("Initial messages:", data); 
-
-          
           const uniqueMessages = removeDuplicates(data, 'id');
           setMessages(uniqueMessages);
         } catch (error) {
@@ -77,19 +72,15 @@ function Chat() {
     if (!loading && userName && receiver) {
       fetchInitialMessages();
   
-      console.log("Setting up WebSocket connection...");
       const socket = new SockJS("http://localhost:8095/ws/messages");
       const client = Stomp.over(socket);
   
       client.connect({}, () => {
-        console.log('WebSocket connection established');
         client.subscribe(`/topic/messages/${userName}`, (msg) => {
-          console.log("Received new message:", msg);
           const newMessage = JSON.parse(msg.body);
           setMessages((prevMessages) => [...prevMessages, newMessage]);
         });
         setStompClient(client);
-        console.log("stompClient set:", client);
       }, (error) => {
         console.log('WebSocket connection error: ', error);
       });
@@ -103,23 +94,23 @@ function Chat() {
   }, [loading, userName, receiver]);
 
   useEffect(() => {
-    // Clear messages when receiver changes
     setMessages([]);
   }, [receiver]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
   };
 
-  const handleReceiverChange = (e) => {
-    setReceiver(e.target.value);
-    setMessages([]); // Clear messages when changing receiver
+  const handleReceiverChange = (contact) => {
+    setReceiver(contact);
+    setMessages([]);
   };
 
   const handleSendMessage = () => {
-    console.log("handleSendMessage called");
-    console.log("stompClient: ", stompClient);
-    console.log("message: ", message);
     if (message.trim() !== "" && stompClient) {
       const newMessage = {
         sender: userName,
@@ -130,11 +121,15 @@ function Chat() {
       stompClient.send("/app/sendMessage", {}, JSON.stringify(newMessage));
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setMessage("");
-      console.log("Message sent:", newMessage);
-    } else {
-      console.error("Cannot send message: stompClient is not connected or message is empty.");
     }
   };
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "auto", block: "end" });
+    }
+  };
+  
 
   if (loading) {
     return <div>Loading...</div>; 
@@ -142,35 +137,50 @@ function Chat() {
 
   return (
     <div className="chat">
+      <div className="contactList">
+        <h3>Contactos</h3>
+        {contacts.map((contact) => (
+          <div 
+            key={contact} 
+            className={`contact ${receiver === contact ? "active" : ""}`}
+            onClick={() => handleReceiverChange(contact)}
+          >
+            {contact}
+          </div>
+        ))}
+      </div>
       <div className="chatBox">
         <div className="top">
           <div className="user">
-            <select value={receiver} onChange={handleReceiverChange}>
-              <option value="" disabled>Select a contact</option>
-              {contacts.map((contact) => (
-                <option key={contact} value={contact}>{contact}</option>
-              ))}
-            </select>
             <img src="https://i.pinimg.com/564x/a0/2a/28/a02a28c20e7b91d1f5e75b8a789d1456.jpg" alt="" />
-            {userName}
+            <span>{userName}</span>
           </div>
           <div className="property">
-            Propiedad <strong>{receiver}</strong>
+            {receiver ? `Chateando con ${receiver}` : "Selecciona un contacto"}
           </div>
         </div>
         <div className="center">
           <div className="chat_default">
-            <p>Estas chateando con {receiver}</p>
+            {receiver ? `Estas chateando con ${receiver}` : "Selecciona un contacto para empezar a chatear"}
           </div>
-          {messages.map((msg, index) => (
+          {messages.map((msg) => (
             <div key={msg.id} className={`chatMessage ${msg.sender === userName ? "own" : ""}`}>
               <p>{msg.content}</p>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <div className="bottom">
-          <textarea placeholder="Escribe tu mensaje..." value={message} onChange={handleMessageChange} />
-          <button onClick={handleSendMessage} disabled={!stompClient || message.trim() === ""}>
+          <textarea 
+            placeholder="Escribe tu mensaje..." 
+            value={message} 
+            onChange={handleMessageChange} 
+            disabled={!receiver}
+          />
+          <button 
+            onClick={handleSendMessage} 
+            disabled={!stompClient || message.trim() === "" || !receiver}
+          >
             Enviar
           </button>
         </div>
