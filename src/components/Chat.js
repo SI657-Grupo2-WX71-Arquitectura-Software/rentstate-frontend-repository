@@ -11,6 +11,7 @@ function Chat() {
   const [receiver, setReceiver] = useState("");
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -22,6 +23,10 @@ function Chat() {
           console.log("User data fetched:", userData);
           setUserName(userData.username);
           setLoading(false);
+          
+          // Fetch contacts after setting username
+          const contactsData = await fetchContacts(userId, token);
+          setContacts(contactsData);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -30,6 +35,23 @@ function Chat() {
 
     fetchUserName();
   }, []);
+
+  const fetchContacts = async (userId, token) => {
+    try {
+      const response = await fetch(`http://localhost:8091/api/v1/users/${userId}/contacts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      console.log("Contacts fetched:", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     const fetchInitialMessages = async () => {
       const token = localStorage.getItem("token");
@@ -79,7 +101,11 @@ function Chat() {
       };
     }
   }, [loading, userName, receiver]);
-  
+
+  useEffect(() => {
+    // Clear messages when receiver changes
+    setMessages([]);
+  }, [receiver]);
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
@@ -87,6 +113,7 @@ function Chat() {
 
   const handleReceiverChange = (e) => {
     setReceiver(e.target.value);
+    setMessages([]); // Clear messages when changing receiver
   };
 
   const handleSendMessage = () => {
@@ -118,7 +145,12 @@ function Chat() {
       <div className="chatBox">
         <div className="top">
           <div className="user">
-            <input type="text" placeholder="Enter receiver's username" value={receiver} onChange={handleReceiverChange} />
+            <select value={receiver} onChange={handleReceiverChange}>
+              <option value="" disabled>Select a contact</option>
+              {contacts.map((contact) => (
+                <option key={contact} value={contact}>{contact}</option>
+              ))}
+            </select>
             <img src="https://i.pinimg.com/564x/a0/2a/28/a02a28c20e7b91d1f5e75b8a789d1456.jpg" alt="" />
             {userName}
           </div>
