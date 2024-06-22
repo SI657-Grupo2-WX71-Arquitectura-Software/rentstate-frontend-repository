@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import userService from '../hooks/userService';
+import userService from '../hooks/useUserService';
 import PropertyService from '../hooks/usePropertyService';
 import { Avatar, Skeleton, Typography, Box, Button, Card, CardContent, CardMedia } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';

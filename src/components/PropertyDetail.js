@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
 import PropertyService from '../hooks/usePropertyService';
-import userService from '../hooks/userService';
+import userService from '../hooks/useUserService';
 import { Avatar, Skeleton } from '@mui/material';
 
 const PropertyDetail = () => {
