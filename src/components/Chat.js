@@ -40,7 +40,7 @@ function Chat() {
 
   const fetchContacts = async (userId, token) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/users/${userId}/contacts`, {
+      const response = await fetch(`http://api-rentstate.antarticdonkeys.com:8080/api/v1/users/${userId}/contacts`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
