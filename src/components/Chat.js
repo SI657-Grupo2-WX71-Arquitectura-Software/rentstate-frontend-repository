@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/Chat.css";
-import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
-import userService from '../hooks/userService';
+import userService from '../hooks/useUserService';
+import useMessageService from '../hooks/useMessageService';
 
 function Chat() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
   const [receiver, setReceiver] = useState("");
   const [userName, setUserName] = useState("");
-  const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
+  const [loadingUser, setLoadingUser] = useState(true);
   const messagesEndRef = useRef(null);
+
+  const { messages, loading: loadingMessages, sendMessage } = useMessageService(userName, receiver);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -21,14 +20,18 @@ function Chat() {
       if (userId && token) {
         try {
           const userData = await userService.getUser(userId, token);
+          console.log("User data fetched:", userData);
           setUserName(userData.username);
-          setLoading(false);
-          
           const contactsData = await fetchContacts(userId, token);
+          console.log("Contacts data fetched:", contactsData);
           setContacts(contactsData);
         } catch (error) {
           console.error("Error fetching user data:", error);
+        } finally {
+          setLoadingUser(false);
         }
+      } else {
+        setLoadingUser(false);
       }
     };
 
@@ -37,7 +40,7 @@ function Chat() {
 
   const fetchContacts = async (userId, token) => {
     try {
-      const response = await fetch(`http://localhost:8091/api/v1/users/${userId}/contacts`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/${userId}/contacts`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -51,53 +54,6 @@ function Chat() {
   };
 
   useEffect(() => {
-    const fetchInitialMessages = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await fetch(`http://localhost:8095/api/v1/message/conversation/${userName}/${receiver}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          const data = await response.json();
-          const uniqueMessages = removeDuplicates(data, 'id');
-          setMessages(uniqueMessages);
-        } catch (error) {
-          console.error("Error fetching initial messages:", error);
-        }
-      }
-    };
-    
-    if (!loading && userName && receiver) {
-      fetchInitialMessages();
-  
-      const socket = new SockJS("http://localhost:8095/ws/messages");
-      const client = Stomp.over(socket);
-  
-      client.connect({}, () => {
-        client.subscribe(`/topic/messages/${userName}`, (msg) => {
-          const newMessage = JSON.parse(msg.body);
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
-        });
-        setStompClient(client);
-      }, (error) => {
-        console.log('WebSocket connection error: ', error);
-      });
-  
-      return () => {
-        if (client) {
-          client.disconnect();
-        }
-      };
-    }
-  }, [loading, userName, receiver]);
-
-  useEffect(() => {
-    setMessages([]);
-  }, [receiver]);
-
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -107,21 +63,11 @@ function Chat() {
 
   const handleReceiverChange = (contact) => {
     setReceiver(contact);
-    setMessages([]);
   };
 
   const handleSendMessage = () => {
-    if (message.trim() !== "" && stompClient) {
-      const newMessage = {
-        sender: userName,
-        receiver: receiver,
-        content: message,
-        timestamp: Date.now(),
-      };
-      stompClient.send("/app/sendMessage", {}, JSON.stringify(newMessage));
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setMessage("");
-    }
+    sendMessage(message);
+    setMessage("");
   };
 
   const scrollToBottom = () => {
@@ -129,9 +75,8 @@ function Chat() {
       messagesEndRef.current.scrollIntoView({ behavior: "auto", block: "end" });
     }
   };
-  
 
-  if (loading) {
+  if (loadingUser || loadingMessages) {
     return <div>Loading...</div>; 
   }
 
@@ -160,14 +105,15 @@ function Chat() {
           </div>
         </div>
         <div className="center">
-          <div className="chat_default">
-            {receiver ? `Estas chateando con ${receiver}` : "Selecciona un contacto para empezar a chatear"}
-          </div>
-          {messages.map((msg) => (
-            <div key={msg.id} className={`chatMessage ${msg.sender === userName ? "own" : ""}`}>
-              <p>{msg.content}</p>
-            </div>
-          ))}
+          {receiver ? (
+            messages.map((msg) => (
+              <div key={msg.timestamp} className={`chatMessage ${msg.sender === userName ? "own" : ""}`}>
+                <p>{msg.content}</p>
+              </div>
+            ))
+          ) : (
+            <div className="chat_default">Selecciona un contacto para empezar a chatear</div>
+          )}
           <div ref={messagesEndRef} />
         </div>
         <div className="bottom">
@@ -179,7 +125,7 @@ function Chat() {
           />
           <button 
             onClick={handleSendMessage} 
-            disabled={!stompClient || message.trim() === "" || !receiver}
+            disabled={!message.trim() || !receiver}
           >
             Enviar
           </button>
@@ -188,16 +134,5 @@ function Chat() {
     </div>
   );
 }
-
-const removeDuplicates = (arr, key) => {
-  return arr.reduce((acc, current) => {
-    const x = acc.find(item => item[key] === current[key]);
-    if (!x) {
-      return acc.concat([current]);
-    } else {
-      return acc;
-    }
-  }, []);
-};
 
 export default Chat;

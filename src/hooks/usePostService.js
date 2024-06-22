@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8093'; 
+const BASE_URL = 'http://localhost:8080'; 
 
 const PostService = {
   getAllPosts: async () => {

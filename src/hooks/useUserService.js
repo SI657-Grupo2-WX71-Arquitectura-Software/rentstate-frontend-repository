@@ -1,15 +1,51 @@
-const BASE_URL = 'http://localhost:8091'; 
+import axios from 'axios';
 
-export async function getUserInfo(userId) {
+const userService = axios.create({
+  baseURL: 'http://localhost:8080',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+const updateUser = async (updateUserResource, token) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/users/${userId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user information');
-    }
-    const userData = await response.json();
-    return userData;
+    const response = await userService.put(`/api/v1/users`, updateUserResource, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
   } catch (error) {
-    console.error('Error fetching user information:', error.message);
+    console.error("Error updating user:", error);
     throw error;
   }
-}
+};
+
+const getUser = async (userId, token) => {
+  const response = await userService.get(`/api/v1/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
+
+const deleteUser = async (userId, token) => {
+  try {
+    const response = await userService.delete(`/api/v1/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};
+
+export default {
+  updateUser,
+  getUser,
+  deleteUser 
+};
