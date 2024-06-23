@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PropertyService from "../hooks/usePropertyService";
+import userService from "../hooks/useUserService";
 import SearchIcon from "@mui/icons-material/Search";
 import ChairIcon from "@mui/icons-material/Chair";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -19,9 +20,9 @@ const theme = createTheme({
     },
 });
 
-const HomeRentState = (project) => {
+const HomeRentState = () => {
     const [searchValue, setSearchValue] = useState("");
-    const [properties, setProperties] = useState([]); 
+    const [properties, setProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
@@ -29,21 +30,10 @@ const HomeRentState = (project) => {
     const [maxValue, setMaxValue] = useState(300000);
     const isMobile = useMediaQuery("(max-width:600px)");
     const [loading, setLoading] = useState(true);
-
-
-    useEffect(() => {
-        const fetchProperties = async () => {
-            try {
-                const response = await PropertyService.getAllProperties();
-                setProperties(response);
-                setFilteredProperties(response.filter(property => property.available !== false));
-            } catch (error) {
-                console.error("Error al obtener las propiedades:", error);
-            }
-        };
-
-        fetchProperties();
-    }, []);
+    const [user, setUser] = useState(null);
+    const [nearbyPropertiesCount, setNearbyPropertiesCount] = useState(0);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+  
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -51,15 +41,38 @@ const HomeRentState = (project) => {
                 const response = await PropertyService.getAllProperties();
                 setProperties(response);
                 setFilteredProperties(response.filter(property => property.available !== false));
-                setLoading(false); 
+                setLoading(false);
             } catch (error) {
                 console.error("Error al obtener las propiedades:", error);
             }
         };
-    
+
+        const fetchUser = async () => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const token = localStorage.getItem('token');
+                if (userId && token) {
+                    const userResponse = await userService.getUser(userId, token);
+                    setUser(userResponse);
+                } else {
+                    console.error("No se encontró el ID del usuario o el token en el almacenamiento local.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el usuario:", error);
+            }
+        };
+
         fetchProperties();
+        fetchUser();
     }, []);
-    
+
+    useEffect(() => {
+        if (user && properties.length > 0) {
+            const nearbyProperties = properties.filter(property => property.district === user.district);
+            setNearbyPropertiesCount(nearbyProperties.length);
+            setOpenSnackbar(nearbyProperties.length > 0);
+        }
+    }, [user, properties]);
 
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
@@ -102,7 +115,6 @@ const HomeRentState = (project) => {
         );
         setOpen(false);
     };
-    
 
     const handleClearFilters = () => {
         setMinValue(0);
@@ -119,6 +131,10 @@ const HomeRentState = (project) => {
 
     const handleClickMap = (e) => {
         e.stopPropagation();
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
 
     return (
@@ -161,7 +177,7 @@ const HomeRentState = (project) => {
                         onClick={handleSearchIconClick}
                     />
                 </div>
-    
+
                 <div className="search-categories">
                     <div
                         className={`category-opt ${selectedCategory === "Departamento" ? "selected" : ""}`}
@@ -195,7 +211,7 @@ const HomeRentState = (project) => {
                         <TuneIcon style={{ fontSize: "1.2rem" }} />
                     </div>
                 </div>
-    
+
                 <div className="grid-properties">
                     {loading ? (
                         Array.from(new Array(6)).map((_, index) => (
@@ -231,9 +247,8 @@ const HomeRentState = (project) => {
                         ))
                     )}
                 </div>
-    
             </div>
-    
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle style={{ fontSize: "1.1rem" }}>
                     <div>Filtros</div>
@@ -302,9 +317,31 @@ const HomeRentState = (project) => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={600000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity="info"
+                    sx={{ width: '100%' }}
+                    action={
+                        <Button color="inherit" size="small">
+                            <Link to="/nearby-properties" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                Ver estas propiedades
+                            </Link>
+                        </Button>
+                    }
+                >
+                    ¡Tienes {nearbyPropertiesCount} propiedades cerca!
+                </Alert>
+            </Snackbar>
+
         </div>
     );
-    
 };
 
 export default HomeRentState;
