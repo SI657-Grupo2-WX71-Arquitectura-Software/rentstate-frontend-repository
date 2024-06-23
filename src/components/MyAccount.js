@@ -290,12 +290,6 @@ const MyAccount = () => {
                     </div>
                 </Link>
 
-                <Link to="/clients" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'}  style={{ padding: '1.5rem' }}>
-                        <Diversity3Icon />
-                        <div className="category-text">Mis Inquilinos</div>
-                    </div>
-                </Link> 
             </div>
 
             <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>

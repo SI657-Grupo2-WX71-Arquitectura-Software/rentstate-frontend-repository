@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PropertyService from "../hooks/usePropertyService";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,7 +21,7 @@ const theme = createTheme({
 
 const HomeRentState = (project) => {
     const [searchValue, setSearchValue] = useState("");
-    const [properties, setProperties] = useState([]); 
+    const [properties, setProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
@@ -51,15 +51,15 @@ const HomeRentState = (project) => {
                 const response = await PropertyService.getAllProperties();
                 setProperties(response);
                 setFilteredProperties(response.filter(property => property.available !== false));
-                setLoading(false); 
+                setLoading(false);
             } catch (error) {
                 console.error("Error al obtener las propiedades:", error);
             }
         };
-    
+
         fetchProperties();
     }, []);
-    
+
 
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
@@ -102,7 +102,7 @@ const HomeRentState = (project) => {
         );
         setOpen(false);
     };
-    
+
 
     const handleClearFilters = () => {
         setMinValue(0);
@@ -161,7 +161,7 @@ const HomeRentState = (project) => {
                         onClick={handleSearchIconClick}
                     />
                 </div>
-    
+
                 <div className="search-categories">
                     <div
                         className={`category-opt ${selectedCategory === "Departamento" ? "selected" : ""}`}
@@ -195,7 +195,7 @@ const HomeRentState = (project) => {
                         <TuneIcon style={{ fontSize: "1.2rem" }} />
                     </div>
                 </div>
-    
+
                 <div className="grid-properties">
                     {loading ? (
                         Array.from(new Array(6)).map((_, index) => (
@@ -217,23 +217,26 @@ const HomeRentState = (project) => {
                                     <div className="card-details">
                                         <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: project.available ? "inherit" : "#C91A1A" }}>
                                             {project.district}
-                                        </p>                                      
+                                        </p>
                                         <p>{project.location}</p>
                                         <p>{project.characteristics}</p>
                                         <p style={{ color: "#7a7a7a" }}>S/ {project.price}</p>
-                                        <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
-                                            Ver Mapa
-                                            <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                        </a>
+
                                     </div>
                                 </Link>
+                                <div className="map-link">
+                                    <a href={`https://www.google.com/maps?q=${project.latitude},${project.longitude}`} target="_blank" rel="noopener noreferrer" onClick={handleClickMap}>
+                                        Ver Mapa
+                                        <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                    </a>
+                                </div>
                             </div>
                         ))
                     )}
                 </div>
-    
+
             </div>
-    
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle style={{ fontSize: "1.1rem" }}>
                     <div>Filtros</div>
@@ -304,7 +307,7 @@ const HomeRentState = (project) => {
             </Dialog>
         </div>
     );
-    
+
 };
 
 export default HomeRentState;
