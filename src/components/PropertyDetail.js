@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
 import PropertyService from '../hooks/usePropertyService';
 import userService from '../hooks/useUserService';
-import { Avatar, Skeleton } from '@mui/material';
+import { Avatar, Skeleton, Button } from '@mui/material';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import PlaceIcon from "@mui/icons-material/Place";
 
 const PropertyDetail = () => {
     const { id } = useParams();
@@ -54,11 +56,30 @@ const PropertyDetail = () => {
         );
     }
 
-    const { cardimage, district, location, characteristics, price } = property;
+    const { cardimage, district, location, characteristics, price, latitude, longitude } = property;
     const { name, lastName, photoUrl } = owner;
 
     const handleOwnerClick = () => {
         navigate(`/external-profile/${owner.id}`);
+    };
+
+    const handleClickMap = () => {
+        console.log("Ir a Google Maps");
+    };
+
+    const mapContainerStyle = {
+        height: '400px',
+        width: '100%',
+    };
+
+    const center = {
+        lat: parseFloat(latitude),
+        lng: parseFloat(longitude),
+    };
+
+    const markerIcon = {
+        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+        scaledSize: window.google ? new window.google.maps.Size(40, 40) : undefined,
     };
 
     return (
@@ -80,6 +101,27 @@ const PropertyDetail = () => {
                             <div>{location}</div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div style={{ marginTop: '2rem' }}>
+                <LoadScript googleMapsApiKey="AIzaSyCBij6DbsB8SQC_RRKm3-X07RLmvQEnP9w">
+                    <GoogleMap
+                        mapContainerStyle={mapContainerStyle}
+                        center={center}
+                        zoom={15}
+                    >
+                        {window.google && (
+                            <Marker 
+                                position={center} 
+                                icon={markerIcon}
+                            />
+                        )}
+                    </GoogleMap>
+                </LoadScript>
+                <div style={{ marginTop: '1rem', textAlign: 'center' }}>                 
+                    <Button variant="contained" color="secondary"  href={`https://www.google.com/maps?q=${latitude},${longitude}`}  target="_blank" rel="noopener noreferrer"sx={{ textTransform: 'none' }} onClick={handleClickMap} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
+                        <PlaceIcon style={{ marginRight: '0.3rem', marginTop: '-0.18rem' }} />  Ir a Google Maps
+                    </Button>
                 </div>
             </div>
         </div>

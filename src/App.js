@@ -13,8 +13,8 @@ import Chat from './components/Chat';
 import Clients from './components/Clients';
 import AddProperty from './components/AddProperty';
 import MyPublish from './components/MyPublish';
-import MyPosts from './components/MyPosts';
 import ExternalProfileDetails from './components/ExternalProfileDetails';
+import NearbyPropertiesMap from './components/NearbyPropertiesMap';
 
 function NotFound() {
   return (
@@ -42,8 +42,10 @@ function App() {
             <Route path="/publicar" element={<MyPublish />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
-            <Route path="/external-profile/:id" element={<ExternalProfileDetails />} /> {/* Nueva ruta */}
+            <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
+            <Route path="/nearby-properties" element={<NearbyPropertiesMap />} /> 
+
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
