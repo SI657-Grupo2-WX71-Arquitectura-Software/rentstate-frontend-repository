@@ -95,6 +95,21 @@
     transition: all 0.3s;  
 }
 
+.map-link a {
+    font-size: 0.8rem;   
+    display: flex;
+    justify-content: right;
+    margin: 0.5rem 0;
+    text-decoration: none;
+    color: #225E7C;
+    transition: all 0.3s;
+}
+
+.map-link a:hover { 
+    color: #2f7395;
+}
+
+
 .card img {
     width: 100%;
     height: auto;
