@@ -53,15 +53,17 @@ const PropertyService = {
       throw error;
     }
   },
+
   addInterestToProperty: async (propertyId, interestData) => {
     const url = `${BASE_URL}/api/v1/properties/${propertyId}/interest`;
     try {
-        const response = await axios.post(url);
+        const response = await axios.post(url, interestData); 
         return response.data; 
     } catch (error) {
         throw error; 
     }
-  },
+},
+
 
   markPropertyUnavailable: async (propertyId) => {
     try {
