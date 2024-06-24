@@ -53,6 +53,35 @@ const PropertyService = {
       throw error;
     }
   },
+  addInterestToProperty: async (propertyId, interestData) => {
+    const url = `${BASE_URL}/api/v1/properties/${propertyId}/interest`;
+    try {
+        const response = await axios.post(url);
+        return response.data; 
+    } catch (error) {
+        throw error; 
+    }
+  },
+
+  markPropertyUnavailable: async (propertyId) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/unavailable`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al marcar la propiedad con ID ${propertyId} como no disponible:`, error);
+      throw error;
+    }
+  },
+
+  renewPropertyAvailability: async (propertyId) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/available`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al renovar la disponibilidad de la propiedad con ID ${propertyId}:`, error);
+      throw error;
+    }
+  },
 };
 
 export default PropertyService;
