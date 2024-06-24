@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropertyService from "../hooks/usePropertyService";
 import { Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography } from "@mui/material";
 import "../styles/MyProperties.css";
@@ -12,6 +12,7 @@ const MyProperties = () => {
     const [loading, setLoading] = useState(true); 
     const [openDialog, setOpenDialog] = useState(false);
     const [propertyToDelete, setPropertyToDelete] = useState(null);
+    const navigate = useNavigate();
 
     const handleClickMap = (e) => {
         e.stopPropagation();
@@ -107,7 +108,12 @@ const MyProperties = () => {
                                             </a>
                                         </div>
                                     </Link>
-                                    <div style={{marginBottom:'0.8rem'}}><button onClick={(e) => handleOpenDialog(project.id, e)}>Eliminar</button></div>
+                                    <div style={{ marginBottom: '0.8rem', display: 'flex', gap: '0.8rem' }}>
+                                        <button onClick={(e) => handleOpenDialog(project.id, e)}>Eliminar</button>
+                                        <button onClick={() => navigate(`/editar/${project.id}`)}>Editar</button>
+                                        </div>
+
+
                                 </div>
                             </div>
                         ))

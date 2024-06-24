@@ -33,7 +33,7 @@ const PropertyService = {
         console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
         throw error;
     }
-},
+  },
 
   deleteProperty: async (propertyId) => {
     try {
@@ -54,6 +54,16 @@ const PropertyService = {
     }
   },
 
+  updateProperty: async (propertyId, propertyData) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/update/${propertyId}`, propertyData);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al actualizar la propiedad con ID ${propertyId}:`, error);
+      throw error;
+    }
+  },
+
   addInterestToProperty: async (propertyId, interestData) => {
     const url = `${BASE_URL}/api/v1/properties/${propertyId}/interest`;
     try {
@@ -62,8 +72,7 @@ const PropertyService = {
     } catch (error) {
         throw error; 
     }
-},
-
+  },
 
   markPropertyUnavailable: async (propertyId) => {
     try {

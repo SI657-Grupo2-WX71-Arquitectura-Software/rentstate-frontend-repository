@@ -16,14 +16,15 @@ function Chat() {
   useEffect(() => {
     const fetchUserName = async () => {
       const userId = localStorage.getItem("userId");
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       if (userId && token) {
         try {
           const userData = await userService.getUser(userId, token);
           console.log("User data fetched:", userData);
           setUserName(userData.username);
-          const contactsData = await fetchContacts(userId, token);
+          let contactsData = await fetchContacts(userId, token);
           console.log("Contacts data fetched:", contactsData);
+          contactsData = Array.from(new Set(contactsData));
           setContacts(contactsData);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -90,6 +91,7 @@ function Chat() {
             className={`contact ${receiver === contact ? "active" : ""}`}
             onClick={() => handleReceiverChange(contact)}
           >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="contact" />
             {contact}
           </div>
         ))}
@@ -97,7 +99,7 @@ function Chat() {
       <div className="chatBox">
         <div className="top">
           <div className="user">
-            <img src="https://i.pinimg.com/564x/a0/2a/28/a02a28c20e7b91d1f5e75b8a789d1456.jpg" alt="" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="user" />
             <span>{userName}</span>
           </div>
           <div className="property">

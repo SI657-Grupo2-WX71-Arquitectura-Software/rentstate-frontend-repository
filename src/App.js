@@ -15,6 +15,7 @@ import AddProperty from './components/AddProperty';
 import MyPublish from './components/MyPublish';
 import ExternalProfileDetails from './components/ExternalProfileDetails';
 import NearbyPropertiesMap from './components/NearbyPropertiesMap';
+import EditProperty from './components/EditProperty';
 
 function NotFound() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/mensajes" element={<Chat />} />
             <Route path="/crear_propiedad" element={<AddProperty />} />
             <Route path="/publicar" element={<MyPublish />} />
+            <Route path="/editar/:id" element={<EditProperty />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
