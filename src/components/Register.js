@@ -78,7 +78,7 @@ const Register = () => {
                 role: description, 
             });
             console.log("Registration successful:", response.data);
-            navigate("/");
+            navigate("/login");
         } catch (error) {
             console.error("Registration failed:", error);
         }
@@ -231,6 +231,7 @@ const Register = () => {
                                 </select>
                             </div>
                         </div>
+
                         <button
                             type="submit"
                             className={`custom-button ${!isFormValid ? "disabled" : ""}`}
@@ -238,6 +239,7 @@ const Register = () => {
                         >
                             Registrar
                         </button>
+
                         <p style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>
                             ¿Ya tienes una cuenta?{" "}
                             <Link to="/login" style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>Inicia Sesión</Link>

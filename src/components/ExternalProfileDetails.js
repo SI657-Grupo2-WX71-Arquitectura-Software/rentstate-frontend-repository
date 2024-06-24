@@ -41,6 +41,8 @@ const ExternalProfileDetails = () => {
 
     const { name, lastName, gender, description, photoUrl } = owner;
 
+    const filteredProperties = properties.filter(property => property.available && property.userId === owner.id);
+
     return (
         <div>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" style={{ margin: '8rem 0 5rem 0', gap: '0.6rem' }}>
@@ -58,7 +60,7 @@ const ExternalProfileDetails = () => {
                 <p style={{fontSize:'1.4rem', fontWeight:'normal'}}>Todas las Propiedades de {`${name.charAt(0).toUpperCase() + name.slice(1)}`} </p>
                
                     <div className="grid-properties">
-                        {properties.map((property, index) => (
+                        {filteredProperties.map((property, index) => (
                             <div key={index} className="card">
                                 <Link to={`/property/${property.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                                     <img src={property.cardimage} alt="Property" />
@@ -78,11 +80,6 @@ const ExternalProfileDetails = () => {
                             </div>
                         ))}
                     </div>
-
-
-                    
-
-           
             </div>
         </div>
     );
