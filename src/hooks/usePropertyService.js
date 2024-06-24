@@ -25,13 +25,15 @@ const PropertyService = {
 
   getPropertiesByUserId: async (userId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/properties?userId=${userId}`);
-      return response.data; 
+        const response = await axios.get(`${BASE_URL}/api/v1/properties`, {
+            params: { userId: userId }
+        });
+        return response.data;
     } catch (error) {
-      console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
-      throw error; 
+        console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
+        throw error;
     }
-  },
+},
 
   deleteProperty: async (propertyId) => {
     try {

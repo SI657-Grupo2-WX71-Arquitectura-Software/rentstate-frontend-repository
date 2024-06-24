@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PropertyService from "../hooks/usePropertyService";
 import userService from "../hooks/useUserService";
@@ -27,20 +27,20 @@ const HomeRentState = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [open, setOpen] = useState(false);
     const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(300000);
+    const [maxValue, setMaxValue] = useState(10000000000000000);
     const isMobile = useMediaQuery("(max-width:600px)");
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [nearbyPropertiesCount, setNearbyPropertiesCount] = useState(0);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-  
 
     useEffect(() => {
         const fetchProperties = async () => {
             try {
                 const response = await PropertyService.getAllProperties();
-                setProperties(response);
-                setFilteredProperties(response.filter(property => property.available !== false));
+                const availableProperties = response.filter(property => property.available === true);
+                setProperties(availableProperties);
+                setFilteredProperties(availableProperties);
                 setLoading(false);
             } catch (error) {
                 console.error("Error al obtener las propiedades:", error);
@@ -73,6 +73,14 @@ const HomeRentState = () => {
             setOpenSnackbar(nearbyProperties.length > 0);
         }
     }, [user, properties]);
+
+    useEffect(() => {
+        if (selectedCategory) {
+            setFilteredProperties(properties.filter(property => property.category === selectedCategory));
+        } else {
+            setFilteredProperties(properties);
+        }
+    }, [selectedCategory, properties]);
 
     const handleTextFieldChange = (event) => {
         setSearchValue(event.target.value);
@@ -118,7 +126,8 @@ const HomeRentState = () => {
 
     const handleClearFilters = () => {
         setMinValue(0);
-        setMaxValue(300000);
+        setMaxValue(9999999999999999);
+        setFilteredProperties(properties);
     };
 
     const handleClickOpen = () => {
@@ -135,6 +144,12 @@ const HomeRentState = () => {
 
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
+    };
+
+    const handleImageLoad = (index) => {
+        const updatedProperties = [...filteredProperties];
+        updatedProperties[index].imageLoaded = true;
+        setFilteredProperties(updatedProperties);
     };
 
     return (
@@ -228,10 +243,18 @@ const HomeRentState = () => {
                     ) : (
                         filteredProperties.map((project, index) => (
                             <div key={index} className="card">
+                                {!project.imageLoaded && (
+                                    <Skeleton variant="rectangular" width="100%" height={140} />
+                                )}
                                 <Link to={`/property/${project.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                                    <img src={project.cardimage} alt="Property" />
+                                    <img 
+                                        src={project.cardimage} 
+                                        alt="Property" 
+                                        onLoad={() => handleImageLoad(index)}
+                                        style={{ display: project.imageLoaded ? 'block' : 'none' }}
+                                    />
                                     <div className="card-details">
-                                        <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: project.available ? "inherit" : "#C91A1A" }}>
+                                        <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: project.available }}>
                                             {project.district}
                                         </p>                                      
                                         <p>{project.location}</p>
@@ -339,7 +362,6 @@ const HomeRentState = () => {
                     ¡Tienes {nearbyPropertiesCount} propiedades cerca!
                 </Alert>
             </Snackbar>
-
         </div>
     );
 };
