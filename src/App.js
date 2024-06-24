@@ -2,7 +2,7 @@ import './styles/App.css';
 import HomeRentState from './components/HomeRentState';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MyAccount from './components/MyAccount';
 import Login from './components/Login';
 import MyProperties from './components/MyProperties';
@@ -27,6 +27,8 @@ function NotFound() {
 }
 
 function App() {
+  const isAuthenticated = false; 
+
   return (
     <Router>
       <div className="App">
@@ -34,7 +36,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/perfil" element={<MyAccount />} />
-            <Route path="/" element={<HomeRentState />} />
+            <Route path="/" element={isAuthenticated ? <HomeRentState /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/posts" element={<MyProperties />} />
@@ -47,7 +49,6 @@ function App() {
             <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
             <Route path="/nearby-properties" element={<NearbyPropertiesMap />} /> 
-
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
