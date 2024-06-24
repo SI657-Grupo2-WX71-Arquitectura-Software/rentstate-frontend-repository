@@ -29,6 +29,8 @@ const MyAccount = () => {
     const [description, setDescription] = useState("");
     const [district, setDistrict] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
 
     const districts = [
         "Cercado de Lima",
@@ -101,6 +103,12 @@ const MyAccount = () => {
     const handleEdit = () => {
         setIsEditing(true);
     };
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+    
+    const roleText = user.role === 'tenant' ? 'Inquilino' : 'Propietario';
 
     const handleSave = async () => {
         setIsEditing(false);
@@ -203,8 +211,9 @@ const MyAccount = () => {
                 </div>
 
                 <div style={{ fontSize: '2.2rem', fontWeight: 'lighter' }}> 
-                    <p> ¡Hola <span style={{ color: '#1E5181', fontWeight: 'normal' }}>{name} {lastName}</span>!</p>
+                    <p> ¡Hola <span style={{ color: '#1E5181', fontWeight: 'normal' }}>{name} {lastName}</span>! ({roleText})</p>
                 </div>
+                
             </div>
 
             <Box sx={{ marginTop: 3 }}>
@@ -326,14 +335,16 @@ const MyAccount = () => {
               
             </Box>
 
-            <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
-                <Link to="/posts" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'} style={{ padding: '1.5rem' }}>
-                        <MapsHomeWorkIcon />
-                        <div className="category-text">Mis Propiedades</div>
-                    </div>
-                </Link>              
-            </div>
+            {user.role === 'owner' && (           
+                <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
+                    <Link to="/posts" style={{ textDecoration: "none" }}>
+                        <div className={'category-opt'} style={{ padding: '1.5rem' }}>
+                            <MapsHomeWorkIcon />
+                            <div className="category-text">Mis Propiedades</div>
+                        </div>
+                    </Link>              
+                </div>
+            )}
 
             <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
                

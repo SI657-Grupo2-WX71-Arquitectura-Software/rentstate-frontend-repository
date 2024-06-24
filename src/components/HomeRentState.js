@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HomeRentState.css";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PropertyService from "../hooks/usePropertyService";
 import userService from "../hooks/useUserService";
@@ -243,15 +243,10 @@ const HomeRentState = () => {
                     ) : (
                         filteredProperties.map((project, index) => (
                             <div key={index} className="card">
-                                {!project.imageLoaded && (
-                                    <Skeleton variant="rectangular" width="100%" height={140} />
-                                )}
                                 <Link to={`/property/${project.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                                     <img 
                                         src={project.cardimage} 
                                         alt="Property" 
-                                        onLoad={() => handleImageLoad(index)}
-                                        style={{ display: project.imageLoaded ? 'block' : 'none' }}
                                     />
                                     <div className="card-details">
                                         <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: project.available }}>
@@ -270,6 +265,7 @@ const HomeRentState = () => {
                         ))
                     )}
                 </div>
+
             </div>
 
             <Dialog open={open} onClose={handleClose}>
