@@ -5,16 +5,18 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useLocation, Link } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import { useAuth } from '../AuthContext';
 
 const Navbar = () => {
     const location = useLocation();
+    const { isAuthenticated } = useAuth();
     const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
 
     return (
         <div className="navbar">
             <div className="navbar-container">
                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                    <a href="/" className="home-icon">                
+                    <a href={isAuthenticated ? "/home" : "/login"} className="home-icon">                
                         <IconButton aria-label="home" style={{ padding: '0rem' }}>
                             <img style={{ height: '2rem', margin: '0' }} src="/assets/LogoWhiteHouse.png" alt="WhatsApp" />
                         </IconButton>

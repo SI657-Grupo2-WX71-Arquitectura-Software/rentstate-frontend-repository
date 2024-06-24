@@ -15,11 +15,10 @@ import AddProperty from './components/AddProperty';
 import MyPublish from './components/MyPublish';
 import ExternalProfileDetails from './components/ExternalProfileDetails';
 import NearbyPropertiesMap from './components/NearbyPropertiesMap';
-import EditProperty from './components/EditProperty';
 
 function NotFound() {
   return (
-    <div style={{height:'80vh', display:'block', alignContent: 'center'}}>
+    <div style={{ height: '80vh', display: 'block', alignContent: 'center' }}>
       <h1>404 - Page Not Found</h1>
       <p>¡Ups! No encontramos la página que buscas</p>
     </div>
@@ -36,19 +35,19 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/perfil" element={<MyAccount />} />
-            <Route path="/" element={isAuthenticated ? <HomeRentState /> : <Navigate to="/login" />} />
+            <Route path="/" element={<HomeRentState />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/posts" element={<MyProperties />} />
             <Route path="/mensajes" element={<Chat />} />
             <Route path="/crear_propiedad" element={<AddProperty />} />
             <Route path="/publicar" element={<MyPublish />} />
-            <Route path="/editar/:id" element={<EditProperty />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
             <Route path="/nearby-properties" element={<NearbyPropertiesMap />} /> 
+
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
@@ -56,6 +55,11 @@ function App() {
       </div>
     </Router>
   );
+}
+
+function PrivateRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <Navigate to="/login" />;
 }
 
 export default App;

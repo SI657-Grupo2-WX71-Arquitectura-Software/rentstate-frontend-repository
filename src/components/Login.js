@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from '../hooks/api'; 
 import "../styles/Login.css";
+import { useAuth } from '../AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
@@ -35,7 +37,8 @@ const Login = () => {
             const { token, userId } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('userId', userId);
-            navigate("/");
+            login(); // Actualiza el estado de autenticación
+            navigate("/home"); // Redirige al home después de la autenticación
         } catch (error) {
             console.error("Login failed:", error);
         }
@@ -90,9 +93,6 @@ const Login = () => {
                             Ingresar
                         </button>
 
-                        {/* <p >
-                            <a style={{fontSize:'0.9rem', color:'#E8E8E8', textDecoration:'none'}} href="#!">¿Olvidó su contraseña?</a>
-                        </p> */}
                         <p  style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
                             ¿No tienes una cuenta?{" "}
                             <Link to="/register"  style={{fontSize:'0.9rem', color:'#E8E8E8'}}> Registrate aquí </Link>
