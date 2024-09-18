@@ -22,7 +22,7 @@ const useMessageService = (userName, receiver) => {
       }
 
       try {
-        const response = await fetch(`http://api-rentstate.antarticdonkeys.com:8095/api/v1/message/conversation/${userName}/${receiver}`, {
+        const response = await fetch(`http://localhost:8095/api/v1/message/conversation/${userName}/${receiver.username}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -38,7 +38,7 @@ const useMessageService = (userName, receiver) => {
 
     fetchInitialMessages();
 
-    const socket = new SockJS("http://api-rentstate.antarticdonkeys.com:8095/ws/messages");
+    const socket = new SockJS("http://localhost:8095/ws/messages");
     const client = Stomp.over(socket);
 
     client.connect({}, () => {
