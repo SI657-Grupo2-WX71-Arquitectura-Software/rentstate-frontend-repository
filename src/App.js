@@ -2,7 +2,7 @@ import './styles/App.css';
 import HomeRentState from './components/HomeRentState';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MyAccount from './components/MyAccount';
 import Login from './components/Login';
 import MyProperties from './components/MyProperties';
@@ -33,7 +33,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/perfil" element={<MyAccount />} />
-            <Route path="/" element={<HomeRentState />} />
+            <Route path="/home" element={<HomeRentState />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/posts" element={<MyProperties />} />
@@ -44,6 +44,7 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/external-profile/:id" element={<ExternalProfileDetails />} /> {/* Nueva ruta */}
             <Route path="/property_rented" element={<ListRentedProperties />} />
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

@@ -9,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [authError, setAuthError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -35,8 +36,9 @@ const Login = () => {
             const { token, userId } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('userId', userId);
-            navigate("/");
+            navigate("/home");
         } catch (error) {
+            setAuthError("Login failed. Please check your credentials."); // Mostrar error
             console.error("Login failed:", error);
         }
     };
@@ -81,6 +83,9 @@ const Login = () => {
                             />
                             {passwordError && <p className="error-message">{passwordError}</p>}
                         </div>
+                        
+                        {authError && <p className="error-message">{authError}</p>}
+
                         <button
                             type="submit"
                             className={`custom-button ${!isLoginButtonEnabled ? "disabled" : ""}`}
@@ -90,9 +95,6 @@ const Login = () => {
                             Ingresar
                         </button>
 
-                        {/* <p >
-                            <a style={{fontSize:'0.9rem', color:'#E8E8E8', textDecoration:'none'}} href="#!">¿Olvidó su contraseña?</a>
-                        </p> */}
                         <p  style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
                             ¿No tienes una cuenta?{" "}
                             <Link to="/register"  style={{fontSize:'0.9rem', color:'#E8E8E8'}}> Registrate aquí </Link>
