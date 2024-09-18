@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from '../hooks/api'; 
 import "../styles/Login.css";
+import { useAuth } from '../AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
@@ -36,7 +38,8 @@ const Login = () => {
             const { token, userId } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('userId', userId);
-            navigate("/home");
+            login(); // Actualiza el estado de autenticación
+            navigate("/home"); // Redirige al home después de la autenticación
         } catch (error) {
             setAuthError("Login failed. Please check your credentials."); // Mostrar error
             console.error("Login failed:", error);

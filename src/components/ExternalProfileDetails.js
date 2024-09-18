@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import userService from '../hooks/useUserService';
 import PropertyService from '../hooks/usePropertyService';
 import { Avatar, Skeleton, Typography, Box, Button, Card, CardContent, CardMedia } from '@mui/material';
@@ -11,6 +11,7 @@ const ExternalProfileDetails = () => {
     const [owner, setOwner] = useState(null);
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         const fetchOwner = async () => {
@@ -39,7 +40,21 @@ const ExternalProfileDetails = () => {
         );
     }
 
-    const { name, lastName, gender, description, photoUrl } = owner;
+    const { name, lastName, gender, description, photoUrl, username } = owner;
+    const currentUserId = localStorage.getItem('userId'); // Obtener el ID del usuario actual
+
+    const handleSendContactRequest = async () => {
+        try {
+            await userService.sendContactRequest(currentUserId, username);
+            alert('Solicitud de contacto enviada exitosamente.');
+            navigate('/mensajes'); // Redirigir a la página de mensajes
+        } catch (error) {
+            console.error('Error al enviar la solicitud de contacto:', error);
+            alert('Error al enviar la solicitud de contacto.');
+        }
+    };
+
+    const filteredProperties = properties.filter(property => property.available && property.userId === owner.id);
 
     return (
         <div>
@@ -49,7 +64,11 @@ const ExternalProfileDetails = () => {
                 <Typography variant="body1">{`Género: ${gender.charAt(0).toUpperCase() + gender.slice(1)}`}</Typography>
                 <Typography variant="body1">{description}</Typography>
 
-                <Button style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem", margin:'1rem' }}   sx={{ textTransform: 'none' }}>
+                <Button 
+                    style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem", margin:'1rem' }} 
+                    sx={{ textTransform: 'none' }} 
+                    onClick={handleSendContactRequest}
+                >
                     <MessageIcon style={{ marginRight: '0.3rem', marginTop: '-0.18rem' }} /> Enviar Mensaje
                 </Button>
             </Box>
@@ -58,7 +77,7 @@ const ExternalProfileDetails = () => {
                 <p style={{fontSize:'1.4rem', fontWeight:'normal'}}>Todas las Propiedades de {`${name.charAt(0).toUpperCase() + name.slice(1)}`} </p>
                
                     <div className="grid-properties">
-                        {properties.map((property, index) => (
+                        {filteredProperties.map((property, index) => (
                             <div key={index} className="card">
                                 <Link to={`/property/${property.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                                     <img src={property.cardimage} alt="Property" />
@@ -78,11 +97,6 @@ const ExternalProfileDetails = () => {
                             </div>
                         ))}
                     </div>
-
-
-                    
-
-           
             </div>
         </div>
     );

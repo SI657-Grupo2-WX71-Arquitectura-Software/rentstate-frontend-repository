@@ -25,11 +25,13 @@ const PropertyService = {
 
   getPropertiesByUserId: async (userId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/properties?userId=${userId}`);
-      return response.data; 
+        const response = await axios.get(`${BASE_URL}/api/v1/properties`, {
+            params: { userId: userId }
+        });
+        return response.data;
     } catch (error) {
-      console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
-      throw error; 
+        console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
+        throw error;
     }
   },
 
@@ -48,6 +50,46 @@ const PropertyService = {
       return response.data;
     } catch (error) {
       console.error('Error al crear la propiedad:', error);
+      throw error;
+    }
+  },
+
+  updateProperty: async (propertyId, propertyData) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/update/${propertyId}`, propertyData);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al actualizar la propiedad con ID ${propertyId}:`, error);
+      throw error;
+    }
+  },
+
+  addInterestToProperty: async (propertyId, interestData) => {
+    const url = `${BASE_URL}/api/v1/properties/${propertyId}/interest`;
+    try {
+        const response = await axios.post(url, interestData); 
+        return response.data; 
+    } catch (error) {
+        throw error; 
+    }
+  },
+
+  markPropertyUnavailable: async (propertyId) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/unavailable`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al marcar la propiedad con ID ${propertyId} como no disponible:`, error);
+      throw error;
+    }
+  },
+
+  renewPropertyAvailability: async (propertyId) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/available`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al renovar la disponibilidad de la propiedad con ID ${propertyId}:`, error);
       throw error;
     }
   },

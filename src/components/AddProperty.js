@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Select, MenuItem, Button, InputLabel, FormControl, IconButton } from '@mui/material';
 import '../styles/Booking.css';
-import { DeleteOutline, InsertPhoto } from '@mui/icons-material';
+import { DeleteOutline } from '@mui/icons-material';
 import PropertyService from '../hooks/usePropertyService';
 
 const AddProperty = ({ onBookingSuccess }) => {
@@ -14,25 +14,11 @@ const AddProperty = ({ onBookingSuccess }) => {
     const [cardimage, setCardImage] = useState('');    
     const [price, setPrice] = useState('');
     const userId = localStorage.getItem('userId');
-
     const navigate = useNavigate();
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setCardImage(event.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleBackToHome = () => {
         navigate('/');
     };
-
-
 
     const handleSubmit = async () => {
         try {
@@ -124,20 +110,20 @@ const AddProperty = ({ onBookingSuccess }) => {
                     </div>
                 </div>
                 <div className="formColumn" style={{ backgroundColor: 'white', height: '60%', width: '40%', borderRadius: '1rem', justifyContent: 'center', display: 'block', alignContent: 'center', position: 'relative' }}>
-                <TextField
-                    label="URL de la imagen"
-                    value={cardimage}
-                    onChange={(e) => setCardImage(e.target.value)}
-                    required
-                    fullWidth
-                    margin="normal"
-                />
-                {cardimage && (
-                    <IconButton onClick={() => setCardImage('')} style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white' }}>
-                        <DeleteOutline />
-                    </IconButton>
-                )}
-            </div>
+                    <TextField
+                        label="URL de la imagen"
+                        value={cardimage}
+                        onChange={(e) => setCardImage(e.target.value)}
+                        required
+                        fullWidth
+                        margin="normal"
+                    />
+                    {cardimage && (
+                        <IconButton onClick={() => setCardImage('')} style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white' }}>
+                            <DeleteOutline />
+                        </IconButton>
+                    )}
+                </div>
 
             </div>
             <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>

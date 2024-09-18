@@ -17,15 +17,16 @@ function Chat() {
   useEffect(() => {
     const fetchUserNameAndContacts = async () => {
       const userId = localStorage.getItem("userId");
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       if (userId && token) {
         try {
           const userData = await userService.getUser(userId, token);
           console.log("User data fetched:", userData);
           setUserName(userData.username);
-
-          const contactsUsernames = await fetchContacts(userId, token); 
-          await fetchContactDetails(contactsUsernames, token); 
+          let contactsData = await fetchContacts(userId, token);
+          console.log("Contacts data fetched:", contactsData);
+          contactsData = Array.from(new Set(contactsData));
+          setContacts(contactsData);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -106,39 +107,26 @@ function Chat() {
     <div className="chat">
       <div className="contactList">
         <h3>Contactos</h3>
-        {contacts.length > 0 ? (
-          contacts.map((contact) => (
-            <div 
-              key={contact.username}
-              className={`contact ${receiver?.username === contact.username ? "active" : ""}`}
-              onClick={() => handleReceiverChange(contact)}
-            >
-              <img 
-                src={contact.photoUrl ? contact.photoUrl : "https://via.placeholder.com/40"} 
-                alt={contact.username} 
-                className="contactImg" 
-              />
-            <span>{contact.username}</span>
-        </div>
-          ))
-        ) : (
-          <div>No tienes contactos disponibles</div>
-        )}
+        {contacts.map((contact) => (
+          <div 
+            key={contact} 
+            className={`contact ${receiver === contact ? "active" : ""}`}
+            onClick={() => handleReceiverChange(contact)}
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="contact" />
+            {contact}
+          </div>
+        ))}
       </div>
       <div className="chatBox">
         <div className="top">
-          {receiver ? (
-            <div className="receiver-info">
-              <img 
-                src={receiver.photoUrl ? receiver.photoUrl : "https://via.placeholder.com/40"} 
-                alt={receiver.username} 
-                className="receiverImg" 
-              />
-              <span>{receiver.username}</span>
-            </div>
-          ) : (
-            <div className="select-contact">Selecciona un contacto</div>
-          )}
+          <div className="user">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="user" />
+            <span>{userName}</span>
+          </div>
+          <div className="property">
+            {receiver ? `Chateando con ${receiver}` : "Selecciona un contacto"}
+          </div>
         </div>
         <div className="center">
           {receiver ? (

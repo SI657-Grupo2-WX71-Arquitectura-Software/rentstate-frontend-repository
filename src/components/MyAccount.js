@@ -27,8 +27,43 @@ const MyAccount = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [description, setDescription] = useState("");
+    const [district, setDistrict] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
 
+    const districts = [
+        "Cercado de Lima",
+        "Ate",
+        "Barranco",
+        "Breña",
+        "Comas",
+        "Chorrillos",
+        "El Agustino",
+        "Jesús María",
+        "La Molina",
+        "La Victoria",
+        "Lince",
+        "Magdalena del Mar",
+        "Miraflores",
+        "Pueblo Libre",
+        "Puente Piedra",
+        "Rímac",
+        "San Isidro",
+        "Independencia",
+        "San Juan de Miraflores",
+        "San Luis",
+        "San Martín de Porres",
+        "San Miguel",
+        "Santiago de Surco",
+        "Surquillo",
+        "Villa María del Triunfo",
+        "San Juan de Lurigancho",
+        "Santa Rosa",
+        "Los Olivos",
+        "Villa El Salvador",
+        "Santa Anita"
+    ];
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -54,6 +89,7 @@ const MyAccount = () => {
                 setUsername(userData.username);
                 setPassword(userData.password);
                 setDescription(userData.description);
+                setDistrict(userData.district)
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -67,6 +103,12 @@ const MyAccount = () => {
     const handleEdit = () => {
         setIsEditing(true);
     };
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+    
+    const roleText = user.role === 'tenant' ? 'Inquilino' : 'Propietario';
 
     const handleSave = async () => {
         setIsEditing(false);
@@ -169,8 +211,9 @@ const MyAccount = () => {
                 </div>
 
                 <div style={{ fontSize: '2.2rem', fontWeight: 'lighter' }}> 
-                    <p> ¡Hola <span style={{ color: '#1E5181', fontWeight: 'normal' }}>{name} {lastName}</span>!</p>
+                    <p> ¡Hola <span style={{ color: '#1E5181', fontWeight: 'normal' }}>{name} {lastName}</span>! ({roleText})</p>
                 </div>
+                
             </div>
 
             <Box sx={{ marginTop: 3 }}>
@@ -265,6 +308,16 @@ const MyAccount = () => {
                             /> 
                         </LocalizationProvider>
                     </Grid>
+                    <Grid item xs={12} sm={6} style={{ marginTop: '0.5rem' }}> 
+                        <TextField
+                            label="Distrito"
+                            variant="outlined"
+                            fullWidth
+                            value={district}
+                            onChange={(e) => setDistrict(e.target.value)}
+                            disabled={!isEditing}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Box display="flex" alignItems="center" justifyContent='right' margin='1rem 0'>  
@@ -282,21 +335,16 @@ const MyAccount = () => {
               
             </Box>
 
-            <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
-                <Link to="/posts" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'} style={{ padding: '1.5rem' }}>
-                        <MapsHomeWorkIcon />
-                        <div className="category-text">Mis Propiedades</div>
-                    </div>
-                </Link>
-
-                <Link to="/clients" style={{ textDecoration: "none" }}>
-                    <div className={'category-opt'}  style={{ padding: '1.5rem' }}>
-                        <Diversity3Icon />
-                        <div className="category-text">Mis Inquilinos</div>
-                    </div>
-                </Link> 
-            </div>
+            {user.role === 'owner' && (           
+                <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
+                    <Link to="/posts" style={{ textDecoration: "none" }}>
+                        <div className={'category-opt'} style={{ padding: '1.5rem' }}>
+                            <MapsHomeWorkIcon />
+                            <div className="category-text">Mis Propiedades</div>
+                        </div>
+                    </Link>              
+                </div>
+            )}
 
             <div style={{ display: 'flex', gap: '1.8rem', width: '100%', justifyContent: 'center', margin: '3rem 0rem 3rem 0rem' }}>
                

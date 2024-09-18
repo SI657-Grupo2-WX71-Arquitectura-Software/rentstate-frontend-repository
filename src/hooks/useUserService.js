@@ -44,8 +44,19 @@ const deleteUser = async (userId, token) => {
   }
 };
 
+const sendContactRequest = async (userId, contactUsername) => {
+  try {
+      const response = await userService.post(`/api/v1/users/${userId}/contacts/${contactUsername}`);
+      return response.data;
+  } catch (error) {
+    console.error('Error al enviar la solicitud de contacto:', error.response || error.message);
+    throw error;
+  }
+};
+
 export default {
   updateUser,
   getUser,
-  deleteUser 
+  deleteUser,
+  sendContactRequest 
 };
