@@ -42,7 +42,7 @@ function App() {
             <Route path="/publicar" element={<MyPublish />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
-            <Route path="/external-profile/:id" element={<ExternalProfileDetails />} /> {/* Nueva ruta */}
+            <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<NotFound />} />
