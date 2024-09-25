@@ -1,17 +1,57 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
-import PostService from '../hooks/usePostService';
+import PropertyService from '../hooks/usePropertyService';
+import PlaceIcon from "@mui/icons-material/Place";
+import { Link } from 'react-router-dom';
 
 const MyPublish = () => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');    
+    const [category, setCategory] = useState('');
+    const [district, setDistrict] = useState('');
+    const [location, setLocation] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
+    const [description, setDescription] = useState('');
+    const [characteristics, setCharacteristics] = useState('');
     const [price, setPrice] = useState('');
-    const [propertyId, setPropertyId] = useState('');
+    const [cardimage, setCardImage] = useState('');
     const userId = localStorage.getItem('userId');
+
+    const districts = [
+        "Cercado de Lima",
+        "Ate",
+        "Barranco",
+        "Breña",
+        "Comas",
+        "Chorrillos",
+        "El Agustino",
+        "Jesús María",
+        "La Molina",
+        "La Victoria",
+        "Lince",
+        "Magdalena del Mar",
+        "Miraflores",
+        "Pueblo Libre",
+        "Puente Piedra",
+        "Rímac",
+        "San Isidro",
+        "Independencia",
+        "San Juan de Miraflores",
+        "San Luis",
+        "San Martín de Porres",
+        "San Miguel",
+        "Santiago de Surco",
+        "Surquillo",
+        "Villa María del Triunfo",
+        "San Juan de Lurigancho",
+        "Santa Rosa",
+        "Los Olivos",
+        "Villa El Salvador",
+        "Santa Anita"
+    ];
 
     const navigate = useNavigate();
 
@@ -21,73 +61,181 @@ const MyPublish = () => {
 
     const handleSubmit = async () => {
         try {
-            const postData = {
-                title,
-                content,
+            const propertyData = {
+                category,
+                district,
+                location,
+                latitude,
+                longitude,
+                description,
+                characteristics,
                 price,
-                propertyId,
-                userId,
+                cardimage,
+                userId: parseInt(userId), 
+                available: true, 
             };
-            const createdPost = await PostService.createPost(postData);
-            console.log('Post creada:', createdPost);
-            toast.success('Publicación creada exitosamente', {
+
+            const createdProperty = await PropertyService.createProperty(propertyData, userId);
+            console.log('Propiedad creada:', createdProperty);
+            toast.success('Propiedad creada exitosamente', {
                 position: 'top-right',
                 autoClose: 3000,
             });
-
+            navigate('/posts'); 
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
-            toast.error('Error al crear la publicación', {
+            toast.error('Error al crear la propiedad', {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
             });
         }
     };
 
+    const menuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: 224,
+                width: 250,
+            },
+        },
+        anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left',
+        },
+        transformOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+        },
+        getContentAnchorEl: null
+    };
+
     return (
-        <div className="bookingContainer" style={{ height: '90vh', display: 'flex', justifyContent: 'center', margin: '1rem 1rem' }}>
+        <div className="bookingContainer" style={{ height: '100vh', display: 'flex', justifyContent: 'center', margin: '1rem 1rem' }}>
             <div style={{ fontSize: '2.5rem', fontWeight: 'lighter', margin: '0rem 0 2rem 0' }}>Publica en <span style={{ fontWeight: 'normal', color: '#1E5181' }}>RENTSTATE</span></div>
-            <div style={{ display: 'flex', gap: '4rem', alignItems: 'center' }}>
-                <div style={{ display: 'block' }}>
-                    <div className="formColumn">
-                        <TextField
-                            label="Titulo"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            required
-                            fullWidth
-                            margin="normal"
-                        />
-                        <TextField
-                            label="Contenido"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            required
-                            fullWidth
-                            margin="normal"
-                        />
-                        <TextField
-                            label="Precio"
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            required
-                            fullWidth
-                            margin="normal"
-                        />
-                    </div>
-                    <div className="formColumn">
-                        <TextField
-                            label="Propiedad ID"
-                            value={propertyId}
-                            onChange={(e) => setPropertyId(e.target.value)}
-                            required
-                            fullWidth
-                            margin="normal"
-                        />
+           
+            <div style={{ display: 'flex', margin: '0 30rem', gap: '2rem' }}>
+                <div style={{ display: 'flex', gap: '4rem', alignItems: 'center', width: '35rem' }}>
+                    <div style={{ display: 'block' }}>
+                        <div className="formColumn">                          
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel id="category-label">Categoría</InputLabel>
+                                <Select
+                                    labelId="category-label"
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value)}
+                                    label="Categoría"
+                                    required
+                                >
+                                    <MenuItem value="Departamento">Departamento</MenuItem>
+                                    <MenuItem value="Casa">Casa</MenuItem>
+                                    <MenuItem value="Oficina">Oficina</MenuItem>
+                                    <MenuItem value="Habitacion">Habitación</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel id="district-label">Distrito</InputLabel>
+                                <Select
+                                    labelId="district-label"
+                                    value={district}
+                                    onChange={(e) => setDistrict(e.target.value)}
+                                    label="Distrito"
+                                    required
+                                    MenuProps={menuProps}
+                                >
+                                    {districts.map((district, index) => (
+                                        <MenuItem key={index} value={district}>
+                                            {district}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                           
+                            <TextField
+                                label="Ubicación"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Latitud"
+                                value={latitude}
+                                onChange={(e) => setLatitude(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Longitud"
+                                value={longitude}
+                                onChange={(e) => setLongitude(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Descripción"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Características"
+                                value={characteristics}
+                                onChange={(e) => setCharacteristics(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Precio"
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Imagen URL"
+                                value={cardimage}
+                                onChange={(e) => setCardImage(e.target.value)}
+                                required
+                                fullWidth
+                                margin="normal"
+                            />
+                        </div>
                     </div>
                 </div>
+
+                <div style={{ width: '30rem', display: 'flex', justifyContent:'center', alignContent:'center', alignItems:'center' }}>
+                    <div key={1} className="card">
+                        <Link to="#" style={{ textDecoration: "none", color: "inherit" }}>
+                            <img 
+                                src={cardimage || 'https://via.placeholder.com/300x200?text=Imagen+de+Previsualización'} 
+                                alt="Property" 
+                            />
+                            <div className="card-details">
+                                <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem"}}>
+                                    {district || 'Distrito'}
+                                </p>                                      
+                                <p>{location || 'Locación'}</p>
+                                <p>{characteristics || 'Características'}</p>
+                                <p style={{ color: "#7a7a7a" }}>S/ {price || 'Precio'}</p>
+                                <a href={`https://www.google.com/maps?q=${latitude || '0'},${longitude || '0'}`} target="_blank" rel="noopener noreferrer" >
+                                    Ver Mapa
+                                    <PlaceIcon style={{ fontSize: '1.2rem' }} />
+                                </a>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+
             </div>
+
             <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
                 <Button onClick={handleBackToHome} sx={{ textTransform: 'none' }} style={{ color: "grey", padding: "0.5rem 1rem", backgroundColor: "#EEEE" }}>
                     Cancelar
