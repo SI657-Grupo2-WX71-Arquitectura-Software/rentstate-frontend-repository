@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const userService = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://34.171.129.103:8080',
   headers: {
     'Content-Type': 'application/json',
   },
