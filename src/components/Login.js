@@ -1,33 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from '../hooks/api'; 
-import "../styles/Login.css";
+import { FieldEdit, FieldEditPassword, Button } from "./components";
+import { useStylesLogin } from "../styles/useStyles";
 
 const Login = () => {
+    const classes = useStylesLogin();
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [usernameError, setUsernameError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
     const [authError, setAuthError] = useState("");
+    const isLoginButtonEnabled = username.trim() !== "" && password.trim() !== "";
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
-        if (username.trim() === "") {
-            setUsernameError("Username is required");
-            return;
-        } else {
-            setUsernameError("");
-        }
-
-        if (password.trim() === "") {
-            setPasswordError("Password is required");
-            return;
-        } else {
-            setPasswordError("");
-        }
-
         try {
             const response = await api.post('/auth/api/login', {
                 username,
@@ -38,70 +24,41 @@ const Login = () => {
             localStorage.setItem('userId', userId);
             navigate("/home");
         } catch (error) {
-            setAuthError("Login failed. Please check your credentials."); // Mostrar error
+            setAuthError("Credenciales incorrectas, intenta nuevamente.");
             console.error("Login failed:", error);
         }
     };
 
-    const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
-        setUsernameError(""); 
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        setPasswordError("");
-    };
-
-    const isLoginButtonEnabled = username.trim() !== "" && password.trim() !== "";
-
     return (
-        <div className="app-container">
-            <div className="content-container">
-                <div className="login-form-container">
-                    <h3 style={{color:'white', fontWeight:'lighter', fontSize:'2rem' }}>Iniciar Sesión</h3>
-                    <form onSubmit={handleLogin}>
-                        <div className="form-group">                           
-                            <input
-                                id="username"
-                                className={`form-control ${usernameError && "invalid"}`}
-                                type="text"
-                                placeholder="Usuario"
-                                value={username}
-                                onChange={handleUsernameChange}
-                            />
-                            {usernameError && <p className="error-message">{usernameError}</p>}
-                        </div>
-                        <div className="form-group">                           
-                            <input
-                                id="password"
-                                className={`form-control ${passwordError && "invalid"}`}
-                                type="password"
-                                placeholder="Contraseña"
-                                value={password}
-                                onChange={handlePasswordChange}
-                            />
-                            {passwordError && <p className="error-message">{passwordError}</p>}
-                        </div>
-                        
-                        {authError && <p className="error-message">{authError}</p>}
-
-                        <button
-                            type="submit"
-                            className={`custom-button ${!isLoginButtonEnabled ? "disabled" : ""}`}
-                            style={{ padding: '0.8rem 8rem' }}
-                            disabled={!isLoginButtonEnabled}
-                        >
-                            Ingresar
-                        </button>
-
-                        <p  style={{fontSize:'0.9rem', color:'#E8E8E8'}}>
-                            ¿No tienes una cuenta?{" "}
-                            <Link to="/register"  style={{fontSize:'0.9rem', color:'#E8E8E8'}}> Registrate aquí </Link>
-                        </p>
-                    </form>
+        <div className={classes.container}>
+            <div className={classes.darkOverlay}></div>
+            <form onSubmit={handleLogin} className={classes.formContainer}>
+                <h3 style={{ color: 'white', fontWeight: 'lighter', fontSize: '2rem' }}>Iniciar Sesión</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+                    <FieldEdit
+                        id="username"
+                        label="Usuario"
+                        type="text"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+                    <FieldEditPassword
+                        id="password"
+                        label="Contraseña"
+                        type="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    {authError && <p style={{ color: 'red', margin: 0 }}>{authError}</p>}
                 </div>
-            </div>
+                <div className={classes.buttonContainer}>
+                    <Button disabled={!isLoginButtonEnabled} className={classes.button}>Ingresar</Button>
+                </div>
+                <p style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>
+                    ¿No tienes una cuenta?{" "}
+                    <Link to="/register" style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>Registrate aquí</Link>
+                </p>
+            </form>
         </div>
     );
 };

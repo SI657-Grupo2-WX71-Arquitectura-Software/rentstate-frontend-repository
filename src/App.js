@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import MyAccount from './components/MyAccount';
 import Login from './components/Login';
 import MyProperties from './components/MyProperties';
-import Register from './components/Register';
 import PropertyDetail from './components/PropertyDetail';
 import ListRentedProperties from './components/ListRentedProperties';
 import Chat from './components/Chat';
@@ -15,6 +14,7 @@ import AddProperty from './components/AddProperty';
 import MyPublish from './components/MyPublish';
 import ExternalProfileDetails from './components/ExternalProfileDetails';
 import NearbyPropertiesMap from './components/NearbyPropertiesMap';
+import Register from './components/Register Account/Register';
 
 function NotFound() {
   return (

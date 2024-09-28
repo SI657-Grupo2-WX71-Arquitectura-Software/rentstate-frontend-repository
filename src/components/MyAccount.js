@@ -5,7 +5,6 @@ import { Save } from "@mui/icons-material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
