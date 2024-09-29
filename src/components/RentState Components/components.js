@@ -4,6 +4,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import SearchIcon from '@mui/icons-material/Search';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import peruFlag from '../../assets/peru.svg';
@@ -168,6 +169,33 @@ export const FieldEditPassword = ({ id, label, value, onChange }) => {
                 }}
             />
         </ThemeProvider>
+    );
+};
+
+export const FieldEditSearch = ({ id, value, onChange, placeholder, width, height }) => {
+    return (
+        <div style={{
+            display: 'flex', 
+            alignItems: 'center', 
+            width: width, 
+            height: height, 
+            backgroundColor: 'white', 
+            borderRadius: '20px', 
+            padding: '0 10px'
+        }}>
+            <input
+                type="text"
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                style={{ border: 'none', flexGrow: 1, fontSize: '16px' }}
+            />
+            <button style={{ border: 'none', background: 'transparent', marginBottom:'1rem', paddingRight:'0' }}>
+                <IconButton aria-label="search">
+                    <SearchIcon />
+                </IconButton>
+            </button>
+        </div>
     );
 };
 
