@@ -208,3 +208,135 @@ export const useStylesButtonComponent = makeStyles(() => ({
         }
     }
 }));
+
+
+export const useStylesChat = makeStyles(() => ({
+    chat: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    },
+    contactList: {
+      width: '200px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+      marginRight: '20px',
+      padding: '20px',
+    },
+    contactImg: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+    },
+    receiverImg: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+    },
+    receiverInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '10px',
+    },
+    receiverInfoImg: {
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      objectFit: 'cover',
+    },
+    receiverInfoSpan: {
+      fontSize: '1.2rem',
+      fontWeight: 500,
+      color: 'white',
+    },
+    contact: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '10px',
+      cursor: 'pointer',
+      borderRadius: '4px',
+      transition: 'background-color 0.2s',
+      '&:hover': {
+        backgroundColor: '#f0f0f0',
+      },
+    },
+    contactSelected: {
+      backgroundColor: '#4b8af7',
+      color: 'white',
+    },
+    chatBox: {
+      width: '400px',
+      height: '500px',
+      backgroundColor: 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: '8px',
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    },
+    top: {
+      backgroundColor: '#4b8af7',
+      padding: '10px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderTopLeftRadius: '8px',
+      borderTopRightRadius: '8px',
+    },
+    center: {
+      flex: 1,
+      padding: '20px',
+      overflowY: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    chatDefault: {
+      fontWeight: 600,
+    },
+    chatMessage: {
+      maxWidth: '70%',
+      padding: '10px',
+      borderRadius: '4px',
+      marginBottom: '10px',
+      alignSelf: 'flex-start',
+      backgroundColor: '#f0f0f0',
+      color: '#333',
+      '&.own': {
+        alignSelf: 'flex-end',
+        backgroundColor: '#99baf3',
+      },
+    },
+    bottom: {
+      borderTop: '1px solid #4b8af7',
+      padding: '10px 20px',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    bottomTextarea: {
+      flex: 1,
+      height: '40px',
+      border: 'none',
+      borderRadius: '4px',
+      padding: '10px',
+      resize: 'none',
+    },
+    bottomButton: {
+      marginLeft: '10px',
+      padding: '10px 20px',
+      backgroundColor: '#4b8af7',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+    },
+    contactSpan: {
+      fontSize: '1rem',
+      fontWeight: 500,
+      color: 'black',
+    }
+ }));
