@@ -7,6 +7,16 @@ const userService = axios.create({
   },
 });
 
+const createUser = async (userData) => {
+  try {
+    const response = await userService.post(`/api/v1/users`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+};
+
 const updateUser = async (updateUserResource, token) => {
   try {
     const response = await userService.put(`/api/v1/users`, updateUserResource, {
@@ -45,6 +55,7 @@ const deleteUser = async (userId, token) => {
 };
 
 export default {
+  createUser,
   updateUser,
   getUser,
   deleteUser 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from '../hooks/api'; 
-import { FieldEdit, FieldEditPassword, Button } from "./components";
 import { useStylesLogin } from "../styles/useStyles";
+import { Button, FieldEdit, FieldEditPassword } from "./RentState Components/components";
 
 const Login = () => {
     const classes = useStylesLogin();
@@ -52,7 +52,7 @@ const Login = () => {
                     {authError && <p style={{ color: 'red', margin: 0 }}>{authError}</p>}
                 </div>
                 <div className={classes.buttonContainer}>
-                    <Button disabled={!isLoginButtonEnabled} className={classes.button}>Ingresar</Button>
+                    <Button disabled={!isLoginButtonEnabled}>Ingresar</Button>                   
                 </div>
                 <p style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>
                     ¿No tienes una cuenta?{" "}

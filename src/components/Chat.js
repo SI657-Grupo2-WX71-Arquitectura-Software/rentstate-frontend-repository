@@ -41,7 +41,7 @@ function Chat() {
 
   const fetchContacts = async (userId, token) => {
     try {
-      const response = await fetch(`http://34.171.129.103:8080/api/v1/users/${userId}/contacts`, {
+      const response = await fetch(`http://rentstate.antarticdonkeys.com:8080/api/v1/users/${userId}/contacts`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -59,7 +59,7 @@ function Chat() {
     setLoadingContacts(true);
     try {
       const contactDetails = await Promise.all(usernames.map(async (username) => {
-        const response = await fetch(`http://34.171.129.103:8080/api/v1/users/username/${username}`, {
+        const response = await fetch(`http://rentstate.antarticdonkeys.com:8080/api/v1/users/username/${username}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
