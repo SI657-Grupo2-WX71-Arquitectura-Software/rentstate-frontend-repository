@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const userService = axios.create({
-  baseURL: 'http://34.171.129.103:8080',
+  baseURL: 'http://rentstate.antarticdonkeys.com:8080',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -9,7 +9,7 @@ const userService = axios.create({
 
 const createUser = async (userData) => {
   try {
-    const response = await userService.post(`/api/v1/users`, userData);
+    const response = await userService.post(`/auth/api/register`, userData);
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);

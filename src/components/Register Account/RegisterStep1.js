@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FieldEdit, Button, FieldSelect} from "../RentState Components/components";
+import { FieldEdit, Button, FieldSelect, FieldDatePicker } from "../RentState Components/components";
 import { useStylesRegister } from "../../styles/useStyles";
+import dayjs from 'dayjs';
 
-const RegisterStep1 = ({ nextStep, prevStep }) => {
+const RegisterStep1 = ({ nextStep, updateUserData }) => {
     const classes = useStylesRegister();
 
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [birthDate, setBirthDate] = useState("");
     const [gender, setGender] = useState("");
     const [emailError, setEmailError] = useState("");
-    const isFormValid = !emailError && email.trim() && name.trim() && lastName.trim() && birthDate && gender;
+    const [selectedDate, setSelectedDate] = useState(dayjs());
+    const isFormValid = !emailError && email.trim() && name.trim() && lastName.trim() && gender;
 
     const genderOptions = [
         { value: "male", label: "Masculino" },
@@ -29,6 +30,7 @@ const RegisterStep1 = ({ nextStep, prevStep }) => {
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
+        updateUserData({ email: newEmail });
         if (!validateEmail(newEmail)) {
             setEmailError("Por favor, ingrese un correo electrónico válido.");
         } else {
@@ -54,31 +56,43 @@ const RegisterStep1 = ({ nextStep, prevStep }) => {
                         id="name" 
                         label="Nombres" 
                         value={name} 
-                        onChange={(e) => setName(e.target.value)} 
+                        onChange={(e) => {
+                            setName(e.target.value);
+                            updateUserData({ name: e.target.value });
+                        }}
                     />
                     <FieldEdit 
                         id="lastName" 
                         label="Apellidos" 
                         value={lastName} 
-                        onChange={(e) => setLastName(e.target.value)} 
+                        onChange={(e) => {
+                            setLastName(e.target.value);
+                            updateUserData({ lastName: e.target.value });
+                        }}
                     />
                     <FieldEdit 
                         id="email" 
                         label="Correo electrónico" 
                         value={email} 
                         onChange={handleEmailChange} 
-                    />
-                    <FieldEdit                 
-                        id="birthDate" 
-                        label="Fecha de Nacimiento" 
-                        value={birthDate} 
-                        onChange={(e) => setBirthDate(e.target.value)} 
+                    />                  
+                    <FieldDatePicker 
+                        id="birthdate" 
+                        label="Fecha de Nacimiento"
+                        selectedDate={selectedDate} 
+                        setSelectedDate={(date) => {
+                            setSelectedDate(date);
+                            updateUserData({ birthDate: date });
+                        }}
                     />
                     <FieldSelect 
                         id="gender" 
                         label="Género" 
                         value={gender} 
-                        onChange={(e) => setGender(e.target.value)} 
+                        onChange={(e) => {
+                            setGender(e.target.value);
+                            updateUserData({ gender: e.target.value });
+                        }}
                         options={genderOptions}
                     />
                 </div>    

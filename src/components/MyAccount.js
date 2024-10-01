@@ -13,6 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import userService from '../hooks/useUserService';
 import "../styles/MyAccount.css";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import axios from 'axios';
 
 const MyAccount = () => {
     const [user, setUser] = useState(null);
@@ -28,39 +29,7 @@ const MyAccount = () => {
     const [description, setDescription] = useState("");
     const [district, setDistrict] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
-
-    const districts = [
-        "Cercado de Lima",
-        "Ate",
-        "Barranco",
-        "Breña",
-        "Comas",
-        "Chorrillos",
-        "El Agustino",
-        "Jesús María",
-        "La Molina",
-        "La Victoria",
-        "Lince",
-        "Magdalena del Mar",
-        "Miraflores",
-        "Pueblo Libre",
-        "Puente Piedra",
-        "Rímac",
-        "San Isidro",
-        "Independencia",
-        "San Juan de Miraflores",
-        "San Luis",
-        "San Martín de Porres",
-        "San Miguel",
-        "Santiago de Surco",
-        "Surquillo",
-        "Villa María del Triunfo",
-        "San Juan de Lurigancho",
-        "Santa Rosa",
-        "Los Olivos",
-        "Villa El Salvador",
-        "Santa Anita"
-    ];
+    const [photoUploaded, setPhotoUploaded] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -132,16 +101,40 @@ const MyAccount = () => {
     };
     
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const imageUrl = event.target.result;
-                setAvatarImage(imageUrl);
-                localStorage.setItem('avatarImage', imageUrl);
-            };
-            reader.readAsDataURL(file);
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            console.error("No file selected");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('file', file);
+    
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            console.error("No user ID found");
+            return;
+        }
+    
+        console.log("UserID for upload:", userId);
+    
+        try {
+            const response = await axios.post(`http://rentstate.antarticdonkeys.com:8091/users/upload-profile-picture/${userId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            const photoUrl = response.data;
+            console.log("Upload successful, Photo URL:", photoUrl);
+    
+            setPhotoUploaded(true);
+            localStorage.setItem('avatarImage', photoUrl);
+            setAvatarImage(photoUrl);
+        } catch (error) {
+            console.error("Error uploading the image:", error);
+            setPhotoUploaded(false);
         }
     };
 

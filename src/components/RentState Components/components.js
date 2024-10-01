@@ -9,6 +9,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import peruFlag from '../../assets/peru.svg';
 import { useStylesButtonComponent } from '../../styles/useStyles';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -30,7 +33,16 @@ const theme = createTheme({
         },
         MuiInputLabel: {
             styleOverrides: {
-                root: {'&.Mui-focused': {color: 'rgba(0, 0, 0, 0.54)'}}
+                root: {
+                    '&.Mui-focused': {
+                        color: 'rgba(0, 0, 0, 0.54)'
+                    },
+                    backgroundColor: 'white',
+                    padding: '0 10px',
+                    borderRadius: '10px 10px 0 0',
+                    overflow: 'hidden',
+                    left:-14
+                }
             }
         },
         MuiSelect: {
@@ -40,7 +52,26 @@ const theme = createTheme({
                     paddingLeft: '10px', 
                 }
             }
-        }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'white',
+                    borderRadius: 10,
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: 'transparent',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: 'transparent',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: 'transparent',
+                        },
+                    },
+                },
+            },
+        },    
     },
 });
   
@@ -64,7 +95,7 @@ export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) =>
 
     const inputLabelStyles = {
         position: 'absolute',
-        left: 0, 
+        left: focused || value ? '0' : '6px',  
         top: focused || value ? -6 : '50%', 
         transform: focused || value ? 'scale(0.75)' : 'translate(0, -50%)',
         transformOrigin: 'top left',
@@ -122,7 +153,7 @@ export const FieldEditPassword = ({ id, label, value, onChange }) => {
 
     const inputLabelStyles = {
         position: 'absolute',
-        left: 0, 
+        left: focused || value ? '0' : '6px',  
         top: focused || value ? -6 : '50%', 
         transform: focused || value ? 'scale(0.75)' : 'translate(0, -50%)',
         transformOrigin: 'top left',
@@ -309,7 +340,7 @@ export const FieldSelect = ({ id, label, value, onChange, options }) => {
 
     const inputLabelStyles = {
         position: 'absolute',
-        left: 0, 
+        left: focused || value ? '0' : '6px', 
         top: focused || value ? -6 : '50%', 
         transform: focused || value ? 'scale(0.75)' : 'translate(0, -50%)',
         transformOrigin: 'top left',
@@ -358,6 +389,27 @@ export const FieldSelect = ({ id, label, value, onChange, options }) => {
                 </Select>
             </FormControl>
         </ThemeProvider>
+    );
+};
+
+export const FieldDatePicker = ({ id, label, selectedDate, setSelectedDate }) => {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+                <DatePicker
+                    id={id}
+                    label={label}
+                    value={selectedDate}
+                    onChange={setSelectedDate}
+                    renderInput={(params) => (
+                        <TextField 
+                            {...params} 
+                            fullWidth
+                        />
+                    )}
+                />
+            </ThemeProvider>
+        </LocalizationProvider>
     );
 };
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FieldEdit, Button, FieldEditPassword, FieldEditPhone} from "../RentState Components/components";
+import { FieldEdit, Button, FieldEditPassword, FieldEditPhone } from "../RentState Components/components";
 import { useStylesRegister } from "../../styles/useStyles";
-import backArrow from '../../assets/backArrow.svg'
+import backArrow from '../../assets/backArrow.svg';
 
-const RegisterStep2 = ({ nextStep, prevStep }) => {
+const RegisterStep2 = ({ nextStep, prevStep, updateUserData }) => {
     const classes = useStylesRegister();    
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
@@ -17,8 +17,10 @@ const RegisterStep2 = ({ nextStep, prevStep }) => {
     const isFormValid = user.trim() && password.trim() && confirmPassword && phone.trim() && dni.trim() && !passwordError && !dniError && !phoneError;
 
     const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        if (confirmPassword && e.target.value !== confirmPassword) {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        updateUserData({ password: newPassword });        
+        if (confirmPassword && newPassword !== confirmPassword) {
             setPasswordError("Las contraseñas no coinciden.");
         } else {
             setPasswordError("");
@@ -26,8 +28,9 @@ const RegisterStep2 = ({ nextStep, prevStep }) => {
     };
 
     const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-        if (password && e.target.value !== password) {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+        if (password && newConfirmPassword !== password) {
             setPasswordError("Las contraseñas no coinciden.");
         } else {
             setPasswordError("");
@@ -37,6 +40,7 @@ const RegisterStep2 = ({ nextStep, prevStep }) => {
     const handlePhoneChange = (e) => {
         const newPhone = e.target.value;
         setPhone(newPhone);
+        updateUserData({ phone: newPhone });
         if (!/^\d{9}$/.test(newPhone)) {
             setPhoneError("Teléfono inválido");
         } else {
@@ -45,8 +49,10 @@ const RegisterStep2 = ({ nextStep, prevStep }) => {
     };
 
     const handleDniChange = (e) => {
-        setDni(e.target.value);
-        if (/^\d{8}$/.test(e.target.value)) {
+        const newDni = e.target.value;
+        setDni(newDni);
+        updateUserData({ dni: newDni });
+        if (/^\d{8}$/.test(newDni)) {
             setDniError("");
         } else {
             setDniError("DNI inválido");
@@ -74,7 +80,10 @@ const RegisterStep2 = ({ nextStep, prevStep }) => {
                         id="user" 
                         label="Usuario" 
                         value={user} 
-                        onChange={(e) => setUser(e.target.value)} 
+                        onChange={(e) => {
+                            setUser(e.target.value);
+                            updateUserData({ username: e.target.value });
+                        }} 
                     />
                     <FieldEditPassword
                         id="password"
