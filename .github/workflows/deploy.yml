@@ -13,29 +13,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
     - name: Install Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
 
-    - name: Set Node.js memory limit
+    - name: Set Node.js memory and stack size limit
       run: |
-        export NODE_OPTIONS=--max_old_space_size=8192
+        export NODE_OPTIONS="--max_old_space_size=8192 --stack-size=65500"
 
-    - name: Clean up node_modules
+    - name: Clean up node_modules and package-lock.json
       run: |
-        rm -rf node_modules
+        rm -rf node_modules package-lock.json
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --force
 
     - name: Build the frontend
       run: npm run build
@@ -60,7 +52,7 @@ jobs:
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
         cd /home/heyshaske/rentstate-frontend-repository &&
         git pull &&
-        npm install &&
+        npm install --force &&
         npm run build &&
         sudo systemctl restart nginx
         "
