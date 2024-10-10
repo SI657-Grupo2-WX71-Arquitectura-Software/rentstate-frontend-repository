@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const userService = axios.create({
-  baseURL: 'http://rentstate.antarticdonkeys.com:8080',
+  baseURL: 'https://rentstate.antarticdonkeys.com/api/gateway-service',
   headers: {
     'Content-Type': 'application/json',
   },

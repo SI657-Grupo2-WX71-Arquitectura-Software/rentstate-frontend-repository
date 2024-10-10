@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://34.171.129.103:8080'; 
+const BASE_URL = 'https://rentstate.antarticdonkeys.com/api/gateway-service'; 
 
 const PropertyService = {
   getAllProperties: async () => {

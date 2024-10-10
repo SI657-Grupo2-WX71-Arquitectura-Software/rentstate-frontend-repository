@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://34.171.129.103:8080', 
+  baseURL: 'https://rentstate.antarticdonkeys.com/api/gateway-service', 
   headers: {
     'Content-Type': 'application/json',
   },

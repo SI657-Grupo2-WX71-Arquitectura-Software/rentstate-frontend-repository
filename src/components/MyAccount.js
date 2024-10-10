@@ -120,7 +120,7 @@ const MyAccount = () => {
         console.log("UserID for upload:", userId);
     
         try {
-            const response = await axios.post(`http://rentstate.antarticdonkeys.com:8091/users/upload-profile-picture/${userId}`, formData, {
+            const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/user-service/users/upload-profile-picture/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
