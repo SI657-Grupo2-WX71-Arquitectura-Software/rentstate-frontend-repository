@@ -15,10 +15,14 @@ jobs:
 
     - name: Set up SSH for Git
       run: |
+        echo "Setting up SSH..."
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan github.com >> ~/.ssh/known_hosts
+        echo "SSH setup completed."
+        ls -al ~/.ssh  
+        cat ~/.ssh/id_rsa  
 
     - name: Install Node.js
       uses: actions/setup-node@v2
