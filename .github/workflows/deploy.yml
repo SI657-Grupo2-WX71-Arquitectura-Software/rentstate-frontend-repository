@@ -53,6 +53,7 @@ jobs:
     - name: Deploy to VM
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
+        git config --global --add safe.directory /home/heyshaske/rentstate-frontend-repository &&
         cd /home/heyshaske/rentstate-frontend-repository &&
         git pull &&
         npm install --force &&
