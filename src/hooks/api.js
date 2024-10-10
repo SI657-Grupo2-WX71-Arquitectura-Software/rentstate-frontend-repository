@@ -6,6 +6,6 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
+//prueba
 
 export default api;
