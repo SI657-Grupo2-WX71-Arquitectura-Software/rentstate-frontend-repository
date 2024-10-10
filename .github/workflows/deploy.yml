@@ -12,8 +12,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}  
 
     - name: Install Node.js
       uses: actions/setup-node@v2
@@ -55,11 +53,12 @@ jobs:
     - name: Deploy to VM
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
-        ssh-keyscan github.com >> ~/.ssh/known_hosts &&
-        sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository/.git &&
-        git config --global --add safe.directory /home/heyshaske/rentstate-frontend-repository &&
+        # Asegurarse de que el repositorio tenga los permisos correctos
+        sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository &&
         cd /home/heyshaske/rentstate-frontend-repository &&
-        git pull origin develop &&  # Asegúrate de que esto use el token
+        git config --global credential.helper 'store --file=/tmp/git-credentials' &&
+        echo 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}:x-oauth-basic' > /tmp/git-credentials &&
+        git pull origin develop &&
         npm install --force &&
         npm run build &&
         sudo systemctl restart nginx
