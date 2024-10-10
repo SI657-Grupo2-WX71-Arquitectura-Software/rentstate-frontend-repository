@@ -12,17 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up SSH for Git
-      run: |
-        echo "Setting up SSH..."
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        echo "SSH setup completed."
-        ls -al ~/.ssh  
-        cat ~/.ssh/id_rsa  
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}  
 
     - name: Install Node.js
       uses: actions/setup-node@v2
@@ -64,13 +55,11 @@ jobs:
     - name: Deploy to VM
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
-        # Añadir GitHub a los hosts conocidos
         ssh-keyscan github.com >> ~/.ssh/known_hosts &&
-        # Establecer permisos correctos para la carpeta y autenticación SSH
         sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository/.git &&
         git config --global --add safe.directory /home/heyshaske/rentstate-frontend-repository &&
         cd /home/heyshaske/rentstate-frontend-repository &&
-        git pull &&
+        git pull origin develop &&  # Asegúrate de que esto use el token
         npm install --force &&
         npm run build &&
         sudo systemctl restart nginx
