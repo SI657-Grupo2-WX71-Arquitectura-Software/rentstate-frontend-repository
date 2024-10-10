@@ -18,8 +18,13 @@ jobs:
       with:
         node-version: '14'  
 
-    - name: Install dependencies
-      run: npm install
+    - name: Set Node.js memory limit
+      run: |
+        export NODE_OPTIONS=--max_old_space_size=4096
+        npm install
+
+    - name: Install dependencies using npm ci
+      run: npm ci
 
     - name: Build the frontend
       run: npm run build
