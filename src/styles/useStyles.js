@@ -410,7 +410,7 @@ export const useStylesMyAccount = makeStyles(() => ({
         borderRadius: '5rem',
         cursor: 'pointer',
         color: '#6C6B6B',
-        transition: 'background-color 0.3s ease',
+        transition: 'background-color 0.2s ease',
     },
     tabButtonSelected: {
         backgroundColor: '#CECECE',
@@ -428,12 +428,18 @@ export const useStylesMyAccount = makeStyles(() => ({
         backgroundColor: '#F2F2F2', 
         padding: '2rem 1.5rem',
         borderRadius: '1rem',
-        cursor: 'pointer',
         textAlign: 'left',
         width: '50vw',
         display: 'flex',
         gap: '1rem',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        transition: 'background-color 0.2s ease',
+        '&:hover': {
+            transition: 'background-color 0.2s ease',
+            backgroundColor: '#E5E5E5',
+            cursor: 'pointer'
+        }
     },
     switchOptionContainer: {
         padding: '0.5rem 1.5rem',
@@ -456,4 +462,257 @@ export const useStylesMyAccount = makeStyles(() => ({
         color: 'white',
         marginTop: '1.5rem',
     }
+}));
+
+export const useStylesSearchBarComponent = makeStyles(() => ({
+    searchBar: {
+        display: 'flex',
+        alignItems: 'center',
+        border: '1px solid #C8C8C8',
+        borderRadius: '5rem',
+        padding: '0.5rem 1rem',
+        boxSizing: 'border-box',
+        opacity: 0.8,
+    },
+      input: {
+        flex: 1,
+        border: 'none',
+        outline: 'none',
+        fontSize: '1rem',
+        backgroundColor: 'transparent',
+        color: '#7B7979',
+        opacity: 0.8,
+    },
+      icon: {
+        height: '1.3rem',
+        cursor: 'pointer',
+        color:'#959595'
+    }
+}));
+
+export const useStylesInquilinoCard = makeStyles(() => ({
+    cardContainer: {
+        backgroundColor: '#F2F2F2',
+        borderRadius: '30px',
+        margin: '10px',
+        border:'none',
+        borderColor:'transparent',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        transition: 'background-color 0.2s ease',
+        width: '25%',        
+        '&:hover': {
+            transition: 'background-color 0.2s ease',
+            backgroundColor: '#E5E5E5',
+            cursor: 'pointer'
+        }
+    },
+    profileImage: {
+        width: '100px',
+        height: '100px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+        margin:'5px 0'
+    },
+    title: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#626262',
+    },
+    text: {
+        color: '#6C6B6B',
+        fontSize: '1.1rem',     
+    },
+    active: {
+        color: '#487847',
+        fontWeight:'bold',
+    },
+    inactive: {
+        color: '#CC3434',
+        fontWeight:'bold',
+    },
+}));
+
+export const useStylesPropertyCard = makeStyles(() => ({
+    cardContainer: {
+        backgroundColor: '#F2F2F2',
+        borderRadius: '20px',
+        margin: '15px',
+        overflow: 'hidden',
+        width: '300px',
+        position: 'relative',
+        transition: 'background-color 0.2s ease',
+        '&:hover': {
+            transition: 'background-color 0.2s ease',
+            backgroundColor: '#E5E5E5',
+            cursor: 'pointer'
+        }
+    },
+    propertyImage: {
+        width: '100%',
+        height: '200px',
+        objectFit: 'cover',
+    },
+    iconsContainer: {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        gap: '10px',
+        zIndex: 1000,
+        display:'flex',  
+        padding:'10px 0',
+    },
+    icon: {
+        width: '24px',
+        height: '24px',
+        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 1))'
+    },    
+    propertyDetails: {
+        padding: '10px 20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '5px',
+        textAlign: 'left',
+    },
+    title: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#626262',
+    },
+    active: {
+        color: '#487847',
+    },
+    inactive: {
+        color: '#CC3434',
+    },
+
+    propertyBottom: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 20px 15px 20px',
+    },
+    ownerInfo: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+    },
+    ownerImage: {
+        width: '30px',
+        height: '30px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    viewMapText: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        fontSize: '0.7rem',
+        color: '#04476C',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+    }
+}));
+
+export const useStylesMyProperties = makeStyles(() => ({
+    scrollableDiv: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        width: '100%',
+        maxHeight: '75vh',
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '12px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#D4D4D4',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#F0F0F0',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-button': {
+            display: 'none',
+        },
+    },
+}));
+
+export const useStylesMyTenants = makeStyles(() => ({
+    scrollableDiv: {
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        justifyContent: 'center', 
+        width: '100%',
+        maxHeight: '75vh',
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '12px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#D4D4D4',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#F0F0F0',
+            borderRadius: '10px',        
+        },
+        '&::-webkit-scrollbar-button': {
+            display: 'none',
+        },
+    },
+}));
+
+export const deleteAccountModalStyles = makeStyles((theme) => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '60vh',
+    },
+    title: {
+        color: '#434343',
+        fontWeight:'bolder',
+        fontSize: '1.5rem',            
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap:'1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent:'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
+        '&:first-child': {
+            backgroundColor: '#00283E',
+        },
+        '&:last-child': {
+            backgroundColor: '#CC3434',
+        },
+    },
 }));

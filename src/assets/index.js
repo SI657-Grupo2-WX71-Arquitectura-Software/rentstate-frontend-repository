@@ -7,6 +7,11 @@ import warningIcon from './warningIcon.svg';
 import googleMapsLogo from './googleMapsLogo.svg';
 import completedIcon from './completedIcon.svg';
 import needsIcon from './needsIcon.svg';
+import searchIcon from './searchIcon.svg';
+import peru from './peru.svg';
+import trashIcon from './trashIcon.svg';
+import markerMap from './markerMap.svg';
+
 
 export {
     emailIcon,
@@ -17,5 +22,10 @@ export {
     warningIcon,
     googleMapsLogo,
     completedIcon,
-    needsIcon
+    needsIcon,
+    peru,
+    searchIcon,
+    trashIcon,
+    markerMap
+
 };

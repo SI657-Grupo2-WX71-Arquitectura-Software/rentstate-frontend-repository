@@ -4,25 +4,19 @@ import SwitchRentstate from '../../RentState Components/SwitchRentstate ';
 import { useNavigate } from "react-router-dom";
 import {  warningIcon, googleMapsLogo, completedIcon, needsIcon } from '../../../assets';
 import { deleteUser } from '../../../hooks/useUserService';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button} from '@mui/material';
+import { DeleteAccountModal } from "../Modals/DeleteAccountModal";
 
 const MyConfiguration = () => {
     const classes = useStylesMyAccount();
     const navigate = useNavigate();
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         navigate('/login');
-    };
-
-    const handleClickOpen = () => {
-        setOpenDialog(true);
-    };
-      
-    const handleClose = () => {
-        setOpenDialog(false);
     };
       
     const handleDelete = async () => {
@@ -83,29 +77,16 @@ const MyConfiguration = () => {
             </div>
 
             <div className={classes.buttonsContainer}>
-                <div className={classes.button} onClick={handleLogout} style={{backgroundColor: '#00283E'}}> Cerrar Sesión </div>
-                <div className={classes.button}  onClick={handleClickOpen} style={{backgroundColor: '#CC3434'}}> Eliminar Cuenta </div>
+                <div className={classes.button} onClick={handleLogout} style={{backgroundColor: '#00283E'}}> 
+                    Cerrar Sesión 
+                </div>
+                <div className={classes.button}  onClick={handleOpen} style={{backgroundColor: '#CC3434'}}> 
+                    Eliminar Cuenta 
+                </div>
             </div>
 
-            <Dialog
-                open={openDialog}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title"> {"Eliminar Cuenta"} </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description"> ¿Está seguro de que desea eliminar su cuenta de manera permanente? Todos sus datos, chats, y propiedades se perderán. </DialogContentText>
-                </DialogContent>
-                <DialogActions>                      
-                    <Button onClick={handleDelete} style={{ color: "#225E7C", padding: "0.5rem 1rem" }} sx={{ textTransform: 'none' }}>
-                        Aceptar
-                    </Button>
-                    <Button onClick={handleClose} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}   sx={{ textTransform: 'none' }}>
-                        Cancelar
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <DeleteAccountModal open={openModal} handleClose={handleClose} handleDelete={handleDelete} />
+        
         </>
     );
 };
