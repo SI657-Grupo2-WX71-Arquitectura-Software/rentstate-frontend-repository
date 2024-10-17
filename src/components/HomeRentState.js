@@ -3,7 +3,6 @@ import "../styles/HomeRentState.css";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Slider, TextField, createTheme, Skeleton, Snackbar, Alert, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PropertyService from "../hooks/usePropertyService";
-import userService from "../hooks/useUserService";
 import SearchIcon from "@mui/icons-material/Search";
 import ChairIcon from "@mui/icons-material/Chair";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -13,6 +12,7 @@ import CottageIcon from "@mui/icons-material/Cottage";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import { Link } from "react-router-dom";
+import { getUser } from '../hooks/useUserService';
 
 const theme = createTheme({
     palette: {
@@ -52,7 +52,7 @@ const HomeRentState = () => {
                 const userId = localStorage.getItem('userId');
                 const token = localStorage.getItem('token');
                 if (userId && token) {
-                    const userResponse = await userService.getUser(userId, token);
+                    const userResponse = await getUser(userId, token);
                     setUser(userResponse);
                 } else {
                     console.error("No se encontró el ID del usuario o el token en el almacenamiento local.");

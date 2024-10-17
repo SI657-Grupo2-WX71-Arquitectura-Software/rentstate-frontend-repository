@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/PropertyDetail.css';
 import PropertyService from '../hooks/usePropertyService';
-import userService from '../hooks/useUserService';
 import { Avatar, Skeleton, Button, List, ListItem, ListItemAvatar, ListItemText, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import PlaceIcon from "@mui/icons-material/Place";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import { getUser } from '../hooks/useUserService';
 
 const PropertyDetail = () => {
     const { id } = useParams();
@@ -35,11 +35,11 @@ const PropertyDetail = () => {
             const response = await PropertyService.getPropertyById(propertyId);
             setProperty(response);
     
-            const ownerInfo = await userService.getUser(response.userId);
+            const ownerInfo = await getUser(response.userId);
             setOwner(ownerInfo);
             setLoading(false);
     
-            const usersPromises = response.interestedUserIds.map(userId => userService.getUser(userId));
+            const usersPromises = response.interestedUserIds.map(userId => getUser(userId));
             const usersDetails = await Promise.all(usersPromises);
             setInterestedUsers(usersDetails);
     

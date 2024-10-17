@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import { Link } from "react-router-dom"; // Importar Link de react-router-dom
+import { Link } from "react-router-dom";
 import PropertyService from "../hooks/usePropertyService";
-import userService from "../hooks/useUserService";
+import { getUser } from '../hooks/useUserService';
 
 const NearbyPropertiesMap = () => {
     const [properties, setProperties] = useState([]);
@@ -15,7 +15,7 @@ const NearbyPropertiesMap = () => {
                 const userId = localStorage.getItem("userId");
                 const token = localStorage.getItem("token");
                 if (userId && token) {
-                    const userResponse = await userService.getUser(userId, token);
+                    const userResponse = await getUser(userId, token);
                     setUser(userResponse);
                     const propertiesResponse = await PropertyService.getAllProperties();
                     const nearbyProperties = propertiesResponse.filter(
@@ -40,7 +40,7 @@ const NearbyPropertiesMap = () => {
 
     const center = properties.length > 0
         ? { lat: parseFloat(properties[0].latitude), lng: parseFloat(properties[0].longitude) }
-        : { lat: -12.046374, lng: -77.042793 }; // Coordenadas de Lima como valor predeterminado
+        : { lat: -12.046374, lng: -77.042793 };
 
     return (
         <div style={{ height: "100vh", width: "100%" }}>

@@ -209,7 +209,6 @@ export const useStylesButtonComponent = makeStyles(() => ({
     }
 }));
 
-
 export const useStylesChat = makeStyles(() => ({
     chat: {
       display: 'flex',
@@ -340,3 +339,121 @@ export const useStylesChat = makeStyles(() => ({
       color: 'black',
     }
  }));
+
+export const useStylesMyAccount = makeStyles(() => ({
+    container: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        height: '100vh',
+        width: '95vw',
+    },
+    containerDivisor: {
+        display: 'flex',
+        gap: '2rem',
+        justifyContent: 'flex-start',
+        padding: '7rem 2rem 2.2rem 2rem',
+        width: '100%',
+        height: '83vh',
+    },
+    profileCard: {
+        backgroundColor: '#F2F2F2',
+        borderRadius: '2rem',
+        width: '25rem',
+        height: '75vh',
+        padding: '2rem',
+        paddingRight:'1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+    },
+    tabsSection: {
+        width: '80%',
+    },
+    title: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#626262',
+    },
+    subtitle: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#6C6B6B',
+    },
+    dataContainer: {
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'flex-start', 
+        alignItems: 'flex-start',
+        gap:'10px',
+        margin:'1rem 1rem 1rem 0'
+    },
+    icon: {
+        marginRight: '10px',
+    },
+    text: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#6C6B6B',
+        display: 'flex',
+        alignItems: 'center',
+    },
+    tabsButtons: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '20px',
+    },
+    tabButton: {
+        backgroundColor: '#F2F2F2',
+        padding: '1rem 1.6rem',
+        borderRadius: '5rem',
+        cursor: 'pointer',
+        color: '#6C6B6B',
+        transition: 'background-color 0.3s ease',
+    },
+    tabButtonSelected: {
+        backgroundColor: '#CECECE',
+    },
+    tabContent: {
+        margin: '1rem 0',
+        height: '71vh',
+        padding:'1rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2rem',
+        alignItems: 'center',
+    },
+    configOption: {
+        backgroundColor: '#F2F2F2', 
+        padding: '2rem 1.5rem',
+        borderRadius: '1rem',
+        cursor: 'pointer',
+        textAlign: 'left',
+        width: '50vw',
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'center',
+    },
+    switchOptionContainer: {
+        padding: '0.5rem 1.5rem',
+        borderRadius: '1rem',
+        textAlign: 'left',
+        width: '50vw',
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    buttonsContainer: {
+        display:'flex',
+        gap:'1.5rem',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
+        marginTop: '1.5rem',
+    }
+}));

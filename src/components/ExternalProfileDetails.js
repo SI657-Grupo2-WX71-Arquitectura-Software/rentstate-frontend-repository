@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import userService from '../hooks/useUserService';
+import { getUser } from '../hooks/useUserService';
 import PropertyService from '../hooks/usePropertyService';
 import { Avatar, Skeleton, Typography, Box, Button, Card, CardContent, CardMedia } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';
@@ -15,7 +15,7 @@ const ExternalProfileDetails = () => {
     useEffect(() => {
         const fetchOwner = async () => {
             try {
-                const ownerInfo = await userService.getUser(id);
+                const ownerInfo = await getUser(id);
                 setOwner(ownerInfo);
                 const userProperties = await PropertyService.getPropertiesByUserId(id);
                 setProperties(userProperties);

@@ -3,7 +3,6 @@ import HomeRentState from './components/HomeRentState';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import MyAccount from './components/MyAccount';
 import Login from './components/Login';
 import MyProperties from './components/MyProperties';
 import PropertyDetail from './components/PropertyDetail';
@@ -15,6 +14,7 @@ import MyPublish from './components/MyPublish';
 import ExternalProfileDetails from './components/ExternalProfileDetails';
 import NearbyPropertiesMap from './components/NearbyPropertiesMap';
 import Register from './components/Register Account/Register';
+import MyAccount from './components/MyAccount/MyAccount';
 
 function NotFound() {
   return (

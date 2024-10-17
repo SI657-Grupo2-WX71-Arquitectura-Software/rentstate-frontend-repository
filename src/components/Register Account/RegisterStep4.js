@@ -4,7 +4,7 @@ import { Button } from "../RentState Components/components";
 import GoogleMapsFinder from "../RentState Components/GoogleMapsFinder";
 import { useStylesRegister } from "../../styles/useStyles";
 import backArrow from '../../assets/backArrow.svg';
-import useUserService from "../../hooks/useUserService";
+import { createUser } from "../../hooks/useUserService";
 
 const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
     const classes = useStylesRegister();
@@ -17,7 +17,7 @@ const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
         };
     
         try {
-            const result = await useUserService.createUser(finalUserData);
+            const result = await createUser(finalUserData);
             console.log("Usuario registrado con éxito:", result);
             nextStep();
         } catch (error) {
