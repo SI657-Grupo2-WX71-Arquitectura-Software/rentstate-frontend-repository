@@ -43,7 +43,8 @@ const GoogleMapMarker = ({ height, width, latitude, longitude }) => {
     }, []);
 
     return (
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_APIKEY}>
+        <>
+         {/* <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_APIKEY}>
             <GoogleMap
                 mapContainerStyle={mapStylesContainer}
                 zoom={15}
@@ -52,7 +53,9 @@ const GoogleMapMarker = ({ height, width, latitude, longitude }) => {
             >
                 {markerIcon && <Marker position={defaultCenter} icon={markerIcon} />}
             </GoogleMap>
-        </LoadScript>
+        </LoadScript> */}
+        </>
+       
     );
 };
 

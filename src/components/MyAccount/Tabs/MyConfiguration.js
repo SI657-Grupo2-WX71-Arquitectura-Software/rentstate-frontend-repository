@@ -2,16 +2,27 @@ import React, { useState } from "react";
 import { useStylesMyAccount } from '../../../styles/useStyles';
 import SwitchRentstate from '../../RentState Components/SwitchRentstate ';
 import { useNavigate } from "react-router-dom";
-import {  warningIcon, googleMapsLogo, completedIcon, needsIcon } from '../../../assets';
+import { warningIcon, googleMapsLogo, completedIcon, needsIcon } from '../../../assets';
 import { deleteUser } from '../../../hooks/useUserService';
 import { DeleteAccountModal } from "../Modals/DeleteAccountModal";
+import { InterestedZonesModal } from "../Modals/InterestedZonesModal";
+import { PreciseNeedsModal } from "../Modals/PreciseNeedsModal";
 
 const MyConfiguration = () => {
     const classes = useStylesMyAccount();
     const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(false);
-    const handleOpen = () => setOpenModal(true);
-    const handleClose = () => setOpenModal(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openInterestedZonesModal, setOpenInterestedZonesModal] = useState(false);
+    const [openPreciseNeedsModal, setOpenPreciseNeedsModal] = useState(false);
+
+    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+
+    const handleOpenInterestedZonesModal = () => setOpenInterestedZonesModal(true);
+    const handleCloseInterestedZonesModal = () => setOpenInterestedZonesModal(false);
+
+    const handleOpenPreciseNeedsModal = () => setOpenPreciseNeedsModal(true);
+    const handleClosePreciseNeedsModal = () => setOpenPreciseNeedsModal(false);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -34,9 +45,9 @@ const MyConfiguration = () => {
 
     return (
         <>
-            <div className={classes.configOption}>
+            <div className={classes.configOption} onClick={handleOpenInterestedZonesModal}>
                 <div>
-                    <div className={classes.title} style={{alignItems:'bottom', alignContent:'bottom', justifyContent:'bottom', alignmentBaseline:'baseline'}}>
+                    <div className={classes.title} style={{alignItems:'bottom', alignContent:'bottom', justifyContent:'bottom', alignmentBaseline:'baseline'}} >
                         Zona de Interés (Z.I)
                         <img src={warningIcon} alt="Email" className={classes.icon} style={{height: '20px', marginLeft:'10px'}}/>
                     </div>
@@ -45,9 +56,9 @@ const MyConfiguration = () => {
                         para que recibas notificaciones de nuevos inmuebles
                     </div>
                 </div>
-                <img src={googleMapsLogo} alt="Email" className={classes.icon} style={{height: '70px'}}/>                           
+                <img src={googleMapsLogo} alt="googleMapsLogo" className={classes.icon} style={{height: '70px'}}/>                           
             </div>
-            <div className={classes.configOption}>
+            <div className={classes.configOption} onClick={handleOpenPreciseNeedsModal}>
                 <div>
                     <div className={classes.title} style={{alignItems:'bottom', alignContent:'bottom', justifyContent:'bottom', alignmentBaseline:'baseline'}}>
                         ¡Necesidades Precisas!
@@ -80,12 +91,14 @@ const MyConfiguration = () => {
                 <div className={classes.button} onClick={handleLogout} style={{backgroundColor: '#00283E'}}> 
                     Cerrar Sesión 
                 </div>
-                <div className={classes.button}  onClick={handleOpen} style={{backgroundColor: '#CC3434'}}> 
+                <div className={classes.button}  onClick={handleOpenDeleteModal} style={{backgroundColor: '#CC3434'}}> 
                     Eliminar Cuenta 
                 </div>
             </div>
 
-            <DeleteAccountModal open={openModal} handleClose={handleClose} handleDelete={handleDelete} />
+            <DeleteAccountModal open={openDeleteModal} handleClose={handleCloseDeleteModal} handleDelete={handleDelete} />
+            <InterestedZonesModal open={openInterestedZonesModal} handleClose={handleCloseInterestedZonesModal} handleDelete={handleDelete} />
+            <PreciseNeedsModal open={openPreciseNeedsModal} handleClose={handleClosePreciseNeedsModal} handleDelete={handleDelete} />
         
         </>
     );

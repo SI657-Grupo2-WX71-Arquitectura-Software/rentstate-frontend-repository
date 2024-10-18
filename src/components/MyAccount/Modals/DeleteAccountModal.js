@@ -31,7 +31,7 @@ export const DeleteAccountModal = ({ open, handleClose, handleDelete }) => {
                         Eliminar Cuenta
                     </div>
                     <div className={classes.button} onClick={handleClose} style={{ backgroundColor: '#7E7E7E' }}>
-                        Volver
+                        Cancelar
                     </div>
                 </div>
             </div>

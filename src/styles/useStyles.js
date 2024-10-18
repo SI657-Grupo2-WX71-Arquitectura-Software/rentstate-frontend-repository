@@ -666,7 +666,7 @@ export const useStylesMyTenants = makeStyles(() => ({
     },
 }));
 
-export const deleteAccountModalStyles = makeStyles((theme) => ({
+export const deleteAccountModalStyles = makeStyles(() => ({
     overlay: {
         position: 'fixed',
         top: 0,
@@ -715,4 +715,180 @@ export const deleteAccountModalStyles = makeStyles((theme) => ({
             backgroundColor: '#CC3434',
         },
     },
+}));
+
+export const interestedZonesModalStyles = makeStyles(() => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '100vh',
+    },
+    textTopContainer: {
+        display: 'flex',
+        gap: '1rem',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        color: '#434343',
+        fontWeight:'bolder',
+        fontSize: '1.5rem',            
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap:'1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent:'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
+        '&:first-child': {
+            backgroundColor: '#00283E',
+        },
+        '&:last-child': {
+            backgroundColor: '#CC3434',
+        },
+    },
+}));
+
+export const preciseNeedsModalStyles = makeStyles(() => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '100vh',
+    },
+    textTopContainer: {
+        display: 'flex',
+        gap: '1rem',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        color: '#434343',
+        fontWeight:'bolder',
+        fontSize: '1.5rem',            
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap:'1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent:'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
+        '&:first-child': {
+            backgroundColor: '#00283E',
+        },
+        '&:last-child': {
+            backgroundColor: '#CC3434',
+        },
+    },
+    needContainer : {
+        margin:'30px 0 10px 0', 
+        padding:'1rem 1rem', 
+        display:'flex', 
+        gap:'1rem', 
+        justifyContent:'center'
+    },
+    needColumn: {
+        backgroundColor: '#EFEFEF',
+        padding:'1rem 1.4rem', 
+        borderRadius:'1rem',
+        textAlign:'left',
+        width:'100%',
+        height:'40vh',
+    },
+    titleCard: {
+        color: '#6C6B6B',
+        fontWeight:'bolder',
+        fontSize: '1rem',
+        marginBottom:'10px' 
+    },
+    checkbox: {
+        position: 'relative',
+        opacity: 0,
+        width: '0',
+        height: '0',
+        '& + span': {
+            display: 'inline-block',
+            width: '13px',
+            height: '12px',
+            background: '#fff',
+            border: '1px solid #ccc',
+            borderRadius: '0.25em',
+            verticalAlign: 'middle',
+            transition: 'background 0.3s, border-color 0.3s',
+            cursor: 'pointer',
+            marginRight: '8px',
+            marginBottom: '1px',
+            position: 'relative',
+        },
+        '&:checked + span': {
+            background: '#00283E',
+            borderColor: '#00283E',
+            '&::before': {
+                content: '"\\2713"',
+                color: '#fff',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                fontSize: '10px',
+            }
+        }
+    },    
+    
+    subtitleCard: {
+        margin: '5px 0',
+        color: '#6C6B6B',
+    }
+
 }));
