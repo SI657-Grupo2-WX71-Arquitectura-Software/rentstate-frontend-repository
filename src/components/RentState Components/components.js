@@ -211,33 +211,6 @@ export const FieldEditPassword = ({ id, label, value, onChange, backgroundColor,
     );
 };
 
-export const FieldEditSearch = ({ value, onChange, placeholder, width, height }) => {
-    return (
-        <div style={{
-            display: 'flex', 
-            alignItems: 'center', 
-            width: width, 
-            height: height, 
-            backgroundColor: 'white', 
-            borderRadius: '20px', 
-            padding: '0 10px'
-        }}>
-            <input
-                type="text"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                style={{ border: 'none', flexGrow: 1, fontSize: '16px' }}
-            />
-            <button style={{ border: 'none', background: 'transparent', marginBottom:'1rem', paddingRight:'0' }}>
-                <IconButton aria-label="search">
-                    <SearchIcon />
-                </IconButton>
-            </button>
-        </div>
-    );
-};
-
 export const FieldEditPhone = ({ id, label, value, onChange }) => {
     const [focused, setFocused] = useState(false);
 
@@ -454,21 +427,21 @@ export const ButtonUpload = ({ children, onClick, disabled = false, type = 'subm
     );
 };  
 
-export const SearchBar = ({ placeholder = 'Buscar', height, width, value, onChange, ...props }) => {
-    const classes = useStylesSearchBarComponent();
-  
+export const SearchBar = ({ placeholder = 'Buscar', height, width, value, onChange, borderColor, ...props }) => {
+    const classes = useStylesSearchBarComponent({ borderColor });
+
     return (
-      <div className={classes.searchBar} style={{ height, width, ...props.style }}>
-        <input
-          type="text"
-          className={classes.input}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          {...props}
-        />
-        <img src={searchIcon} alt="Buscar" className={classes.icon} />
-      </div>
+        <div className={classes.searchBar} style={{ height, width, ...props.style }}>
+            <input
+                type="text"
+                className={classes.input}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                {...props}
+            />
+            <img src={searchIcon} alt="Buscar" className={classes.icon} />
+        </div>
     );
 };
 

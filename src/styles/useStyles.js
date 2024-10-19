@@ -473,8 +473,10 @@ export const useStylesSearchBarComponent = makeStyles(() => ({
         padding: '0.5rem 1rem',
         boxSizing: 'border-box',
         opacity: 0.8,
+        backgroundColor: 'white',
+        borderColor: props => props.borderColor || '#C8C8C8',
     },
-      input: {
+    input: {
         flex: 1,
         border: 'none',
         outline: 'none',
@@ -483,11 +485,11 @@ export const useStylesSearchBarComponent = makeStyles(() => ({
         color: '#7B7979',
         opacity: 0.8,
     },
-      icon: {
+    icon: {
         height: '1.3rem',
         cursor: 'pointer',
-        color:'#959595'
-    }
+        color: '#959595',
+    },
 }));
 
 export const useStylesInquilinoCard = makeStyles(() => ({
@@ -890,5 +892,41 @@ export const preciseNeedsModalStyles = makeStyles(() => ({
         margin: '5px 0',
         color: '#6C6B6B',
     }
+
+}));
+
+
+export const chatStyles = makeStyles(() => ({
+    chatContainer: {
+        width: '100%',
+        height:'100vh', 
+        justifyContent:'center', 
+        alignContent:'center', 
+        display:'flex', 
+        gap:'2rem', 
+        alignItems:'center'
+    },
+    columnContacts: {
+        width: '20vw', 
+        height: '70vh', 
+        backgroundColor: '#F2F2F2', 
+        borderRadius: '2rem', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        gap: '1rem'
+    },
+    contactList: {
+        backgroundColor:'white', 
+        borderRadius:'20px', 
+        padding:'13.2vw 7vw'
+    },
+    columnChat: { 
+        width:'40vw', 
+        height:'70vh', 
+        backgroundColor:'#F2F2F2', 
+        borderRadius:'2rem'
+    }
+
 
 }));

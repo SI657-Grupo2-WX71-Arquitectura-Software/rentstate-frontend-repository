@@ -1,46 +1,40 @@
 import React, { useState } from "react";
-import { FieldEditSearch } from "./RentState Components/components";
+import { SearchBar } from "./RentState Components/components";
+import { chatStyles } from "../styles/useStyles";
 
 
 const Chat = () => {
-
     const [searchTerm, setSearchTerm] = useState('');
+    const classes = chatStyles();
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
+
     return (
-        <div style={{width: '100%', height:'100vh', justifyContent:'center', alignContent:'center', display:'flex', gap:'2rem', alignItems:'center'}}>            
-            
-            <div style={{
-                width: '20vw', 
-                height: '70vh', 
-                backgroundColor: '#F2F2F2', 
-                borderRadius: '2rem', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                gap: '1rem'
-            }}>                
+        <div className={classes.chatContainer}>            
+            <div className={classes.columnContacts}>                
                 <div style={{margin:'2rem 0 0rem 0'}}>
-                    <FieldEditSearch
-                        id="search"
+                    <SearchBar 
+                        placeholder="Buscar Contacto" 
+                        height="2.5rem" 
+                        width="auto" 
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        placeholder="Buscar Contacto"
-                        width="15vw"
-                        height="50px"
+                        borderColor={'transparent'}
                     />
                 </div>
-                <div style={{backgroundColor:'white', borderRadius:'20px', padding:'13.2vw 7vw'}}>
+
+                <div className={classes.contactList}>
                     Lista
-                </div>                
+                </div>   
+
             </div>
 
 
 
-            <div style={{width:'40vw', height:'70vh', backgroundColor:'#F2F2F2', borderRadius:'2rem'}}>
+            <div  className={classes.columnChat}>
                 Chat
             </div>
         </div>
