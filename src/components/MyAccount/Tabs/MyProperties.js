@@ -1,192 +1,60 @@
-
-import React, { useState } from 'react';
-import { PropertyCard, SearchBar } from '../../RentState Components/components';
+import React, { useState, useEffect } from 'react';
+import { MyPropertyCard, SearchBar } from '../../RentState Components/components';
 import { useStylesMyProperties } from '../../../styles/useStyles';
+import PropertyService from "../../../hooks/usePropertyService";
+import { getUser } from "../../../hooks/useUserService";
 
-const MyProperties = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+const MyProperties = ({ currentUser }) => {
     const classes = useStylesMyProperties();
-    const properties = [
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/3e8e5ae0-4ef3-4669-99d0-cdfa6f6b3b84-Monkey-Selfie.jpg",
-            district: "Miraflores",
-            isActive: true,
-            address: "Av. Pardo 456, Lima",
-            price: 2000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Juan",
-            ownerLastName: "Sifuentes"
-        },
-        {
-            photoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            district: "San Isidro",
-            isActive: false,
-            address: "Av. Conquistadores 850, Lima",
-            price: 3000,
-            ownerPhotoUrl: "https://storage.googleapis.com/rentstate-img/profile-pictures/1245511b-303a-4196-b4c0-eeb243188066-rei chiquita.jfif",
-            ownerName: "Laura",
-            ownerLastName: "Torres"
+    const [searchTerm, setSearchTerm] = useState('');
+    const [properties, setProperties] = useState([]);
+    const [filteredProperties, setFilteredProperties] = useState([]);
+    const [owners, setOwners] = useState({});
+
+    useEffect(() => {
+        const fetchPropertiesAndOwners = async () => {
+            try {
+                const response = await PropertyService.getAllProperties();
+                const userProperties = response.filter(property => property.userId === currentUser.id);
+    
+                const ownerIds = userProperties.map(p => p.userId);
+                const ownerPromises = ownerIds.map(id => getUser(id));
+                const ownersData = await Promise.all(ownerPromises);
+                const ownersMap = ownersData.reduce((acc, owner, index) => {
+                    acc[ownerIds[index]] = owner;
+                    return acc;
+                }, {});
+    
+                setOwners(ownersMap);
+                setProperties(userProperties);
+                setFilteredProperties(userProperties);
+            } catch (error) {
+                console.error("Error al obtener las propiedades y los datos del propietario:", error);
+            }
+        };
+    
+        if (currentUser && currentUser.id) {
+            fetchPropertiesAndOwners();
         }
-    ];      
+    }, [currentUser]);
+    
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        const search = event.target.value.toLowerCase();
+        setSearchTerm(search);
+        const filtered = properties.filter(property => {
+            return property.district.toLowerCase().includes(search) ||
+                   property.address.toLowerCase().includes(search) ||
+                   property.price.toString().includes(search) ||
+                   (`${owners[property.userId]?.name} ${owners[property.userId]?.lastName}`).toLowerCase().includes(search) ||
+                   (property.isActive ? 'activo' : 'inactivo').includes(search);
+        });
+        setFilteredProperties(filtered);
     };
-
-    const filteredProperties = properties.filter(property => {
-        const district = property.district.toLowerCase();
-        const address = property.address.toLowerCase();
-        const ownerFullName = `${property.ownerName} ${property.ownerLastName}`.toLowerCase();
-        const status = property.isActive ? 'activo' : 'inactivo';
-        const price = property.price.toString();
-        const search = searchTerm.toLowerCase();
-        if (search === 'activo') { return property.isActive; }
-        return district.includes(search) || address.includes(search) || ownerFullName.includes(search) || status.includes(search) || price.includes(search);
-    });
 
     return (
         <div>
-            <div style={{display: 'flex', justifyContent:'center', margin:'0 0 1rem 0'}}>
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '0 0 1rem 0' }}>
                 <SearchBar 
                     placeholder="Buscar Inmueble" 
                     height="3rem" 
@@ -197,9 +65,10 @@ const MyProperties = () => {
             </div>
             <div className={classes.scrollableDiv}>
                 {filteredProperties.map((property, index) => (
-                    <PropertyCard
+                    <MyPropertyCard
                         key={index}
                         property={property}
+                        owner={owners[property.userId]}
                     />
                 ))}
             </div>

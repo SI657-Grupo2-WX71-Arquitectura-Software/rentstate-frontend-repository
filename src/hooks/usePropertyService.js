@@ -1,31 +1,35 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://34.171.129.103:8080'; 
+const propertyService = axios.create({
+    baseURL: 'https://rentstate.antarticdonkeys.com/api/gateway-service',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-const PropertyService = {
-  getAllProperties: async () => {
+export const getAllProperties = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/properties`);
-      return response.data;
+        const response = await propertyService.get(`/api/v1/properties`);
+        return response.data;
     } catch (error) {
-      console.error('Error al obtener todas las propiedades:', error);
-      throw error; 
+        console.error('Error al obtener todas las propiedades:', error);
+        throw error;
     }
-  },
+};
 
-  getPropertyById: async (propertyId) => {
+export const getPropertyById = async (propertyId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/v1/properties/${propertyId}`);
-      return response.data; 
+        const response = await propertyService.get(`/api/v1/properties/${propertyId}`);
+        return response.data;
     } catch (error) {
-      console.error(`Error al obtener la propiedad con ID ${propertyId}:`, error);
-      throw error; 
+        console.error(`Error al obtener la propiedad con ID ${propertyId}:`, error);
+        throw error;
     }
-  },
+};
 
-  getPropertiesByUserId: async (userId) => {
+export const getPropertiesByUserId = async (userId) => {
     try {
-        const response = await axios.get(`${BASE_URL}/api/v1/properties`, {
+        const response = await propertyService.get(`/api/v1/properties`, {
             params: { userId: userId }
         });
         return response.data;
@@ -33,57 +37,85 @@ const PropertyService = {
         console.error(`Error al obtener propiedades del usuario con ID ${userId}:`, error);
         throw error;
     }
-},
-
-  deleteProperty: async (propertyId) => {
-    try {
-      await axios.delete(`${BASE_URL}/api/v1/properties/${propertyId}`);
-    } catch (error) {
-      console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
-      throw error; 
-    }
-  },
-
-  createProperty: async (propertyData, userId) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/api/v1/properties?userId=${userId}`, propertyData);
-      return response.data;
-    } catch (error) {
-      console.error('Error al crear la propiedad:', error);
-      throw error;
-    }
-  },
-
-  addInterestToProperty: async (propertyId, interestData) => {
-    const url = `${BASE_URL}/api/v1/properties/${propertyId}/interest`;
-    try {
-        const response = await axios.post(url, interestData); 
-        return response.data; 
-    } catch (error) {
-        throw error; 
-    }
-},
-
-
-  markPropertyUnavailable: async (propertyId) => {
-    try {
-      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/unavailable`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error al marcar la propiedad con ID ${propertyId} como no disponible:`, error);
-      throw error;
-    }
-  },
-
-  renewPropertyAvailability: async (propertyId) => {
-    try {
-      const response = await axios.put(`${BASE_URL}/api/v1/properties/${propertyId}/available`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error al renovar la disponibilidad de la propiedad con ID ${propertyId}:`, error);
-      throw error;
-    }
-  },
 };
 
-export default PropertyService;
+export const deleteProperty = async (propertyId, token) => {
+    try {
+        await propertyService.delete(`/api/v1/properties/${propertyId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    } catch (error) {
+        console.error(`Error al eliminar la propiedad con ID ${propertyId}:`, error);
+        throw error;
+    }
+};
+
+export const createProperty = async (propertyData, userId, token) => {
+    try {
+        const response = await propertyService.post(`/api/v1/properties?userId=${userId}`, propertyData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear la propiedad:', error);
+        throw error;
+    }
+};
+
+export const addInterestToProperty = async (propertyId, interestData, token) => {
+    const url = `/api/v1/properties/${propertyId}/interest`;
+    try {
+        const response = await propertyService.post(url, interestData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error al agregar interés a la propiedad con ID ${propertyId}:`, error);
+        throw error;
+    }
+};
+
+export const markPropertyUnavailable = async (propertyId, token) => {
+    try {
+        const response = await propertyService.put(`/api/v1/properties/${propertyId}/unavailable`, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error al marcar la propiedad con ID ${propertyId} como no disponible:`, error);
+        throw error;
+    }
+};
+
+export const renewPropertyAvailability = async (propertyId, token) => {
+    try {
+        const response = await propertyService.put(`/api/v1/properties/${propertyId}/available`, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error al renovar la disponibilidad de la propiedad con ID ${propertyId}:`, error);
+        throw error;
+    }
+};
+
+export default {
+    getAllProperties,
+    getPropertyById,
+    getPropertiesByUserId,
+    deleteProperty,
+    createProperty,
+    addInterestToProperty,
+    markPropertyUnavailable,
+    renewPropertyAvailability
+};

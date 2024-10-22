@@ -10,7 +10,7 @@ import MyProperties from "./Tabs/MyProperties";
 import { emailIcon, phoneIcon, dniIcon, editIcon, passwordIcon} from '../../assets';
 const MyAccount = () => {
     const classes = useStylesMyAccount();
-    const [selectedTab, setSelectedTab] = useState('myConfiguration');
+    const [selectedTab, setSelectedTab] = useState('myProperties');
     const [avatarImage, setAvatarImage] = useState(""); 
     const [user, setUser] = useState({
         id: '',
@@ -116,7 +116,7 @@ const MyAccount = () => {
             case 'myTenants':
                 return <MyTenants />;
             case 'myProperties':
-                return <MyProperties />;
+                return <MyProperties currentUser={user} />;
             default:
                 return <div>Hola</div>;
         }

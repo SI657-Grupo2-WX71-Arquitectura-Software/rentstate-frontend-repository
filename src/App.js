@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
-import MyProperties from './components/MyProperties';
 import PropertyDetail from './components/PropertyDetail';
 import ListRentedProperties from './components/ListRentedProperties';
 import Chat from './components/Chat';
@@ -36,7 +35,6 @@ function App() {
             <Route path="/home" element={<HomeRentState />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/posts" element={<MyProperties />} />
             <Route path="/mensajes" element={<Chat />} />
             <Route path="/crear_propiedad" element={<AddProperty />} />
             <Route path="/publicar" element={<MyPublish />} />

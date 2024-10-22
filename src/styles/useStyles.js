@@ -928,5 +928,62 @@ export const chatStyles = makeStyles(() => ({
         borderRadius:'2rem'
     }
 
-
 }));
+
+export const homeStyles = makeStyles(() => ({ 
+    homeContainer: {
+        maxWidth: '1400px',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: '6rem 0 0 0',
+    },
+    searchBarContainer: {
+        margin: '1rem 0'
+    },
+    optionsContainer: {
+        margin: '1rem 0',
+        display: 'flex',
+        gap:'1rem',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    optionButton: {
+        backgroundColor: '#F2F2F2',
+        borderRadius:'2rem',
+        color: '#6C6B6B',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: '1rem 2rem',
+        transition: 'background-color 0.2s ease',
+        '&:hover': {
+            transition: 'background-color 0.2s ease',
+            backgroundColor: '#E5E5E5',
+            cursor: 'pointer'
+        }
+    },
+    filterButton: {
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        padding: '0.5rem',
+        color: '#6C6B6B',
+        '&:hover': {
+            transition: 'background-color 0.2s ease',
+            backgroundColor: '#E5E5E5',
+            cursor: 'pointer'
+        }    },
+    propertyGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gap: '1rem',
+        width: '100%',
+        padding: '1rem',
+    },
+
+
+}))

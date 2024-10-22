@@ -11,6 +11,7 @@ import searchIcon from './searchIcon.svg';
 import peru from './peru.svg';
 import trashIcon from './trashIcon.svg';
 import markerMap from './markerMap.svg';
+import favoriteIcon from './favoriteIcon.svg';
 
 
 export {
@@ -26,6 +27,7 @@ export {
     peru,
     searchIcon,
     trashIcon,
-    markerMap
+    markerMap,
+    favoriteIcon
 
 };
