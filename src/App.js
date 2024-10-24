@@ -14,6 +14,7 @@ import ExternalProfileDetails from './components/ExternalProfileDetails';
 import NearbyPropertiesMap from './components/NearbyPropertiesMap';
 import Register from './components/Register Account/Register';
 import MyAccount from './components/MyAccount/MyAccount';
+import OtherAccount from './components/OtherAccount';
 
 function NotFound() {
   return (
@@ -42,7 +43,8 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/external-profile/:id" element={<ExternalProfileDetails />} />
             <Route path="/property_rented" element={<ListRentedProperties />} />
-            <Route path="/nearby-properties" element={<NearbyPropertiesMap />} /> 
+            <Route path="/nearby-properties" element={<NearbyPropertiesMap />} />
+            <Route path="/perfil/:userId" element={<OtherAccount />} />
 
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<NotFound />} />

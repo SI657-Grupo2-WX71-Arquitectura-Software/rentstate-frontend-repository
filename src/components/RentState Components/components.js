@@ -11,6 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { searchIcon, peru, trashIcon, markerMap, editIcon, favoriteIcon } from '../../assets';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -462,64 +463,53 @@ export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) 
     );
 };
 
-export const MyPropertyCard = ({ property, owner }) => {
-    const classes = useStylesPropertyCard();
-    const handleMapClick = () => {
-        const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
-        window.open(mapUrl, '_blank');
-    };
-
-    return (
-        <div className={classes.cardContainer}>
-            <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
-            <div className={classes.iconsContainer}>
-                <img src={trashIcon} alt="Delete" className={classes.icon} />
-                <img src={editIcon} alt="Edit" className={classes.icon} />
-            </div>
-            <div className={classes.propertyDetails}>
-                <div className={classes.title}>{property.district} ·
-                    <span className={property.available ? classes.active : classes.inactive} style={{ marginLeft: '5px' }}>
-                        {property.available ? 'Activo' : 'Inactivo'}
-                    </span>
-                </div>
-                <div style={{ color: '#6C6B6B' }}>{property.address}</div>
-                <div style={{ color: '#6C6B6B' }}>S/. {property.price}</div>
-            </div>
-            <div className={classes.propertyBottom}>
-                <div className={classes.ownerInfo}>
-                    <img src={owner.photoUrl} alt="Owner" className={classes.ownerImage} />
-                    <div className={classes.viewMapText} style={{ color: '#6C6B6B', fontWeight: 'normal' }}>
-                        {owner.name} {owner.lastName}
-                    </div>
-                </div>
-                <div className={classes.viewMapText} onClick={handleMapClick}>
-                    <img src={markerMap} alt="Map" style={{ width: '10px' }} />
-                    Ver en Mapa
-                </div>
-            </div>
-        </div>
-    );
-};
-
 export const PropertyCard = ({ property, owner }) => {
     const classes = useStylesPropertyCard();
+    const navigate = useNavigate();
+    const currentUserId = localStorage.getItem('userId');
+
     const handleMapClick = () => {
         const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
         window.open(mapUrl, '_blank');
     };
+
+    const handleOwnerClick = () => {
+        if (String(owner?.id) === String(currentUserId)) {
+            navigate('/perfil');
+        } else {
+            navigate(`/perfil/${owner?.id}`);
+        }
+    };
+
     return (
         <div className={classes.cardContainer}>
             <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
             <div className={classes.iconsContainer}>
-                <img src={favoriteIcon} alt="Favorite" className={classes.icon} />
+                {String(currentUserId) === String(owner?.id) ? (
+                    <>
+                        <img src={trashIcon} alt="Delete" className={classes.icon} />
+                        <img src={editIcon} alt="Edit" className={classes.icon} />
+                    </>
+                ) : (
+                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} />
+                )}
             </div>
             <div className={classes.propertyDetails}>
-                <div className={classes.title}>{property.district}</div>
+                {String(currentUserId) === String(owner?.id) ? (
+                    <div className={classes.title}>
+                        {property.district} ·
+                        <span className={property.available ? classes.active : classes.inactive} style={{ marginLeft: '5px' }}>
+                            {property.available ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </div>
+                ) : (
+                    <div className={classes.title}>{property.district}</div>
+                )}
                 <div style={{ color: '#6C6B6B' }}>{property.location}</div>
                 <div style={{ color: '#6C6B6B' }}>S/. {property.price}</div>
             </div>
             <div className={classes.propertyBottom}>
-                <div className={classes.ownerInfo}>
+                <div className={classes.ownerInfo} onClick={handleOwnerClick}>
                     <img src={owner?.photoUrl} alt="Owner" className={classes.ownerImage} />
                     <div className={classes.viewMapText} style={{ color: '#6C6B6B', fontWeight: 'normal' }}>
                         {owner?.name} {owner?.lastName}

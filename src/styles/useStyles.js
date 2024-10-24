@@ -383,10 +383,15 @@ export const useStylesMyAccount = makeStyles(() => ({
     dataContainer: {
         display: 'flex', 
         flexDirection: 'column', 
-        justifyContent: 'flex-start', 
+        justifyContent: 'center', 
         alignItems: 'flex-start',
         gap:'10px',
         margin:'1rem 1rem 1rem 0'
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     icon: {
         marginRight: '10px',
@@ -404,6 +409,7 @@ export const useStylesMyAccount = makeStyles(() => ({
         justifyContent: 'center',
         gap: '20px',
     },
+    
     tabButton: {
         backgroundColor: '#F2F2F2',
         padding: '1rem 1.6rem',
@@ -985,5 +991,18 @@ export const homeStyles = makeStyles(() => ({
         padding: '1rem',
     },
 
+
+}))
+
+export const otherAccountStyles = makeStyles(() => ({
+    homeContainer: {
+        maxWidth: '1400px',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: '6rem 0 0 0',
+    },
 
 }))

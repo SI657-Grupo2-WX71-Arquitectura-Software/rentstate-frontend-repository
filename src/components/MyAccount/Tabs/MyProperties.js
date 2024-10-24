@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MyPropertyCard, SearchBar } from '../../RentState Components/components';
+import { PropertyCard, SearchBar } from '../../RentState Components/components';
 import { useStylesMyProperties } from '../../../styles/useStyles';
 import PropertyService from "../../../hooks/usePropertyService";
 import { getUser } from "../../../hooks/useUserService";
@@ -10,6 +10,7 @@ const MyProperties = ({ currentUser }) => {
     const [properties, setProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [owners, setOwners] = useState({});
+    const [users, setUsers] = useState({});
 
     useEffect(() => {
         const fetchPropertiesAndOwners = async () => {
@@ -24,8 +25,18 @@ const MyProperties = ({ currentUser }) => {
                     acc[ownerIds[index]] = owner;
                     return acc;
                 }, {});
+
+                const userPromises = response.map(property => getUser(property.userId).catch(error => null));
+                const userResponses = await Promise.all(userPromises);
+                const usersData = userResponses.reduce((acc, user) => {
+                    if (user) {
+                        acc[user.id] = user;
+                    }
+                    return acc;
+                }, {});
     
                 setOwners(ownersMap);
+                setUsers(usersData);
                 setProperties(userProperties);
                 setFilteredProperties(userProperties);
             } catch (error) {
@@ -65,10 +76,10 @@ const MyProperties = ({ currentUser }) => {
             </div>
             <div className={classes.scrollableDiv}>
                 {filteredProperties.map((property, index) => (
-                    <MyPropertyCard
+                    <PropertyCard
                         key={index}
                         property={property}
-                        owner={owners[property.userId]}
+                        owner={users[property.userId]}
                     />
                 ))}
             </div>
