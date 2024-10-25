@@ -1,4 +1,3 @@
-// src/hooks/useMessageService.js
 import { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -22,7 +21,7 @@ const useMessageService = (userName, receiver) => {
       }
 
       try {
-        const response = await fetch(`https://rentstate.antarticdonkeys.com/api/message-service/api/v1/message/conversation/${userName}/${receiver.username}`, {
+        const response = await fetch(`http://rentstate.antarticdonkeys.com:8095/api/v1/message/conversation/${userName}/${receiver.username}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -38,7 +37,7 @@ const useMessageService = (userName, receiver) => {
 
     fetchInitialMessages();
 
-    const socket = new SockJS("https://rentstate.antarticdonkeys.com/api/message-service/ws/messages");
+    const socket = new SockJS("http://rentstate.antarticdonkeys.com:8095/ws/messages");
     const client = Stomp.over(socket);
 
     client.connect({}, () => {

@@ -4,14 +4,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import SearchIcon from '@mui/icons-material/Search';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import peruFlag from '../../assets/peru.svg';
-import { useStylesButtonComponent } from '../../styles/useStyles';
+import { useStylesButtonComponent, useStylesInquilinoCard, useStylesPropertyCard, useStylesSearchBarComponent } from '../../styles/useStyles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { searchIcon, peru, trashIcon, markerMap, editIcon, favoriteIcon } from '../../assets';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -129,7 +129,7 @@ export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) =>
     );
 };
 
-export const FieldEditPassword = ({ id, label, value, onChange }) => {
+export const FieldEditPassword = ({ id, label, value, onChange, backgroundColor, textColor, boxShadow }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [focused, setFocused] = useState(false);
 
@@ -157,12 +157,20 @@ export const FieldEditPassword = ({ id, label, value, onChange }) => {
         top: focused || value ? -6 : '50%', 
         transform: focused || value ? 'scale(0.75)' : 'translate(0, -50%)',
         transformOrigin: 'top left',
-        backgroundColor: 'white',
+        backgroundColor: backgroundColor || 'white',
         padding: '0 12px 0 10px',
         pointerEvents: 'none', 
         transition: 'all 0.2s ease-in-out',
         borderRadius: '10px 10px 0 0',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        color: textColor || 'black',
+    };
+
+    const customInputStyle = {
+        backgroundColor: backgroundColor || 'white',
+        color: textColor || 'black',
+        borderRadius: 10,
+        boxShadow: boxShadow || "0px 4px 8px rgba(0, 0, 0, 0.1)"
     };
 
     const InputProps = {
@@ -178,7 +186,7 @@ export const FieldEditPassword = ({ id, label, value, onChange }) => {
                 </IconButton>
             </InputAdornment>
         ),
-        style: { backgroundColor: 'white', borderRadius: 10, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }
+        style: customInputStyle
     };
 
     return (
@@ -200,33 +208,6 @@ export const FieldEditPassword = ({ id, label, value, onChange }) => {
                 }}
             />
         </ThemeProvider>
-    );
-};
-
-export const FieldEditSearch = ({ id, value, onChange, placeholder, width, height }) => {
-    return (
-        <div style={{
-            display: 'flex', 
-            alignItems: 'center', 
-            width: width, 
-            height: height, 
-            backgroundColor: 'white', 
-            borderRadius: '20px', 
-            padding: '0 10px'
-        }}>
-            <input
-                type="text"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                style={{ border: 'none', flexGrow: 1, fontSize: '16px' }}
-            />
-            <button style={{ border: 'none', background: 'transparent', marginBottom:'1rem', paddingRight:'0' }}>
-                <IconButton aria-label="search">
-                    <SearchIcon />
-                </IconButton>
-            </button>
-        </div>
     );
 };
 
@@ -271,7 +252,7 @@ export const FieldEditPhone = ({ id, label, value, onChange }) => {
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start" style={{ marginRight: '5px' }}>
-                            <img src={peruFlag} alt="Flag" style={{ width: 24, height: 15, marginRight: 5 }} />
+                            <img src={peru} alt="Flag" style={{ width: 24, height: 15, marginRight: 5 }} />
                             <span style={{ color: '#AAAAAA' }}>+51</span>
                         </InputAdornment>
                     ),
@@ -445,3 +426,108 @@ export const ButtonUpload = ({ children, onClick, disabled = false, type = 'subm
         </button>
     );
 };  
+
+export const SearchBar = ({ placeholder = 'Buscar', height, width, value, onChange, borderColor, ...props }) => {
+    const classes = useStylesSearchBarComponent({ borderColor });
+
+    return (
+        <div className={classes.searchBar} style={{ height, width, ...props.style }}>
+            <input
+                type="text"
+                className={classes.input}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                {...props}
+            />
+            <img src={searchIcon} alt="Buscar" className={classes.icon} />
+        </div>
+    );
+};
+
+export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) => {
+    const classes = useStylesInquilinoCard();
+  
+    return (
+      <div className={classes.cardContainer}>
+        <img src={photoUrl} alt={`${name} ${lastName}`} className={classes.profileImage} />
+        <div className={classes.title}>{name} {lastName}</div>
+        <div className={classes.text}>
+          Inquilino 
+          <span className={isActive ? classes.active : classes.inactive} style={{marginLeft:'5px'}}>
+            {isActive ? 'Activo' : 'Inactivo'}            
+          </span>
+        </div>
+        <div className={classes.text} style={{marginTop:'10px'}}>En inmueble <span style={{fontWeight:'bold'}}>{property}</span></div>
+      </div>
+    );
+};
+
+export const PropertyCard = ({ property, owner }) => {
+    const classes = useStylesPropertyCard();
+    const navigate = useNavigate();
+    const currentUserId = localStorage.getItem('userId');
+
+    const handleMapClick = (event) => {
+        event.stopPropagation();
+        const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
+        window.open(mapUrl, '_blank');
+    };
+
+    const handleOwnerClick = (event) => {
+        event.stopPropagation();
+        if (String(owner?.id) === String(currentUserId)) {
+            navigate('/perfil');
+        } else {
+            navigate(`/perfil/${owner?.id}`);
+        }
+    };
+
+    const handleCardClick = () => {
+        navigate(`/property/${property.id}`);
+    };
+
+    return (
+        <div className={classes.cardContainer} onClick={handleCardClick}>
+            <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
+            <div className={classes.iconsContainer}>
+                {String(currentUserId) === String(owner?.id) ? (
+                    <>
+                        <img src={trashIcon} alt="Delete" className={classes.icon} />
+                        <img src={editIcon} alt="Edit" className={classes.icon} />
+                    </>
+                ) : (
+                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} />
+                )}
+            </div>
+            <div className={classes.propertyDetails}>
+                {String(currentUserId) === String(owner?.id) ? (
+                    <div className={classes.title}>
+                        {property.district} ·
+                        <span className={property.available ? classes.active : classes.inactive} style={{ marginLeft: '5px' }}>
+                            {property.available ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </div>
+                ) : (
+                    <div className={classes.title}>{property.district}</div>
+                )}
+                <div style={{ color: '#6C6B6B' }}>{property.location}</div>
+                <div style={{ color: '#6C6B6B' }}>S/. {property.price}</div>
+            </div>
+            <div className={classes.propertyBottom}>
+                <div className={classes.ownerInfo} onClick={handleOwnerClick}>
+                    <img src={owner?.photoUrl} alt="Owner" className={classes.ownerImage} />
+                    <div className={classes.viewMapText} style={{ color: '#6C6B6B', fontWeight: 'normal' }}>
+                        {owner?.name} {owner?.lastName}
+                    </div>
+                </div>
+                <div className={classes.viewMapText} onClick={handleMapClick}>
+                    <img src={markerMap} alt="Map" style={{ width: '10px' }} />
+                    Ver en Mapa
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default PropertyCard;

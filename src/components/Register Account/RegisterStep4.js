@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../RentState Components/components";
-import GoogleMapsFinder from "../RentState Components/GoogleMapsFinder";
 import { useStylesRegister } from "../../styles/useStyles";
 import backArrow from '../../assets/backArrow.svg';
-import useUserService from "../../hooks/useUserService";
+import { createUser } from "../../hooks/useUserService";
+import GoogleMapRentState from "../RentState Components/GoogleMapRentState";
 
 const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
     const classes = useStylesRegister();
@@ -17,7 +17,7 @@ const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
         };
     
         try {
-            const result = await useUserService.createUser(finalUserData);
+            const result = await createUser(finalUserData);
             console.log("Usuario registrado con éxito:", result);
             nextStep();
         } catch (error) {
@@ -35,8 +35,13 @@ const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2rem 8rem' }}>
                 <h3 className={classes.title}>Crea tu cuenta</h3>
                 <h3 className={classes.subtitle}>Paso 4/5</h3>
-                <GoogleMapsFinder updateUserData={updateUserData} />
 
+                <GoogleMapRentState 
+                    mapType="finder" 
+                    height="500px" 
+                    width="70vw" 
+                />
+                
                 <Button
                     type="submit"
                     //disabled={!isFormValid}

@@ -4,7 +4,7 @@ import RegisterStep2 from './RegisterStep2';
 import RegisterStep3 from './RegisterStep5';
 import RegisterStep4 from './RegisterStep4';
 import RegisterStep5 from './RegisterStep3';
-import useUserService from '../../hooks/useUserService';
+import { createUser } from '../../hooks/useUserService';
 
 const Register = () => {
     const [step, setStep] = useState(1);
@@ -41,7 +41,7 @@ const Register = () => {
 
     const handleFinalRegister = async () => {
         try {
-            const result = await useUserService.createUser(userData);
+            const result = await createUser(userData);
             console.log("Registro exitoso:", result);
         } catch (error) {
             console.error("Registro fallido:", error);
