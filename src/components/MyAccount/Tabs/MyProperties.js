@@ -75,13 +75,19 @@ const MyProperties = ({ currentUser }) => {
                 />
             </div>
             <div className={classes.scrollableDiv}>
-                {filteredProperties.map((property, index) => (
-                    <PropertyCard
-                        key={index}
-                        property={property}
-                        owner={users[property.userId]}
-                    />
-                ))}
+                {filteredProperties.length === 0 ? (
+                    <div style={{ textAlign: 'center', color: '#6C6B6B', fontSize: '1.2rem' }}>
+                        ¡No tienes propiedades por el momento!
+                    </div>
+                ) : (
+                    filteredProperties.map((property, index) => (
+                        <PropertyCard
+                            key={index}
+                            property={property}
+                            owner={owners[property.userId]}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );

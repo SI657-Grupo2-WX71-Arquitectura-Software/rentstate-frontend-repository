@@ -12,7 +12,7 @@ import { Button } from './RentState Components/components';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { IconButton } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import GoogleMapsFinder from '../../src/components/RentState Components/GoogleMapsZoneCoverage';
+import GoogleMapRentState from '../../src/components/RentState Components/GoogleMapRentState';
 
 const PropertyDetail = () => {
     const classes = propertyDetailStyles();
@@ -146,7 +146,13 @@ const PropertyDetail = () => {
                             </div>
 
                             <div style={{margin:'1rem 0'}}>
-                                <GoogleMapsFinder width="100%" height="500px" />                        
+                                <GoogleMapRentState 
+                                    mapType="propertyMarker" 
+                                    width="100%" 
+                                    height="500px" 
+                                    latitude={property.latitude} 
+                                    longitude={property.longitude} 
+                                />                        
                             </div>
                         </div>
 

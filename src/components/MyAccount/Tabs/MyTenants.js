@@ -118,7 +118,7 @@ const MyTenants = () => {
                 />
             </div>
             <div className={classes.scrollableDiv}>
-                {filteredInquilinos.map((inquilino, index) => (
+                {/* {filteredInquilinos.map((inquilino, index) => (
                     <InquilinoCard
                         key={index}
                         photoUrl={inquilino.photoUrl}
@@ -127,7 +127,10 @@ const MyTenants = () => {
                         isActive={inquilino.isActive}
                         property={inquilino.property}
                     />
-                ))}
+                ))} */}
+                <div style={{ textAlign: 'center', color: '#6C6B6B', fontSize: '1.2rem' }}>
+                    ¡No tienes inquilinos por el momento!
+                </div>
             </div>
         </div>
     );

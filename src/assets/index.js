@@ -14,6 +14,9 @@ import markerMap from './markerMap.svg';
 import favoriteIcon from './favoriteIcon.svg';
 import starIcon from './starIcon.svg';
 import tentantIcon from './tentantIcon.svg';
+import restaurantMarker from './restaurantMarker.svg';
+import parkMarker from './parkMarker.svg';
+import schoolMarker from './schoolMarker.svg';
 
 
 export {
@@ -32,6 +35,9 @@ export {
     markerMap,
     favoriteIcon,
     starIcon,
-    tentantIcon
+    tentantIcon,
+    restaurantMarker,
+    parkMarker,
+    schoolMarker
 
 };

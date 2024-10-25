@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getUser, updateUser } from '../../../hooks/useUserService';
 import { interestedZonesModalStyles } from '../../../styles/useStyles';
 import { googleMapsLogo } from '../../../assets';
-import GoogleMapsZoneCoverage from '../../RentState Components/GoogleMapsZoneCoverage';
+import GoogleMapRentState from '../../RentState Components/GoogleMapRentState';
 
 export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
     const classes = interestedZonesModalStyles(); 
+    const [polygons, setPolygons] = useState([]);
+    const currentUserId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        console.log("Estos son los polígonos actuales:", polygons.map(poly => poly.coordinates));
+    }, [polygons]);
+
+    const handleSaveZones = async () => {
+        try {
+            const userData = await getUser(currentUserId, token);
+            const coverageAreaInterest = polygons.map(poly => 
+                poly.coordinates.map(coord => ({
+                    latitude: coord.lat,
+                    longitude: coord.lng
+                }))
+            );
+
+            const { id, name, lastName, gender, email, description, birthDate, district, photoUrl, role, latitude, longitude, department, city, address, dni, phone, premium, chatNewMessage, newPropertyNear, favoriteProperties, userNeeds } = userData;
+            const updatedUserData = { id, name, lastName, gender, email, description, birthDate, district, photoUrl, role, latitude, longitude, department, city, address, dni, phone, premium, chatNewMessage, newPropertyNear, coverageAreaInterest, favoriteProperties, userNeeds};
+
+            await updateUser(updatedUserData, token);
+            console.log('Zonas guardadas exitosamente');
+        } catch (error) {
+            console.error('Error al guardar las zonas:', error);
+        }
+    };
+
     if (!open) return null;
 
     return (
@@ -21,14 +50,17 @@ export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
                 </div>
 
                 <div style={{margin:'10px 0'}}>
-                    <GoogleMapsZoneCoverage/>
+                    <GoogleMapRentState 
+                        mapType="poligon"
+                        setPolygons={setPolygons} 
+                    />
                 </div>
 
                 <div className={classes.buttonsContainer}>                  
                     <div className={classes.button} onClick={handleClose} style={{ backgroundColor: '#7E7E7E' }}>
                         Cancelar
                     </div>
-                    <div className={classes.button} style={{ backgroundColor: '#00283E' }}>
+                    <div onClick={handleSaveZones} className={classes.button} style={{ backgroundColor: '#00283E' }}>
                         Guardar Zonas
                     </div>
                 </div>

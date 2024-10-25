@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { IconButton, Avatar} from "@mui/material";
 import dayjs from 'dayjs';
 import { getUser, uploadProfilePicture } from '../../hooks/useUserService';
-import GoogleMapMarker from "../RentState Components/GoogleMapMarker";
 import { useStylesMyAccount } from "../../styles/useStyles";
 import MyConfiguration from "./Tabs/MyConfiguration";
 import MyTenants from "./Tabs/MyTenants";
 import MyProperties from "./Tabs/MyProperties";
 import { emailIcon, phoneIcon, dniIcon, editIcon, passwordIcon} from '../../assets';
+import GoogleMapRentState from "../RentState Components/GoogleMapRentState";
 const MyAccount = () => {
     const classes = useStylesMyAccount();
     const [selectedTab, setSelectedTab] = useState('myProperties');
@@ -177,9 +177,10 @@ const MyAccount = () => {
                     </div>
 
                     <div>
-                        <GoogleMapMarker 
+                        <GoogleMapRentState 
+                            mapType="marker"
                             height="25vh" 
-                            width="100%" 
+                            width="96%" 
                             latitude={user.latitude} 
                             longitude={user.longitude} 
                         />
