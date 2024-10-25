@@ -66,3 +66,31 @@ export const uploadProfilePicture = async (userId, file, token) => {
     });
     return response.data;
 };
+
+export const createContact = async (userId, contactUsername, token) => {
+    try {
+        const response = await userService.post(`/api/v1/users/${userId}/contacts/${contactUsername}`, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating contact:', error);
+        throw error;
+    }
+};
+
+export const getContacts = async (userId, token) => {
+    try {
+        const response = await userService.get(`/api/v1/users/${userId}/contacts`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching contacts:', error);
+        throw error;
+    }
+};

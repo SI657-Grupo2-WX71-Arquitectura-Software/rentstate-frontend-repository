@@ -12,6 +12,8 @@ import peru from './peru.svg';
 import trashIcon from './trashIcon.svg';
 import markerMap from './markerMap.svg';
 import favoriteIcon from './favoriteIcon.svg';
+import starIcon from './starIcon.svg';
+import tentantIcon from './tentantIcon.svg';
 
 
 export {
@@ -28,6 +30,8 @@ export {
     searchIcon,
     trashIcon,
     markerMap,
-    favoriteIcon
+    favoriteIcon,
+    starIcon,
+    tentantIcon
 
 };

@@ -1,18 +1,26 @@
 import { Avatar } from "@mui/material";
 import dayjs from 'dayjs';
-import { getUser } from '../../src/hooks/useUserService';
+import { getUser, createContact, getContacts  } from '../../src/hooks/useUserService';
 import { emailIcon, phoneIcon } from '../../src/assets';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useStylesMyAccount } from "../styles/useStyles";
 import MyProperties from "./MyAccount/Tabs/MyProperties";
 import { useEffect, useState } from "react";
 import { getPropertiesByUserId } from "../hooks/usePropertyService";
+import { IconButton } from '@mui/material';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import { getPropertyById } from '../hooks/usePropertyService';
 
 const MyAccount = () => {
     const classes = useStylesMyAccount();
     const [avatarImage, setAvatarImage] = useState(""); 
     const { userId } = useParams();
     const [propertyCount, setPropertyCount] = useState(0);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+    const currentUserId = localStorage.getItem('userId');
+    const [owner, setOwner] = useState(null);
 
     const [user, setUser] = useState({
         id: '',
@@ -45,18 +53,16 @@ const MyAccount = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem('token');
                 if (userId && token) {
                     const userResponse = await getUser(userId, token);
                     console.log('User data fetched:', userResponse);
                     setUser(userResponse);
+                    setOwner(userResponse);
                     setAvatarImage(userResponse.photoUrl);
 
                     const properties = await getPropertiesByUserId(userId);
-
                     const userProperties = properties.filter(property => property.userId === parseInt(userId));
                     console.log('Filtered properties:', userProperties);
-
                     setPropertyCount(userProperties.length);
                 } else {
                     console.error("No se encontró el ID del usuario o el token en el almacenamiento local.");
@@ -67,7 +73,37 @@ const MyAccount = () => {
         };
 
         fetchUserData();
-    }, [userId]);
+    }, [userId, token]);
+
+    useEffect(() => {
+        const fetchPropertyData = async () => {
+            try {
+                const propertyData = await getPropertyById(id);
+                const ownerData = await getUser(propertyData.userId);
+                setOwner(ownerData);
+            } catch (error) {
+                console.error("Error al obtener los detalles de la propiedad o del propietario:", error);
+            }
+        };
+        fetchPropertyData();
+    }, [id]);
+
+    const handleChatClick = async () => {
+        try {
+            if (!owner) {
+                console.error('Owner no está definido');
+                return;
+            }         
+            const contacts = await getContacts(currentUserId, token);
+            const contactExists = contacts.includes(owner.username);
+            if (!contactExists) {
+                await createContact(currentUserId, owner.username, token);
+            }
+            navigate('/mensajes');
+        } catch (error) {
+            console.error('Error al crear el contacto:', error);
+        }
+    };
 
     return (
         <div className={classes.container}>
@@ -111,8 +147,11 @@ const MyAccount = () => {
                     </div>
 
 
-                    <div className={classes.buttonContainer}>
-                        <div className={classes.button} style={{backgroundColor: '#00283E' }}> 
+                    <div className={classes.buttonContainer} onClick={handleChatClick} > 
+                        <div className={classes.button} style={{backgroundColor: '#00283E', display:'flex', gap:'5px', justifyContent:'center' }}> 
+                            <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
+                                <MarkUnreadChatAltIcon />
+                            </IconButton>
                             ¡Chatear!
                         </div>      
                     </div>

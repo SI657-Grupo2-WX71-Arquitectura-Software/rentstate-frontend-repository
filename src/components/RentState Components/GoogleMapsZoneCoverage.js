@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
-const containerStyle = {
-    width: '100%',
-    height: '400px'
-};
-
-const center = {
-    lat: -12.0714419,
-    lng: -77.06724849999999
-};
-
-const GoogleMapsFinder = () => {
+const GoogleMapsFinder = ({ width = '100%', height = '400px' }) => {
+    const containerStyle = { width, height };
+    const center = { lat: -12.0714419, lng: -77.06724849999999 };
     const [map, setMap] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
     const [activePolygon, setActivePolygon] = useState(null);
@@ -73,9 +65,9 @@ const GoogleMapsFinder = () => {
         setShowDialog(false);
     };
 
-    useEffect(() => {
-        console.log("Estos son los polígonos actuales:", polygons.map(poly => poly.coordinates));
-    }, [polygons]);
+    // useEffect(() => {
+    //     console.log("Estos son los polígonos actuales:", polygons.map(poly => poly.coordinates));
+    // }, [polygons]);
 
     return (
         <LoadScript

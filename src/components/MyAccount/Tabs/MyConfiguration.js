@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useStylesMyAccount } from '../../../styles/useStyles';
-import SwitchRentstate from '../../RentState Components/SwitchRentstate ';
+import SwitchRentstate from '../../RentState Components/SwitchRentstate';
 import { useNavigate } from "react-router-dom";
 import { warningIcon, googleMapsLogo, completedIcon, needsIcon } from '../../../assets';
 import { deleteUser } from '../../../hooks/useUserService';

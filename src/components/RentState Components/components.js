@@ -468,12 +468,14 @@ export const PropertyCard = ({ property, owner }) => {
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('userId');
 
-    const handleMapClick = () => {
+    const handleMapClick = (event) => {
+        event.stopPropagation();
         const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
         window.open(mapUrl, '_blank');
     };
 
-    const handleOwnerClick = () => {
+    const handleOwnerClick = (event) => {
+        event.stopPropagation();
         if (String(owner?.id) === String(currentUserId)) {
             navigate('/perfil');
         } else {
@@ -481,8 +483,12 @@ export const PropertyCard = ({ property, owner }) => {
         }
     };
 
+    const handleCardClick = () => {
+        navigate(`/property/${property.id}`);
+    };
+
     return (
-        <div className={classes.cardContainer}>
+        <div className={classes.cardContainer} onClick={handleCardClick}>
             <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
             <div className={classes.iconsContainer}>
                 {String(currentUserId) === String(owner?.id) ? (

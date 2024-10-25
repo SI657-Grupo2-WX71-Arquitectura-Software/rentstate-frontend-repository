@@ -191,11 +191,10 @@ export const useStylesButtonComponent = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '280px',
         color: '#FFFFFF',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         borderRadius: 20,
-        padding: '15px 0',
+        padding: '15px 20px',
         minWidth: '2rem',
         maxWidth: 'none',
         backgroundColor: '#00283E',
@@ -348,14 +347,22 @@ export const useStylesMyAccount = makeStyles(() => ({
         height: '100vh',
         width: '95vw',
     },
+    containerTopDivisor: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2rem',
+        justifyContent: 'flex-start',
+        width: '100%',
+        height: '83vh',
+    },
     containerDivisor: {
         display: 'flex',
         gap: '2rem',
         justifyContent: 'flex-start',
         padding: '7rem 2rem 2.2rem 2rem',
-        width: '100%',
+        width: '90%',
         height: '83vh',
-    },
+    },    
     profileCard: {
         backgroundColor: '#F2F2F2',
         borderRadius: '2rem',
@@ -950,7 +957,7 @@ export const homeStyles = makeStyles(() => ({
         margin: '1rem 0'
     },
     optionsContainer: {
-        margin: '1rem 0',
+        margin: '2rem 0',
         display: 'flex',
         gap:'1rem',
         alignItems: 'center',
@@ -1005,4 +1012,143 @@ export const otherAccountStyles = makeStyles(() => ({
         padding: '6rem 0 0 0',
     },
 
+}))
+
+export const propertyDetailStyles = makeStyles(() => ({
+    container: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',        
+        width: '85vw',
+    },
+    containerDivisor: {
+        display: 'flex',
+        gap: '2rem',
+        justifyContent: 'flex-start',
+        padding: '7rem 2rem 2.2rem 2rem',
+        width: '100%',
+    },
+    propertyCard: {
+        backgroundColor: '#F2F2F2',
+        borderRadius: '2rem',
+        width: '40%',
+        height: 'auto',
+        padding: '2rem',     
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',  
+        textAlign: 'left',
+    
+    },
+    title: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#626262',
+    },
+    subtitle: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#6C6B6B',
+    },
+    iconsContainer: {   
+        display: 'flex',  
+        justifyContent: 'flex-end', 
+    },
+    optionsIcon: {
+        height:'25px',
+        boxShadow:'none'
+    },
+    imageContainer: {
+        width: '100%',
+        height: '400px',
+        borderRadius: '15px',
+        overflow: 'hidden',
+    },
+    image: {       
+        objectFit: 'cover',
+        objectPosition: 'center',
+        width: '100%',
+        height: '100%',
+    },
+    additionalImagesContainer: {
+        display: 'flex',
+        gap: '10px',
+        width: '100%',
+        margin:'1rem 0'
+    },
+    additionalImage: {
+        flexGrow: 1,
+        aspectRatio: '16/14',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        position: 'relative',
+    },   
+    additionalImageStyle: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center',
+    },    
+    additionalImageBlur: {
+        flexGrow: 1,
+        aspectRatio: '16/14',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        position: 'relative',
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+        fontSize: '24px',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: '10px',
+    },
+    detailSection: {
+        width: '60%',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'left',
+    },
+    infoAndMapContainer: {
+        padding: '2rem 3rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',   
+        alignItems: 'center',
+    },
+    optionsContainer: {
+        display:'flex',
+        gap:'1rem',
+        width: '100%',
+        margin:'2rem 0'
+    },
+    contactCard: {
+        display:'flex',
+        gap:'1rem',
+        padding: '1rem 0.5rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        width: '70%',
+        alignItems: 'center',
+    }, 
+    interestButton: {
+        display:'flex',
+        gap:'2px',
+        padding: '1rem 0.5rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        width: '30%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    }
+    
+    
+    
 }))
