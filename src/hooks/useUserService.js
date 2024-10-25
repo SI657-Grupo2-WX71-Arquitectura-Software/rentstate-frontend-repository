@@ -94,5 +94,3 @@ export const getContacts = async (userId, token) => {
         throw error;
     }
 };
-
-export default userServiceMethods;

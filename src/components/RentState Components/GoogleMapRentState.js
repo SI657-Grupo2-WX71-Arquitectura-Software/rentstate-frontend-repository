@@ -209,11 +209,13 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
     return isLoaded ? (
         <div>
-            <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={() => handlePlaceTypeChange('restaurant')}>Restaurantes</button>
-                <button onClick={() => handlePlaceTypeChange('school')}>Escuelas</button>
-                <button onClick={() => handlePlaceTypeChange('park')}>Parques</button>
-            </div>
+            {(mapType === 'propertyMarker') && markerIcon && (
+               <div style={{ display: 'flex', gap: '10px' }}>
+                    <button onClick={() => handlePlaceTypeChange('restaurant')}>Restaurantes</button>
+                    <button onClick={() => handlePlaceTypeChange('school')}>Escuelas</button>
+                    <button onClick={() => handlePlaceTypeChange('park')}>Parques</button>
+                </div>
+            )}          
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 zoom={mapType === 'marker' || mapType === 'finder' || mapType === 'propertyMarker' ? 15 : 10}
