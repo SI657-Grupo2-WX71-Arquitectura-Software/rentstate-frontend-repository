@@ -60,8 +60,8 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         const service = new window.google.maps.places.PlacesService(map);
         const request = {
             location: centerRef.current,
-            radius: 1000, // Ajustar el radio a 1 km (1000 metros)
-            type: [placeType] // Usar el tipo de lugar seleccionado
+            radius: 1000,
+            type: [placeType]
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -71,7 +71,7 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
                     name: place.name,
                     place_id: place.place_id,
                     address: place.vicinity,
-                    type: placeType // Añadir el tipo de lugar al marcador
+                    type: placeType
                 }));
                 setPlaceMarkers(markers);
             }

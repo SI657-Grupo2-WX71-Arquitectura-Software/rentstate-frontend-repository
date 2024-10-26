@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { FieldEditPassword } from '../../RentState Components/components';
-import { deleteAccountModalStyles } from '../../../styles/useStyles';
+import { FieldEditPassword } from '../RentState Components/components';
+import { deleteAccountModalStyles } from '../../styles/useStyles';
 
 export const DeleteAccountModal = ({ open, handleClose, handleDelete }) => {
     const classes = deleteAccountModalStyles();

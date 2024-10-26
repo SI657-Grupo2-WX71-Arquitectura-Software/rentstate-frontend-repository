@@ -1,5 +1,53 @@
 import { makeStyles } from '@mui/styles';
 
+export const navbarStyles = makeStyles(() => ({
+    navbar: {
+        width: '100%',   
+        position: 'fixed',
+        top: 0,
+        backdropFilter: 'blur(5px)',
+        zIndex: 1000,
+        padding: '0.8em 0rem',
+        backgroundColor: 'rgba(5, 31, 44, 0.938)',
+        boxShadow: '3px 3px 10px rgba(0, 0, 0, 0.2)',
+        alignContent: 'center',
+        textAlign: 'center',
+    },
+    navbarContainer: {
+        display: 'flex',
+        gap: '2rem',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: '0 1.5rem',
+    },
+    iconButtonContainer: {
+        display: 'flex',
+        gap: '0.5rem',
+    },
+    logoButton: {
+        padding: 0,
+    },
+    logoImage: {
+        height: '2rem',
+        margin: 0,
+    },
+    iconLinkContainer: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    iconButton: {
+        fontSize: '2rem',
+        cursor: 'pointer',
+        marginRight: '0.3rem',
+    }, 
+    profileImage: {
+        width: '30px',
+        height: '30px',
+        borderRadius: '50%',
+        objectFit: 'cover'
+    }   
+}));
+
 export const useStylesLogin = makeStyles(() => ({
     container: {
         width: '100%',
@@ -554,9 +602,9 @@ export const useStylesPropertyCard = makeStyles(() => ({
     cardContainer: {
         backgroundColor: '#F2F2F2',
         borderRadius: '20px',
-        margin: '15px',
+        margin: '0',
         overflow: 'hidden',
-        width: '300px',
+        width: '100%',
         position: 'relative',
         transition: 'background-color 0.2s ease',
         '&:hover': {
@@ -575,7 +623,7 @@ export const useStylesPropertyCard = makeStyles(() => ({
         top: '10px',
         right: '10px',
         gap: '10px',
-        zIndex: 1000,
+        zIndex: 999,
         display:'flex',  
         padding:'10px 0',
     },
@@ -654,12 +702,18 @@ export const useStylesMyProperties = makeStyles(() => ({
             display: 'none',
         },
     },
+    propertyGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gap: '1rem',
+        width: '100%',
+        padding: '1rem',
+    },
 }));
 
 export const useStylesMyTenants = makeStyles(() => ({
     scrollableDiv: {
         display: 'flex', 
-        flexWrap: 'wrap', 
         justifyContent: 'center', 
         width: '100%',
         maxHeight: '75vh',
@@ -1148,7 +1202,127 @@ export const propertyDetailStyles = makeStyles(() => ({
         alignItems: 'center',
         flexDirection: 'column',
     }
-    
-    
-    
 }))
+
+export const filterPropertiesModalStyles = makeStyles(() => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        position: 'relative',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '60vh',
+    },
+    closeIcon: {
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem',
+        cursor: 'pointer',
+        width: '1.5rem',
+        height: '1.5rem',
+    },
+    title: {
+        color: '#434343',
+        fontWeight: 'bolder',
+        fontSize: '1.5rem',            
+    },
+    inputContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: '1rem 0',
+    },
+    inputWrapper: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#F2F2F2',
+        borderRadius: '10px',
+        padding: '0.5rem',
+        width: '45%',
+    },
+    currencySymbol: {
+        position: 'absolute',
+        left: '10px',
+        color: '#666',
+        fontSize: '0.9rem',
+    },
+    inputField: {
+        width: '100%',
+        padding: '0.5rem 1rem 0.5rem 2rem',
+        border: 'none',
+        background: 'transparent',
+        fontSize: '1rem',
+        color: '#333',
+        outline: 'none',
+    },
+    inputLabel: {
+        marginLeft: '5px',
+        color: '#666',
+        fontSize: '0.9rem',
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap: '1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent: 'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',     
+    },
+    cleanButton: {
+        fontWeight: 'bold', 
+        backgroundColor: 'transparent', 
+        color: '#00283E', 
+        border: '1px solid #00283E',
+        padding: '0.8rem 2rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',       
+    },
+}));
+
+
+export const doubleDraggerStyles = makeStyles(() => ({
+    draggerContainer: {
+        position: 'relative',
+        height: '10px',
+        borderRadius: '5px',
+        backgroundColor: '#BDBDBD',
+    },
+    draggerTrack: {
+        position: 'absolute',
+        height: '100%',
+        borderRadius: '5px',
+        backgroundColor: '#04476C',
+    },
+    draggerHandle: {
+        position: 'absolute',
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        backgroundColor: '#04476C',
+        cursor: 'pointer',
+        transform: 'translate(-50%, -50%)',
+        top: '50%',
+    },
+}));

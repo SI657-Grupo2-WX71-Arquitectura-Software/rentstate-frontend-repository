@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PropertyCard, SearchBar } from '../../RentState Components/components';
+import { PropertyCard, SearchBar, SkeletonPropertyCard } from '../../RentState Components/components';
 import { useStylesMyProperties } from '../../../styles/useStyles';
 import PropertyService from "../../../hooks/usePropertyService";
 import { getUser } from "../../../hooks/useUserService";
@@ -10,7 +10,8 @@ const MyProperties = ({ currentUser }) => {
     const [properties, setProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [owners, setOwners] = useState({});
-    const [users, setUsers] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSearching, setIsSearching] = useState(false);
 
     useEffect(() => {
         const fetchPropertiesAndOwners = async () => {
@@ -25,22 +26,14 @@ const MyProperties = ({ currentUser }) => {
                     acc[ownerIds[index]] = owner;
                     return acc;
                 }, {});
-
-                const userPromises = response.map(property => getUser(property.userId).catch(error => null));
-                const userResponses = await Promise.all(userPromises);
-                const usersData = userResponses.reduce((acc, user) => {
-                    if (user) {
-                        acc[user.id] = user;
-                    }
-                    return acc;
-                }, {});
     
                 setOwners(ownersMap);
-                setUsers(usersData);
                 setProperties(userProperties);
                 setFilteredProperties(userProperties);
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error al obtener las propiedades y los datos del propietario:", error);
+                setIsLoading(false);
             }
         };
     
@@ -53,12 +46,13 @@ const MyProperties = ({ currentUser }) => {
     const handleSearchChange = (event) => {
         const search = event.target.value.toLowerCase();
         setSearchTerm(search);
+        setIsSearching(true);
         const filtered = properties.filter(property => {
-            return property.district.toLowerCase().includes(search) ||
-                   property.address.toLowerCase().includes(search) ||
-                   property.price.toString().includes(search) ||
-                   (`${owners[property.userId]?.name} ${owners[property.userId]?.lastName}`).toLowerCase().includes(search) ||
-                   (property.isActive ? 'activo' : 'inactivo').includes(search);
+            return (property.district && property.district.toLowerCase().includes(search)) ||
+                (property.address && property.address.toLowerCase().includes(search)) ||
+                (property.price && property.price.toString().includes(search)) ||
+                (owners[property.userId] && `${owners[property.userId]?.name} ${owners[property.userId]?.lastName}`.toLowerCase().includes(search)) ||
+                ((property.isActive ? 'activo' : 'inactivo').includes(search));
         });
         setFilteredProperties(filtered);
     };
@@ -67,7 +61,7 @@ const MyProperties = ({ currentUser }) => {
         <div>
             <div style={{ display: 'flex', justifyContent: 'center', margin: '0 0 1rem 0' }}>
                 <SearchBar 
-                    placeholder="Buscar Inmueble" 
+                    placeholder="Buscar Propiedad" 
                     height="3rem" 
                     width="50vw" 
                     value={searchTerm}
@@ -75,18 +69,26 @@ const MyProperties = ({ currentUser }) => {
                 />
             </div>
             <div className={classes.scrollableDiv}>
-                {filteredProperties.length === 0 ? (
-                    <div style={{ textAlign: 'center', color: '#6C6B6B', fontSize: '1.2rem' }}>
-                        ¡No tienes propiedades por el momento!
+                {isLoading ? (
+                    <div className={classes.propertyGrid}>
+                        {Array.from(new Array(6)).map((_, index) => (
+                            <SkeletonPropertyCard key={index} />
+                        ))}
+                    </div>            
+                ) : filteredProperties.length === 0 ? (
+                    <div style={{ textAlign: 'center', color: '#6C6B6B', fontSize: '1.2rem', margin: '2rem' }}>
+                        {isSearching ? '¡No se encontró su búsqueda!' : '¡No tienes propiedades por el momento!'}
                     </div>
                 ) : (
-                    filteredProperties.map((property, index) => (
-                        <PropertyCard
-                            key={index}
-                            property={property}
-                            owner={owners[property.userId]}
-                        />
-                    ))
+                    <div className={classes.propertyGrid}>
+                        {filteredProperties.map((property, index) => (
+                            <PropertyCard
+                                key={index}
+                                property={property}
+                                owner={owners[property.userId]}
+                            />
+                        ))}
+                    </div>
                 )}
             </div>
         </div>

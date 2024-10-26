@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getUser, updateUser } from '../../../hooks/useUserService';
-import { interestedZonesModalStyles } from '../../../styles/useStyles';
-import { googleMapsLogo } from '../../../assets';
-import GoogleMapRentState from '../../RentState Components/GoogleMapRentState';
+import { interestedZonesModalStyles } from '../../styles/useStyles';
+import { getUser, updateUser } from '../../hooks/useUserService';
+import { googleMapsLogo } from '../../assets';
+import GoogleMapRentState from '../RentState Components/GoogleMapRentState';
+
 
 export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
     const classes = interestedZonesModalStyles(); 

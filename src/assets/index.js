@@ -17,6 +17,7 @@ import tentantIcon from './tentantIcon.svg';
 import restaurantMarker from './restaurantMarker.svg';
 import parkMarker from './parkMarker.svg';
 import schoolMarker from './schoolMarker.svg';
+import closeIcon from './closeIcon.svg';
 
 
 export {
@@ -38,6 +39,7 @@ export {
     tentantIcon,
     restaurantMarker,
     parkMarker,
-    schoolMarker
+    schoolMarker,
+    closeIcon
 
 };
