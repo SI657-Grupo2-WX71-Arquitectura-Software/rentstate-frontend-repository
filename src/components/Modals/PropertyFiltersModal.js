@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { filterPropertiesModalStyles } from '../../styles/useStyles';
 import { closeIcon } from '../../assets';
 import { DoubleDragger } from '../RentState Components/components';
@@ -7,6 +7,13 @@ export const PropertyFiltersModal = ({ open, handleClose, handleDelete }) => {
     const classes = filterPropertiesModalStyles();
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(1000000);
+
+    useEffect(() => {
+        if (!open) {
+            setMinValue(0);
+            setMaxValue(1000000);
+        }
+    }, [open]);
 
     if (!open) return null;
 
@@ -32,7 +39,7 @@ export const PropertyFiltersModal = ({ open, handleClose, handleDelete }) => {
                     <img
                         src={closeIcon}
                         alt="Cerrar"
-                        onClick={handleClose}
+                        onClick={() => handleClose(minValue, maxValue)}
                         style={{ width: '1rem' }}
                     />
                 </div>

@@ -19,6 +19,7 @@ const HomeRentState = () => {
     const [users, setUsers] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -32,8 +33,13 @@ const HomeRentState = () => {
         setIsFilterModalOpen(true);
     };
 
-    const handleCloseFilterModal = () => {
+    const handleCloseFilterModal = (min, max) => {
+        setPriceRange({ min, max });
         setIsFilterModalOpen(false);
+    };
+
+    const handleDeleteFilters = () => {
+        setPriceRange({ min: 0, max: 1000000 });
     };
 
     useEffect(() => {
@@ -57,7 +63,7 @@ const HomeRentState = () => {
             setFilteredProperties(filteredData);
         }
     }, [searchTerm, properties]);
-    
+
     useEffect(() => {
         const fetchPropertiesAndUsers = async () => {
             try {
@@ -87,6 +93,13 @@ const HomeRentState = () => {
     
         fetchPropertiesAndUsers();
     }, []);
+    
+    useEffect(() => {
+        const filtered = properties.filter(property => 
+            property.price >= priceRange.min && property.price <= priceRange.max
+        );
+        setFilteredProperties(filtered);
+    }, [priceRange, properties]);
 
     return (
         <div className={classes.homeContainer}>         
@@ -120,7 +133,7 @@ const HomeRentState = () => {
                     onChange={handleSearchChange}
                 />
             </div>
-            <div className={classes.propertyGrid}>
+            <div className={classes.propertyGrid} style={{marginBottom:'5rem'}}>
                 {isLoading ? (
                     Array.from(new Array(6)).map((_, index) => (
                         <SkeletonPropertyCard key={index} />
@@ -135,7 +148,11 @@ const HomeRentState = () => {
                     ))
                 )}
             </div>
-            <PropertyFiltersModal open={isFilterModalOpen} handleClose={handleCloseFilterModal} />
+            <PropertyFiltersModal
+                open={isFilterModalOpen}
+                handleClose={handleCloseFilterModal}
+                handleDelete={handleDeleteFilters}
+            />
         </div>
     );
 };
