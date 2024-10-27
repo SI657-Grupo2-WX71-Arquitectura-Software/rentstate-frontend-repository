@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { propertyDetailStyles } from '../styles/useStyles';
-import { getPropertyById } from '../hooks/usePropertyService';
+import { getPropertyById, deleteProperty } from '../hooks/usePropertyService';
 import { getUser, createContact, getContacts } from '../hooks/useUserService';
 import ChairIcon from "@mui/icons-material/Chair";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
@@ -13,6 +13,7 @@ import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { IconButton } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import GoogleMapRentState from '../../src/components/RentState Components/GoogleMapRentState';
+import { DeletePropertyModal } from './Modals/DeletePropertyModal';
 
 const PropertyDetail = () => {
     const classes = propertyDetailStyles();
@@ -22,6 +23,7 @@ const PropertyDetail = () => {
     const currentUserId = localStorage.getItem('userId');
     const [property, setProperty] = useState(null);
     const [owner, setOwner] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchPropertyData = async () => {
@@ -51,6 +53,23 @@ const PropertyDetail = () => {
             navigate('/mensajes');
         } catch (error) {
             console.error('Error al crear el contacto:', error);
+        }
+    };
+
+    const handleDeleteClick = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    };
+
+    const handleDeleteProperty = async () => {
+        try {
+            await deleteProperty(property.id, token);
+            navigate('/home');
+        } catch (error) {
+            console.error('Error al eliminar la propiedad:', error);
         }
     };
 
@@ -91,7 +110,7 @@ const PropertyDetail = () => {
                         <div className={classes.iconsContainer}>
                             {String(currentUserId) === String(property.userId) ? (
                                 <div style={{display:'flex', justifyContent:'center', gap:'10px'}}>
-                                    <img src={trashIcon} alt="Delete" className={classes.optionsIcon} />
+                                    <img src={trashIcon} alt="Delete" className={classes.optionsIcon} onClick={handleDeleteClick} />
                                     <img src={editIcon} alt="Edit" className={classes.optionsIcon} />
                                 </div>
                             ) : (
@@ -206,27 +225,15 @@ const PropertyDetail = () => {
                                 <p></p>
                             )}
                     </div>
-                </div>
-                {/* <div className={classes.containerDivisor}  style={{paddingTop:0}}>
-
-                    <div style={{backgroundColor:'transparent',  width: '40%',  padding: '2rem',}}>
-                        <p></p>                    
-                    </div>
-
-                    <div className={classes.detailSection}>
-
-                        <div className={classes.infoAndMapContainer}>
-                            <div style={{margin:'1rem 0'}}>
-                                <div className={classes.title}> Descripción </div>
-                                <div className={classes.subtitle} >
-                                    {property.description}         
-                                </div>
-                            </div>                           
-                        </div>
-                    </div>
-
-                </div> */}
+                </div>              
             </div>
+            <DeletePropertyModal 
+                open={isDeleteModalOpen} 
+                handleClose={handleCloseDeleteModal} 
+                handleDelete={handleDeleteProperty} 
+                district={property.district}
+                location={property.location}
+            />
         </div>
     );
 };

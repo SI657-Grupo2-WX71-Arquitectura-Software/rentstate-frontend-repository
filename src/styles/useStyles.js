@@ -784,6 +784,12 @@ export const deleteAccountModalStyles = makeStyles(() => ({
             backgroundColor: '#CC3434',
         },
     },
+    closeIcon: {
+        display: 'flex',
+        justifyContent: 'right',
+        cursor: 'pointer',
+        width: '100%',
+    },
 }));
 
 export const interestedZonesModalStyles = makeStyles(() => ({
@@ -1110,7 +1116,8 @@ export const propertyDetailStyles = makeStyles(() => ({
     },
     optionsIcon: {
         height:'25px',
-        boxShadow:'none'
+        boxShadow:'none',
+        cursor: 'pointer',
     },
     imageContainer: {
         width: '100%',

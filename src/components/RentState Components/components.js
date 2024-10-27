@@ -12,6 +12,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { searchIcon, peru, trashIcon, markerMap, editIcon, favoriteIcon } from '../../assets';
 import { useNavigate } from 'react-router-dom';
+import { deleteProperty } from '../../hooks/usePropertyService';
+import { DeletePropertyModal } from '../Modals/DeletePropertyModal';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -463,10 +465,13 @@ export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) 
     );
 };
 
-export const PropertyCard = ({ property, owner }) => {
+export const PropertyCard = ({ property, owner, onDelete }) => {
     const classes = useStylesPropertyCard();
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleMapClick = (event) => {
         event.stopPropagation();
@@ -487,13 +492,35 @@ export const PropertyCard = ({ property, owner }) => {
         navigate(`/property/${property.id}`);
     };
 
+    const handleDeleteClick = (event) => {
+        event.stopPropagation();
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    };
+
+    const handleDeleteProperty = async () => {
+        setIsLoading(true);
+        try {
+            await deleteProperty(property.id, token);
+            setIsDeleteModalOpen(false);
+            onDelete();
+        } catch (error) {
+            console.error('Error al eliminar la propiedad:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className={classes.cardContainer} onClick={handleCardClick}>
             <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
             <div className={classes.iconsContainer}>
                 {String(currentUserId) === String(owner?.id) ? (
                     <>
-                        <img src={trashIcon} alt="Delete" className={classes.icon} />
+                        <img src={trashIcon} alt="Delete" className={classes.icon} onClick={handleDeleteClick} />
                         <img src={editIcon} alt="Edit" className={classes.icon} />
                     </>
                 ) : (
@@ -526,6 +553,16 @@ export const PropertyCard = ({ property, owner }) => {
                     Ver en Mapa
                 </div>
             </div>
+            {isDeleteModalOpen && (
+                <DeletePropertyModal
+                    open={isDeleteModalOpen} 
+                    handleClose={handleCloseDeleteModal} 
+                    handleDelete={handleDeleteProperty} 
+                    district={property.district}
+                    location={property.location}
+                />
+            )}
+            {isLoading && <div className={classes.loadingOverlay}>Cargando...</div>}
         </div>
     );
 };

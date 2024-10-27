@@ -19,7 +19,7 @@ const HomeRentState = () => {
     const [users, setUsers] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000000 });
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -39,8 +39,38 @@ const HomeRentState = () => {
     };
 
     const handleDeleteFilters = () => {
-        setPriceRange({ min: 0, max: 1000000 });
+        setPriceRange({ min: 0, max: 1000000000 });
     };
+
+    const fetchPropertiesAndUsers = async () => {
+        try {
+            const [propertyResponse, userResponse] = await Promise.all([
+                PropertyService.getAllProperties(),
+                getAllUsers()
+            ]);
+
+            const availableProperties = propertyResponse.filter(property => property.available === true);
+            
+            const usersData = userResponse.reduce((acc, user) => {
+                acc[user.id] = user;
+                return acc;
+            }, {});
+
+            const validProperties = availableProperties.filter(property => usersData[property.userId]);
+
+            setProperties(validProperties);
+            setFilteredProperties(validProperties);
+            setUsers(usersData);
+        } catch (error) {
+            console.error("Error al obtener las propiedades y usuarios:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPropertiesAndUsers();
+    }, []);
 
     useEffect(() => {
         if (selectedCategory) {
@@ -64,36 +94,6 @@ const HomeRentState = () => {
         }
     }, [searchTerm, properties]);
 
-    useEffect(() => {
-        const fetchPropertiesAndUsers = async () => {
-            try {
-                const [propertyResponse, userResponse] = await Promise.all([
-                    PropertyService.getAllProperties(),
-                    getAllUsers()
-                ]);
-
-                const availableProperties = propertyResponse.filter(property => property.available === true);
-                
-                const usersData = userResponse.reduce((acc, user) => {
-                    acc[user.id] = user;
-                    return acc;
-                }, {});
-
-                const validProperties = availableProperties.filter(property => usersData[property.userId]);
-
-                setProperties(validProperties);
-                setFilteredProperties(validProperties);
-                setUsers(usersData);
-            } catch (error) {
-                console.error("Error al obtener las propiedades y usuarios:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-    
-        fetchPropertiesAndUsers();
-    }, []);
-    
     useEffect(() => {
         const filtered = properties.filter(property => 
             property.price >= priceRange.min && property.price <= priceRange.max
@@ -144,6 +144,7 @@ const HomeRentState = () => {
                             key={index}
                             property={property}
                             owner={users[property.userId]}
+                            onDelete={fetchPropertiesAndUsers}
                         />
                     ))
                 )}
