@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { GoogleMap, Marker, InfoWindow, Autocomplete, useJsApiLoader } from '@react-google-maps/api';
 import markerMap2 from '../../assets/markerMap2.svg';
 import { parkMarker, restaurantMarker, schoolMarker } from '../../assets';
 
 const libraries = ['drawing', 'places'];
 
-const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons }) => {
+const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons, initialPolygons }) => {
     const containerStyle = { height, width };
     const validLatitude = latitude ? parseFloat(latitude) : -12.0714419;
     const validLongitude = longitude ? parseFloat(longitude) : -77.06724849999999;
@@ -21,8 +21,10 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
     const [markerPosition, setMarkerPosition] = useState(mapCenter);
     const autocompleteRef = useRef(null);
     const inputRef = useRef(null);
+    const [localPolygons, updatePolygons] = useState([]);    
+    const initialPolygonsDrawnRef = useRef(false);
 
-    const baseMapOptions = {
+    const baseMapOptions = useMemo(() => ({
         styles: [
             {
                 featureType: 'poi',
@@ -35,12 +37,60 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         rotateControl: mapType === 'propertyMarker',
         streetViewControl: mapType === 'propertyMarker',
         fullscreenControl: mapType === 'propertyMarker'
-    };
+    }), [mapType]);
 
     const { isLoaded, loadError } = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_APIKEY,
         libraries
     });
+
+    const polygonOptions = useMemo(() => ({
+        fillColor: '#04476C',
+        fillOpacity: 0.5,
+        strokeWeight: 2,
+        strokeColor: '#04476C',
+        clickable: true,
+        editable: true,
+        draggable: true,
+        zIndex: 1
+    }), []);
+
+    const drawInitialPolygons = useCallback(() => {
+        if (initialPolygons && initialPolygons.length > 0 && map) {
+            localPolygons.forEach(poly => poly.polygon.setMap(null));
+            updatePolygons([]);
+
+            initialPolygons.forEach(({ coordinates }) => {
+                const polygonPath = coordinates.map(coord => new window.google.maps.LatLng(coord.lat, coord.lng));
+                const polygon = new window.google.maps.Polygon({
+                    paths: polygonPath,
+                    ...polygonOptions
+                });
+
+                polygon.setMap(map);
+                updatePolygons(currentPolygons => [...currentPolygons, { polygon, coordinates }]);
+
+                window.google.maps.event.addListener(polygon, 'click', () => {
+                    setShowDialog(true);
+                    setActivePolygon(polygon);
+                });
+
+                window.google.maps.event.addListener(polygon, 'dragend', () => {
+                    const updatedCoordinates = polygon.getPath().getArray().map(p => ({ lat: p.lat(), lng: p.lng() }));
+                    updatePolygons(currentPolygons =>
+                        currentPolygons.map(poly => poly.polygon === polygon ? { ...poly, coordinates: updatedCoordinates } : poly)
+                    );
+                });
+            });
+            initialPolygonsDrawnRef.current = true;
+        }
+    }, [initialPolygons, map, polygonOptions, updatePolygons, localPolygons]);
+
+    useEffect(() => {
+        if (isLoaded && map && mapType === 'poligon' && !initialPolygonsDrawnRef.current) {
+            drawInitialPolygons();
+        }
+    }, [isLoaded, map, mapType, drawInitialPolygons]);
 
     useEffect(() => {
         if (isLoaded && map) {
@@ -50,6 +100,19 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
             });
         }
     }, [isLoaded, map]);
+
+    useEffect(() => {
+        if (mapType === 'poligon') {
+            const newPolygons = localPolygons.map(poly => ({
+                coordinates: poly.coordinates
+            }));
+    
+            // Comparamos antes de actualizar para evitar bucles infinitos
+            if (JSON.stringify(newPolygons) !== JSON.stringify(initialPolygons)) {
+                setPolygons(newPolygons);
+            }
+        }
+    }, [localPolygons, mapType, setPolygons, initialPolygons]);
 
     const searchNearbyPlaces = useCallback(() => {
         if (!window.google || !window.google.maps || !window.google.maps.places) {
@@ -102,30 +165,22 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
             window.google.maps.event.addListener(drawingManager, 'polygoncomplete', (polygon) => {
                 const coordinates = polygon.getPath().getArray().map(p => ({ lat: p.lat(), lng: p.lng() }));
-                setPolygons(currentPolygons => [...currentPolygons, { polygon, coordinates }]);
+                updatePolygons(currentPolygons => [...currentPolygons, { polygon, coordinates }]);
 
                 window.google.maps.event.addListener(polygon, 'click', () => {
                     setShowDialog(true);
                     setActivePolygon(polygon);
                 });
 
-                polygon.setEditable(true);
-                polygon.setDraggable(true);
-
                 window.google.maps.event.addListener(polygon, 'dragend', () => {
                     const updatedCoordinates = polygon.getPath().getArray().map(p => ({ lat: p.lat(), lng: p.lng() }));
-                    setPolygons(currentPolygons =>
+                    updatePolygons(currentPolygons =>
                         currentPolygons.map(poly => poly.polygon === polygon ? { ...poly, coordinates: updatedCoordinates } : poly)
                     );
                 });
             });
-
-            window.google.maps.event.addListener(map, 'center_changed', () => {
-                const newCenter = map.getCenter();
-                centerRef.current = { lat: newCenter.lat(), lng: newCenter.lng() };
-            });
         }
-    }, [isLoaded, map, setPolygons, mapType]);
+    }, [isLoaded, map, polygonOptions, mapType]);
 
     useEffect(() => {
         if (isLoaded && map && mapType === 'propertyMarker') {
@@ -153,7 +208,7 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
     const handleDeletePolygon = () => {
         if (activePolygon) {
-            setPolygons(currentPolygons => currentPolygons.filter(poly => poly.polygon !== activePolygon));
+            updatePolygons(currentPolygons => currentPolygons.filter(poly => poly.polygon !== activePolygon));
             activePolygon.setMap(null);
             setShowDialog(false);
         }
@@ -181,25 +236,13 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         const size = new window.google.maps.Size(30, 30);
         switch (type) {
             case 'restaurant':
-                return {
-                    url: restaurantMarker,
-                    scaledSize: size
-                };
+                return { url: restaurantMarker, scaledSize: size };
             case 'school':
-                return {
-                    url: schoolMarker,
-                    scaledSize: size
-                };
+                return { url: schoolMarker, scaledSize: size };
             case 'park':
-                return {
-                    url: parkMarker,
-                    scaledSize: size
-                };
+                return { url: parkMarker, scaledSize: size };
             default:
-                return {
-                    url: markerMap2,
-                    scaledSize: size
-                };
+                return { url: markerMap2, scaledSize: size };
         }
     };
 
@@ -209,7 +252,7 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
     return isLoaded ? (
         <div>
-           {(mapType === 'propertyMarker') && markerIcon && (
+            {(mapType === 'propertyMarker') && markerIcon && (
                <div style={{ display: 'flex', gap: '10px' }}>
                     <button onClick={() => handlePlaceTypeChange('restaurant')}>Restaurantes</button>
                     <button onClick={() => handlePlaceTypeChange('school')}>Escuelas</button>
@@ -270,9 +313,7 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
             {mapType === 'finder' && (
                 <Autocomplete
-                    onLoad={autocomplete => {
-                        autocompleteRef.current = autocomplete;
-                    }}
+                    onLoad={autocomplete => autocompleteRef.current = autocomplete}
                     onPlaceChanged={onPlaceSelected}
                 >
                     <input
