@@ -1304,6 +1304,55 @@ export const propertyDetailStyles = makeStyles(() => ({
         alignItems: 'center',
         flexDirection: 'column',
         cursor: 'pointer',
+    },
+
+    tenantElement: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '1.5rem 1rem',       
+        '&:not(:last-child)': {
+            borderBottom: '1px solid #E1E1E1',
+        },        
+    },
+    tenantCard: {
+        display:'flex',
+        gap:'1rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        width: '90%',
+        alignItems: 'left',
+        margin:'2rem 0 1rem 0', 
+        padding:'2rem 3rem',      
+        flexDirection:'column', 
+        textAlign:'left'
+    }, 
+    tenantImg: {
+        width: '50px',
+        height: '50px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    tenantFullname: {
+        fontSize: '1.2rem',
+        fontWeight: '500',
+        color: '#626262',
+    },
+    tenantUser: {
+        fontSize: '1rem',
+        fontWeight: 'light',
+        color: '#6C6B6B',
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        padding: '0.8rem 1.5rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
     }
 }))
 

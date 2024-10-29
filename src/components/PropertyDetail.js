@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { propertyDetailStyles } from '../styles/useStyles';
 import { getPropertyById, deleteProperty } from '../hooks/usePropertyService';
-import { getUser, createContact, getContacts, updateUser } from '../hooks/useUserService';
+import { getUser, createContact, getContacts, updateUser, getAllUsers } from '../hooks/useUserService';
 import ChairIcon from "@mui/icons-material/Chair";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import CottageIcon from "@mui/icons-material/Cottage";
-import { starIcon, favoriteIcon, trashIcon, editIcon, tentantIcon, googleMapsLogo } from '../../src/assets';
+import { starIcon, favoriteIcon, trashIcon, editIcon, tentantIcon, redXIcon, greenCheckIcon } from '../../src/assets';
 import { Button } from './RentState Components/components';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { CircularProgress, IconButton } from '@mui/material';
@@ -27,6 +27,7 @@ const PropertyDetail = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [interestedUsers, setInterestedUsers] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,6 +49,14 @@ const PropertyDetail = () => {
                 setProperty(propertyData);
                 const ownerData = await getUser(propertyData.userId);
                 setOwner(ownerData);
+                const uniqueInterestedUserIds = [...new Set(propertyData.interestedUserIds)];
+                const interestedUsersData = await Promise.all(
+                    uniqueInterestedUserIds.map(async userId => {
+                        const user = await getUser(userId);
+                        return user;
+                    })
+                );
+                setInterestedUsers(interestedUsersData);
             } catch (error) {
                 console.error("Error al obtener los detalles de la propiedad o del propietario:", error);
             }
@@ -68,6 +77,29 @@ const PropertyDetail = () => {
             if (!contactExists) {
                 await createContact(currentUserId, owner.username, token);
             }    
+            navigate('/mensajes');
+        } catch (error) {
+            console.error('Error al crear el contacto:', error);
+        }
+    };
+
+    const handleChatTenantsClick = async (interestedUser) => {
+        try {
+            if (!interestedUser || !interestedUser.username) {
+                console.error('Invalid interested user:', interestedUser);
+                return;
+            }
+
+            const contacts = await getContacts(currentUserId, token);
+            console.log('Contacts:', contacts);
+            const contactExists = contacts.includes(interestedUser.username);
+            console.log('Contact Exists:', contactExists);
+            if (!contactExists) {
+                await createContact(currentUserId, interestedUser.username, token);
+                console.log('Contact created for:', interestedUser.username);
+            } else {
+                console.log('Contact already exists for:', interestedUser.username);
+            }
             navigate('/mensajes');
         } catch (error) {
             console.error('Error al crear el contacto:', error);
@@ -217,11 +249,11 @@ const PropertyDetail = () => {
                                 <GoogleMapRentState 
                                     mapType="propertyMarker" 
                                     width="100%" 
-                                    height="500px" 
+                                    height={String(currentUserId) !== String(property.userId) ? "500px" : "200px"} 
                                     latitude={property.latitude} 
                                     longitude={property.longitude} 
                                 />                        
-                            </div>
+                            </div>                           
                         </div>
 
 
@@ -273,7 +305,40 @@ const PropertyDetail = () => {
                                 </div>
                             ) : (
 
-                                <p></p>
+                                <div className={classes.tenantCard}>
+                                    <div className={classes.title} style={{fontWeight:'normal', paddingBottom:'1rem'}}>Usuarios <strong>Interesados</strong> en esta Propiedad</div>                   
+                                    <div style={{display:'flex', flexDirection:'column', backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
+                                        {interestedUsers.map(interestedUser => (
+                                            <div key={interestedUser.id} className={classes.tenantElement} style={{display:'flex', justifyContent:'space-between'}}>
+                                                <div style={{display:'flex', gap:'10px'}}>
+                                                    <img 
+                                                        src={interestedUser.photoUrl ? interestedUser.photoUrl : "https://via.placeholder.com/40"} 
+                                                        alt={interestedUser.username} 
+                                                        className={classes.tenantImg} 
+                                                    />
+                                                    <div style={{display:'flex', flexDirection:'column', alignContent:'center', justifyContent:'left', textAlign:'left'}}>
+                                                        <span className={classes.tenantFullname}> {interestedUser.name} {interestedUser.lastName}</span>
+                                                        <span className={classes.tenantUser}>{interestedUser.username}</span>
+                                                    </div>
+                                                </div>
+                                                <div style={{display:'flex', gap:'10px'}}>
+                                                    <img src={greenCheckIcon} alt="Green Check" style={{ width: '1.8rem' }} />
+                                                    <img src={redXIcon} alt="Red X" style={{ width: '1.8rem' }} />
+
+                                                    <div className={classes.buttonContainer} > 
+                                                        <div className={classes.button} style={{backgroundColor: '#00283E', display:'flex', gap:'5px', justifyContent:'center' }}> 
+                                                            <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
+                                                                <MarkUnreadChatAltIcon />
+                                                            </IconButton>
+                                                            ¡Chatear!
+                                                        </div>      
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
                     </div>
                 </div>              

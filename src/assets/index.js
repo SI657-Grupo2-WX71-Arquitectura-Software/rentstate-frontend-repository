@@ -19,7 +19,8 @@ import parkMarker from './parkMarker.svg';
 import schoolMarker from './schoolMarker.svg';
 import closeIcon from './closeIcon.svg';
 import sendMessageIcon from './sendMessageIcon.svg';
-
+import greenCheckIcon from './greenCheckIcon.svg';
+import redXIcon from './redXIcon.svg';
 
 export {
     emailIcon,
@@ -42,5 +43,7 @@ export {
     parkMarker,
     schoolMarker,
     closeIcon,
-    sendMessageIcon
+    sendMessageIcon,
+    greenCheckIcon,
+    redXIcon
 };
