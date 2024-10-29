@@ -62,7 +62,7 @@ const useMessageService = (userName, receiver) => {
 
     const newMessage = {
       sender: userName,
-      receiver: receiver,
+      receiver: receiver.username,
       content: messageContent,
       timestamp: Date.now(),
     };
