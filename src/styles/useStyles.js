@@ -256,136 +256,145 @@ export const useStylesButtonComponent = makeStyles(() => ({
     }
 }));
 
-export const useStylesChat = makeStyles(() => ({
+export const chatStyles = makeStyles(() => ({
     chat: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        gap:'2rem'
     },
     contactList: {
-      width: '200px',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-      marginRight: '20px',
-      padding: '20px',
+        width: '400px',
+        backgroundColor: '#F2F2F2',
+        borderRadius: '2rem',
+        padding: '1rem',
+    },
+    searchBarContainer: {
+        margin: '0.5rem 0 1rem 0'
+    },
+    contact: {        
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px',
+        borderBottom: '1px solid #E1E1E1',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#e8e8e8',
+        },
+        '&.active': {
+            backgroundColor: '#4b8af7',
+            color: 'white',
+        },
     },
     contactImg: {
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      objectFit: 'cover',
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    contactFullname: {
+        fontSize: '1rem',
+        fontWeight: '500',
+        color: '#626262',
+    },
+    contactUser: {
+        fontSize: '0.9rem',
+        fontWeight: 'light',
+        color: '#6C6B6B',
     },
     receiverImg: {
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      objectFit: 'cover',
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        objectFit: 'cover',
     },
     receiverInfo: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px',
     },
     receiverInfoImg: {
-      borderRadius: '50%',
-      width: '40px',
-      height: '40px',
-      objectFit: 'cover',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        objectFit: 'cover',
     },
     receiverInfoSpan: {
-      fontSize: '1.2rem',
-      fontWeight: 500,
-      color: 'white',
-    },
-    contact: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '10px',
-      cursor: 'pointer',
-      borderRadius: '4px',
-      transition: 'background-color 0.2s',
-      '&:hover': {
-        backgroundColor: '#f0f0f0',
-      },
-    },
-    contactSelected: {
-      backgroundColor: '#4b8af7',
-      color: 'white',
-    },
+        fontSize: '1.2rem',
+        fontWeight: '500',
+        color: 'white',
+    }, 
     chatBox: {
-      width: '400px',
-      height: '500px',
-      backgroundColor: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      borderRadius: '8px',
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        width: '400px',
+        height: '500px',
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: '8px',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     },
     top: {
-      backgroundColor: '#4b8af7',
-      padding: '10px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderTopLeftRadius: '8px',
-      borderTopRightRadius: '8px',
+        backgroundColor: '#4b8af7',
+        padding: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
     },
     center: {
-      flex: 1,
-      padding: '20px',
-      overflowY: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
+        flex: 1,
+        padding: '20px',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
     },
     chatDefault: {
-      fontWeight: 600,
+        fontWeight: '600',
     },
     chatMessage: {
-      maxWidth: '70%',
-      padding: '10px',
-      borderRadius: '4px',
-      marginBottom: '10px',
-      alignSelf: 'flex-start',
-      backgroundColor: '#f0f0f0',
-      color: '#333',
-      '&.own': {
-        alignSelf: 'flex-end',
-        backgroundColor: '#99baf3',
-      },
+        maxWidth: '70%',
+        padding: '10px',
+        borderRadius: '4px',
+        marginBottom: '10px',
+        '&.own': {
+            alignSelf: 'flex-end',
+            backgroundColor: '#99baf3',
+            color: '#333',
+        },
+        '&:not(.own)': {
+            alignSelf: 'flex-start',
+            backgroundColor: '#f0f0f0',
+            color: '#333',
+        },
     },
     bottom: {
-      borderTop: '1px solid #4b8af7',
-      padding: '10px 20px',
-      display: 'flex',
-      alignItems: 'center',
+        borderTop: '1px solid #4b8af7',
+        padding: '10px 20px',
+        display: 'flex',
+        alignItems: 'center',
     },
     bottomTextarea: {
-      flex: 1,
-      height: '40px',
-      border: 'none',
-      borderRadius: '4px',
-      padding: '10px',
-      resize: 'none',
+        flex: 1,
+        height: '40px',
+        border: 'none',
+        borderRadius: '4px',
+        padding: '10px',
+        resize: 'none',
     },
     bottomButton: {
-      marginLeft: '10px',
-      padding: '10px 20px',
-      backgroundColor: '#4b8af7',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-    },
-    contactSpan: {
-      fontSize: '1rem',
-      fontWeight: 500,
-      color: 'black',
-    }
- }));
+        marginLeft: '10px',
+        padding: '10px 20px',
+        backgroundColor: '#4b8af7',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+    },  
+}));
 
 export const useStylesMyAccount = makeStyles(() => ({
     container: {
@@ -964,41 +973,6 @@ export const preciseNeedsModalStyles = makeStyles(() => ({
     subtitleCard: {
         margin: '5px 0',
         color: '#6C6B6B',
-    }
-
-}));
-
-
-export const chatStyles = makeStyles(() => ({
-    chatContainer: {
-        width: '100%',
-        height:'100vh', 
-        justifyContent:'center', 
-        alignContent:'center', 
-        display:'flex', 
-        gap:'2rem', 
-        alignItems:'center'
-    },
-    columnContacts: {
-        width: '20vw', 
-        height: '70vh', 
-        backgroundColor: '#F2F2F2', 
-        borderRadius: '2rem', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        gap: '1rem'
-    },
-    contactList: {
-        backgroundColor:'white', 
-        borderRadius:'20px', 
-        padding:'13.2vw 7vw'
-    },
-    columnChat: { 
-        width:'40vw', 
-        height:'70vh', 
-        backgroundColor:'#F2F2F2', 
-        borderRadius:'2rem'
     }
 
 }));

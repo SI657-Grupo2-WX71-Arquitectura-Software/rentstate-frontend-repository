@@ -466,7 +466,7 @@ export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) 
     );
 };
 
-export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) => {
+export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate, isPreview }) => {
     const classes = useStylesPropertyCard();
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('userId');
@@ -493,12 +493,14 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) =>
     }, [currentUserId, token, userFetched]);
 
     const handleMapClick = (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
         window.open(mapUrl, '_blank');
     };
 
     const handleOwnerClick = (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         if (String(owner?.id) === String(currentUserId)) {
             navigate('/perfil');
@@ -508,10 +510,12 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) =>
     };
 
     const handleCardClick = () => {
+        if (isPreview) return;
         navigate(`/property/${property.id}`);
     };
 
     const handleDeleteClick = (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         setIsDeleteModalOpen(true);
     };
@@ -534,6 +538,7 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) =>
     };
 
     const handleFavoriteClick = async (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         if (!user) return;
 
@@ -607,12 +612,7 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) =>
                     location={property.location}
                 />
             )}
-            {isLoading && 
-                <div className={classes.loadingOverlay}>
-                <div style={{height:'90vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
-                    <CircularProgress />
-                </div>;
-                </div>}
+            {isLoading && <div className={classes.loadingOverlay}>Cargando...</div>}
         </div>
     );
 };

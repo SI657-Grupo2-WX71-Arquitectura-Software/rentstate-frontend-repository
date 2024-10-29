@@ -7,8 +7,7 @@ import Login from './components/Login';
 import PropertyDetail from './components/PropertyDetail';
 import Chat from './components/Chat';
 import AddProperty from './components/AddProperty';
-import MyPublish from './components/MyPublish';
-import NearbyPropertiesMap from './components/NearbyPropertiesMap';
+import PostProperty from './components/PostProperty';
 import Register from './components/Register Account/Register';
 import MyAccount from './components/MyAccount/MyAccount';
 import OtherAccount from './components/OtherAccount';
@@ -36,10 +35,9 @@ return (
                 <Route path="/register" element={<Register />} />
                 <Route path="/mensajes" element={<Chat />} />
                 <Route path="/crear_propiedad" element={<AddProperty />} />
-                <Route path="/publicar" element={<MyPublish />} />
+                <Route path="/publicar" element={<PostProperty />} />
                 <Route path="/favoritos" element={<FavoriteProperties />} />
                 <Route path="/property/:id" element={<PropertyDetail />} />
-                <Route path="/nearby-properties" element={<NearbyPropertiesMap />} />
                 <Route path="/perfil/:userId" element={<OtherAccount />} />
 
                 <Route path="/" element={<Navigate to="/login" />} />

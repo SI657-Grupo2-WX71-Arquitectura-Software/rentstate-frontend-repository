@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../styles/Chat.css";
-import {getUser} from '../hooks/useUserService';
+import { CircularProgress } from "@mui/material";
+import { getUser, getContacts, getContactDetails } from '../hooks/useUserService';
 import useMessageService from '../hooks/useMessageService';
+import { chatStyles } from '../styles/useStyles';
+import { SearchBar } from '../components/RentState Components/components'
 
 function Chat() {
+    const classes = chatStyles();
     const [message, setMessage] = useState("");
     const [receiver, setReceiver] = useState(null);
     const [userName, setUserName] = useState("");
@@ -11,67 +14,47 @@ function Chat() {
     const [loadingUser, setLoadingUser] = useState(true);
     const [loadingContacts, setLoadingContacts] = useState(false);
     const messagesEndRef = useRef(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const { messages, loading: loadingMessages, sendMessage } = useMessageService(userName, receiver);
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
     useEffect(() => {
         const fetchUserNameAndContacts = async () => {
-        const userId = localStorage.getItem("userId");
-        const token = localStorage.getItem("token"); 
-        if (userId && token) {
-            try {
-            const userData = await getUser(userId, token);
-            console.log("User data fetched:", userData);
-            setUserName(userData.username);
+            const userId = localStorage.getItem("userId");
+            const token = localStorage.getItem("token"); 
+            if (userId && token) {
+                try {
+                    const userData = await getUser(userId, token);
+                    setUserName(userData.username);
 
-            const contactsUsernames = await fetchContacts(userId, token); 
-            await fetchContactDetails(contactsUsernames, token); 
-            } catch (error) {
-            console.error("Error fetching user data:", error);
-            } finally {
-            setLoadingUser(false);
+                    const contactsUsernames = await getContacts(userId, token); 
+                    await fetchContactDetails(contactsUsernames, token); 
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                } finally {
+                    setLoadingUser(false);
+                }
+            } else {
+                setLoadingUser(false);
             }
-        } else {
-            setLoadingUser(false);
-        }
         };
 
         fetchUserNameAndContacts();
     }, []);
 
-    const fetchContacts = async (userId, token) => {
-        try {
-        const response = await fetch(`http://rentstate.antarticdonkeys.com:8080/api/v1/users/${userId}/contacts`, {
-            headers: {
-            'Authorization': `Bearer ${token}`
-            }
-        });
-        const data = await response.json();
-        console.log('Fetched contacts:', data);
-        return data;  
-        } catch (error) {
-        console.error("Error fetching contacts:", error);
-        return [];
-        }
-    };
-
     const fetchContactDetails = async (usernames, token) => {
         setLoadingContacts(true);
         try {
-        const contactDetails = await Promise.all(usernames.map(async (username) => {
-            const response = await fetch(`http://rentstate.antarticdonkeys.com:8080/api/v1/users/username/${username}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-            });
-            return await response.json();
-        }));
-        setContacts(contactDetails);
-        console.log("Contact details fetched:", contactDetails); 
+            const contactDetails = await getContactDetails(usernames, token);
+            setContacts(contactDetails);
         } catch (error) {
-        console.error("Error fetching contact details:", error);
+            console.error("Error fetching contact details:", error);
         } finally {
-        setLoadingContacts(false);
+            setLoadingContacts(false);
         }
     };
 
@@ -94,74 +77,96 @@ function Chat() {
 
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "auto", block: "end" });
+            messagesEndRef.current.scrollIntoView({ behavior: "auto", block: "end" });
         }
     };
 
+    const filteredContacts = contacts.filter(contact =>
+        contact.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     if (loadingUser || loadingMessages || loadingContacts) {
-        return <div>Loading...</div>; 
+        return <div style={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <CircularProgress />
+        </div>;
     }
 
     return (
-        <div className="chat">
-            <div className="contactList">
-                <h3>Contactos</h3>
+        <div className={classes.chat}>
+           <div className={classes.contactList}>               
+                <div className={classes.searchBarContainer}>
+                    <SearchBar
+                        placeholder="Buscar Contacto"  
+                        height="3rem" 
+                        width="100%" 
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                </div>
                 {contacts.length > 0 ? (
-                    contacts.map((contact) => (
-                        <div 
-                            key={contact.username}
-                            className={`contact ${receiver?.username === contact.username ? "active" : ""}`}
-                            onClick={() => handleReceiverChange(contact)}
-                        >
-                        <img 
-                            src={contact.photoUrl ? contact.photoUrl : "https://via.placeholder.com/40"} 
-                            alt={contact.username} 
-                            className="contactImg" 
-                        />
-                        <span>{contact.username}</span>
+                    <div style={{backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
+                        {filteredContacts.map((contact, index) => (
+                            <div 
+                                key={contact.username}
+                                className={`${classes.contact} ${receiver?.username === contact.username ? classes.active : ""}`}
+                                onClick={() => handleReceiverChange(contact)}
+                            >
+                                <img 
+                                    src={contact.photoUrl ? contact.photoUrl : "https://via.placeholder.com/40"} 
+                                    alt={contact.username} 
+                                    className={classes.contactImg} 
+                                />
+                                <div style={{display:'flex', flexDirection:'column', alignContent:'center', justifyContent:'left', textAlign:'left'}}>
+                                    <span className={classes.contactFullname}> {contact.name} {contact.lastName}</span>
+                                    <span className={classes.contactUser}>{contact.username}</span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    ))
-                    ) : (
+                ) : (
                     <div>No tienes contactos disponibles</div>
                 )}
             </div>
-            <div className="chatBox">
-                <div className="top">
+
+            <div className={classes.chatBox}>
+                <div className={classes.top}>
                     {receiver ? (
-                        <div className="receiver-info">
+                        <div className={classes.receiverInfo}>
                             <img 
                                 src={receiver.photoUrl ? receiver.photoUrl : "https://via.placeholder.com/40"} 
                                 alt={receiver.username} 
-                                className="receiverImg" 
+                                className={classes.receiverInfoImg} 
                             />
-                            <span>{receiver.username}</span>
+                            <span className={classes.receiverInfoSpan}>{receiver.username}</span>
                         </div>
                     ) : (
-                        <div className="select-contact">Selecciona un contacto</div>
+                        <div className={classes.selectContact}>Selecciona un contacto</div>
                     )}
                 </div>
-                <div className="center">
+                <div className={classes.center}>
                     {receiver ? (
                         messages.map((msg) => (
-                            <div key={msg.timestamp} className={`chatMessage ${msg.sender === userName ? "own" : ""}`}>
+                            <div key={msg.timestamp} className={`${classes.chatMessage} ${msg.sender === userName ? classes.own : ""}`}>
                                 <p>{msg.content}</p>
                             </div>
                         ))
                     ) : (
-                        <div className="chat_default">Selecciona un contacto para empezar a chatear</div>
+                        <div className={classes.chatDefault}>Selecciona un contacto para empezar a chatear</div>
                     )}
                     <div ref={messagesEndRef} />
                 </div>
-                <div className="bottom">
+                <div className={classes.bottom}>
                     <textarea 
                         placeholder="Escribe tu mensaje..." 
                         value={message} 
                         onChange={handleMessageChange} 
                         disabled={!receiver}
+                        className={classes.bottomTextarea}
                     />
                     <button 
                         onClick={handleSendMessage} 
                         disabled={!message.trim() || !receiver}
+                        className={classes.bottomButton}
                     >
                         Enviar
                     </button>
@@ -171,4 +176,4 @@ function Chat() {
     );
 }
 
-export default Chat;    
+export default Chat;

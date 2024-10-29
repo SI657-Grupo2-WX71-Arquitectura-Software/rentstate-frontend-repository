@@ -108,3 +108,20 @@ export const getContacts = async (userId, token) => {
         throw error;
     }
 };
+
+export const getContactDetails = async (usernames, token) => {
+    try {
+        const contactDetails = await Promise.all(usernames.map(async (username) => {
+            const response = await userService.get(`/api/v1/users/username/${username}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
+        }));
+        return contactDetails;
+    } catch (error) {
+        console.error('Error fetching contact details:', error);
+        throw error;
+    }
+};
