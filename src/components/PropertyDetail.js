@@ -14,6 +14,7 @@ import { CircularProgress, IconButton } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import GoogleMapRentState from '../../src/components/RentState Components/GoogleMapRentState';
 import { DeletePropertyModal } from './Modals/DeletePropertyModal';
+import { SendInterestModal } from './Modals/SendInterestModal';
 
 const PropertyDetail = () => {
     const classes = propertyDetailStyles();
@@ -25,6 +26,7 @@ const PropertyDetail = () => {
     const [owner, setOwner] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -112,7 +114,6 @@ const PropertyDetail = () => {
         }
     };
 
-
     const renderIcon = () => {
         switch (property.category) {
             case 'Departamento':
@@ -138,6 +139,14 @@ const PropertyDetail = () => {
         const [integerPart, decimalPart] = num.toString().split(/[.,]/);
         const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+    };
+
+    const handleOpenModal = () => {
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -250,15 +259,17 @@ const PropertyDetail = () => {
             
                                     </div>
             
-                                    <div className={classes.interestButton}>
-                                        <img src={tentantIcon} alt="Interested" style={{height: '3.5rem', fill:'#8E8E8E'}}/>
+                                    <div className={classes.interestButton} onClick={handleOpenModal}>
+                                        <img src={tentantIcon} alt="Interested" style={{ height: '3.5rem', fill: '#8E8E8E' }} />
                                         <div>¡Me interesa!</div>
                                     </div>
 
-                                    <div className={classes.interestButton}>
-                                        <img src={googleMapsLogo} alt="Interested" style={{height: '3.5rem', fill:'#8E8E8E'}}/>
-                                        <div>¡Ver en Google Maps!</div>
-                                    </div>
+                                    <SendInterestModal
+                                        open={modalOpen}
+                                        handleClose={handleCloseModal}
+                                        owner={owner}
+                                        property={property}
+                                    />
                                 </div>
                             ) : (
 

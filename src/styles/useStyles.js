@@ -1303,6 +1303,7 @@ export const propertyDetailStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        cursor: 'pointer',
     }
 }))
 
