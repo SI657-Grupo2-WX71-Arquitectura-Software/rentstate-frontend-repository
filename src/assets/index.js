@@ -18,6 +18,7 @@ import restaurantMarker from './restaurantMarker.svg';
 import parkMarker from './parkMarker.svg';
 import schoolMarker from './schoolMarker.svg';
 import closeIcon from './closeIcon.svg';
+import sendMessageIcon from './sendMessageIcon.svg';
 
 
 export {
@@ -40,6 +41,6 @@ export {
     restaurantMarker,
     parkMarker,
     schoolMarker,
-    closeIcon
-
+    closeIcon,
+    sendMessageIcon
 };

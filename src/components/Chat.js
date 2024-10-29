@@ -4,6 +4,7 @@ import { getUser, getContacts, getContactDetails } from '../hooks/useUserService
 import useMessageService from '../hooks/useMessageService';
 import { chatStyles } from '../styles/useStyles';
 import { SearchBar } from '../components/RentState Components/components'
+import { sendMessageIcon } from "../assets";
 
 function Chat() {
     const classes = chatStyles();
@@ -93,8 +94,8 @@ function Chat() {
 
     return (
         <div className={classes.chat}>
-           <div className={classes.contactList}>               
-                <div className={classes.searchBarContainer}>
+           <div className={classes.contactListContainer}>               
+                <div className={classes.searchBarContainer}> 
                     <SearchBar
                         placeholder="Buscar Contacto"  
                         height="3rem" 
@@ -105,7 +106,7 @@ function Chat() {
                 </div>
                 {contacts.length > 0 ? (
                     <div style={{backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
-                        {filteredContacts.map((contact, index) => (
+                        {filteredContacts.map((contact) => (
                             <div 
                                 key={contact.username}
                                 className={`${classes.contact} ${receiver?.username === contact.username ? classes.active : ""}`}
@@ -137,39 +138,56 @@ function Chat() {
                                 alt={receiver.username} 
                                 className={classes.receiverInfoImg} 
                             />
-                            <span className={classes.receiverInfoSpan}>{receiver.username}</span>
+                            <div style={{textAlign:'left'}}>
+                                <div className={classes.contactFullnameChat}>{receiver.name} {receiver.lastName}</div>
+                                <div className={classes.contactUsernameChat}>{receiver.username}</div>
+                            </div>                          
                         </div>
                     ) : (
-                        <div className={classes.selectContact}>Selecciona un contacto</div>
+                        <div className={classes.topText}>Bienvenido a Chats de <strong>RentState</strong></div>
                     )}
                 </div>
                 <div className={classes.center}>
                     {receiver ? (
                         messages.map((msg) => (
-                            <div key={msg.timestamp} className={`${classes.chatMessage} ${msg.sender === userName ? classes.own : ""}`}>
+                            <div key={msg.timestamp} className={`${classes.chatMessage} 
+                                ${msg.sender === userName ? classes.own : ""}`}
+                            >
                                 <p>{msg.content}</p>
                             </div>
                         ))
                     ) : (
-                        <div className={classes.chatDefault}>Selecciona un contacto para empezar a chatear</div>
+                        <div className={classes.chatDefaultText}>
+                            <img 
+                                src="assets/LogoHeadLetters.png" 
+                                alt="RentState"
+                                style={{width: '15rem'}}                         
+                            />
+                            Selecciona un contacto para empezar a chatear
+                        </div>
                     )}
                     <div ref={messagesEndRef} />
                 </div>
                 <div className={classes.bottom}>
-                    <textarea 
-                        placeholder="Escribe tu mensaje..." 
-                        value={message} 
-                        onChange={handleMessageChange} 
-                        disabled={!receiver}
-                        className={classes.bottomTextarea}
-                    />
-                    <button 
-                        onClick={handleSendMessage} 
-                        disabled={!message.trim() || !receiver}
-                        className={classes.bottomButton}
-                    >
-                        Enviar
-                    </button>
+                    {receiver && (
+                        <div className={classes.messageInputContainer}>
+                            <input 
+                                type="text"
+                                placeholder="Enviar Mensaje..." 
+                                value={message} 
+                                onChange={handleMessageChange} 
+                                disabled={!receiver}
+                                className={classes.messageInput}
+                            />
+                            <button 
+                                onClick={handleSendMessage} 
+                                disabled={!message.trim() || !receiver}
+                                className={classes.sendButton}
+                            >
+                                <img src={sendMessageIcon} alt="Enviar" />
+                            </button>
+                        </div>
+                    )}   
                 </div>
             </div>
         </div>

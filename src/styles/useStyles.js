@@ -262,10 +262,12 @@ export const chatStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        gap:'2rem'
+        width: '80vw',
+        gap:'3rem',       
     },
-    contactList: {
-        width: '400px',
+    contactListContainer: {
+        //width: '20%',
+        width: '25rem',
         backgroundColor: '#F2F2F2',
         borderRadius: '2rem',
         padding: '1rem',
@@ -273,12 +275,11 @@ export const chatStyles = makeStyles(() => ({
     searchBarContainer: {
         margin: '0.5rem 0 1rem 0'
     },
-    contact: {        
+    contact: {
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
         padding: '10px',
-        borderBottom: '1px solid #E1E1E1',
         cursor: 'pointer',
         '&:hover': {
             backgroundColor: '#e8e8e8',
@@ -287,6 +288,29 @@ export const chatStyles = makeStyles(() => ({
             backgroundColor: '#4b8af7',
             color: 'white',
         },
+        '&:not(:last-child)': {
+            borderBottom: '1px solid #E1E1E1',
+        },
+        '&:first-child': {         
+            '&:hover': {
+                borderTopLeftRadius: '1rem',
+                borderTopRightRadius: '1rem',
+            },
+            '&.active': {
+                borderTopLeftRadius: '1rem',
+                borderTopRightRadius: '1rem',
+            }
+        },
+        '&:last-child': {            
+            '&:hover': {
+                borderBottomLeftRadius: '1rem',
+                borderBottomRightRadius: '1rem',
+            },
+            '&.active': {
+                borderBottomLeftRadius: '1rem',
+                borderBottomRightRadius: '1rem',
+            }
+        }
     },
     contactImg: {
         width: '40px',
@@ -318,42 +342,59 @@ export const chatStyles = makeStyles(() => ({
     },
     receiverInfoImg: {
         borderRadius: '50%',
-        width: '40px',
-        height: '40px',
+        width: '70px',
+        height: '70px',
         objectFit: 'cover',
     },
-    receiverInfoSpan: {
+    contactFullnameChat: {
         fontSize: '1.2rem',
-        fontWeight: '500',
-        color: 'white',
-    }, 
+        fontWeight: 'bolder',
+        color: '#626262',
+    },
+    contactUsernameChat: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#626262',
+    },
     chatBox: {
-        width: '400px',
-        height: '500px',
+        width: '50%',
+        height: '60%',
         backgroundColor: 'white',
         display: 'flex',
-        flexDirection: 'column',
-        borderRadius: '8px',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        flexDirection: 'column',  
     },
     top: {
-        backgroundColor: '#4b8af7',
-        padding: '10px',
+        backgroundColor: '#F6F6F6',
+        padding: '2rem 1rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderTopLeftRadius: '8px',
-        borderTopRightRadius: '8px',
+        borderTopLeftRadius: '2rem',
+        borderTopRightRadius: '2rem',
+    },
+    topText: {
+        color: '#626262',
+        fontSize:'1.2rem',
+        paddingLeft:'0.5rem'
     },
     center: {
         flex: 1,
-        padding: '20px',
+        padding: '2rem 1rem',
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: '#F2F2F2',
     },
-    chatDefault: {
-        fontWeight: '600',
+    chatDefaultText: {
+        color: '#646464',
+        fontSize: '1.2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        
     },
     chatMessage: {
         maxWidth: '70%',
@@ -372,10 +413,12 @@ export const chatStyles = makeStyles(() => ({
         },
     },
     bottom: {
-        borderTop: '1px solid #4b8af7',
-        padding: '10px 20px',
+        padding: '1rem 2rem 1.5rem 2rem',
         display: 'flex',
         alignItems: 'center',
+        backgroundColor: '#F2F2F2',
+        borderBottomLeftRadius: '2rem',
+        borderBottomRightRadius: '2rem',
     },
     bottomTextarea: {
         flex: 1,
@@ -393,7 +436,50 @@ export const chatStyles = makeStyles(() => ({
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
-    },  
+    },
+    messageInputContainer: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '5rem',
+        padding: '0 0.5rem',
+        width: '100%',
+        justifyContent: 'center',
+    },
+    messageInput: {
+        flex: 1,
+        border: 'none',
+        outline: 'none',
+        padding: '0.5rem 1rem',
+        fontSize: '1rem',
+        color: '#7E7E7E',   
+        backgroundColor: 'transparent',
+        '&::placeholder': {
+            color: '#7E7E7E',
+        },
+    },
+    sendButton: {       
+        cursor: 'pointer',
+        margin: '0.8rem 0.5rem',
+        padding: 0, 
+        background: 'none', 
+        display: 'flex',
+        alignItems: 'center',     
+        '&:disabled': {
+            cursor: 'not-allowed',
+            opacity: 0.2,
+            background: 'none', 
+        },
+        '& img': {
+            width: '30px',  
+            background: 'none',           
+        },
+        '&:hover': {
+            background: 'none',           
+
+        }
+    }, 
 }));
 
 export const useStylesMyAccount = makeStyles(() => ({
