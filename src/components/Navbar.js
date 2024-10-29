@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { navbarStyles } from "../styles/useStyles";
@@ -46,6 +47,11 @@ const Navbar = () => {
 
                 {!isAuthRoute && isAuthenticated && (
                     <div className={classes.iconLinkContainer}>
+                        <Link to="/favoritos">
+                            <IconButton aria-label="favoritos" className={classes.iconButton}>
+                                <FavoriteIcon style={{ color: '#E0E0E0' }} />
+                            </IconButton>
+                        </Link>
                         <Link to="/publicar">
                             <IconButton aria-label="publicar" className={classes.iconButton}>
                                 <AddBoxIcon style={{ color: '#E0E0E0' }} />

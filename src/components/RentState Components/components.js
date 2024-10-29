@@ -14,6 +14,7 @@ import { searchIcon, peru, trashIcon, markerMap, editIcon, favoriteIcon } from '
 import { useNavigate } from 'react-router-dom';
 import { deleteProperty } from '../../hooks/usePropertyService';
 import { DeletePropertyModal } from '../Modals/DeletePropertyModal';
+import { getUser, updateUser } from '../../hooks/useUserService';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -472,6 +473,20 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
     const token = localStorage.getItem('token');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await getUser(currentUserId, token);
+                setUser(userData);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, [currentUserId, token]);
 
     const handleMapClick = (event) => {
         event.stopPropagation();
@@ -514,6 +529,27 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
         }
     };
 
+    const handleFavoriteClick = async (event) => {
+        event.stopPropagation();
+        if (!user) return;
+
+        try {
+            const favoriteProperties = new Set(user.favoriteProperties);
+            favoriteProperties.add(property.id);
+
+            const updatedUserData = {
+                ...user,
+                favoriteProperties: Array.from(favoriteProperties)
+            };
+
+            await updateUser(updatedUserData, token);
+            setUser(updatedUserData);
+            console.log('Propiedad agregada a favoritos');
+        } catch (error) {
+            console.error('Error al agregar la propiedad a favoritos:', error);
+        }
+    };
+
     return (
         <div className={classes.cardContainer} onClick={handleCardClick}>
             <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
@@ -524,7 +560,7 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
                         <img src={editIcon} alt="Edit" className={classes.icon} />
                     </>
                 ) : (
-                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} />
+                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} onClick={handleFavoriteClick} />
                 )}
             </div>
             <div className={classes.propertyDetails}>

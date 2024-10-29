@@ -1333,3 +1333,33 @@ export const doubleDraggerStyles = makeStyles(() => ({
         top: '50%',
     },
 }));
+
+export const favoritePropertiesStyles = makeStyles(() => ({   
+    favContainer: {
+        minHeight: '90vh',
+        maxWidth: '1400px',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'top',
+        textAlign: 'center',
+        padding: '6rem 0',
+    },
+    searchBarContainer: {
+        margin: '1rem 0'
+    },
+    propertyGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gap: '1rem',
+        width: '100%',
+        padding: '1rem',
+    },
+    text: {
+        textAlign: 'center', 
+        color: '#6C6B6B', 
+        fontSize: '1.2rem',
+        margin: '3rem 0'
+        
+    }
+}));

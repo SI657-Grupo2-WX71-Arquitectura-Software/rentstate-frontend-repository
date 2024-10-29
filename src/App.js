@@ -12,6 +12,7 @@ import NearbyPropertiesMap from './components/NearbyPropertiesMap';
 import Register from './components/Register Account/Register';
 import MyAccount from './components/MyAccount/MyAccount';
 import OtherAccount from './components/OtherAccount';
+import { FavoriteProperties } from './components/FavoriteProperties';
 
 function NotFound() {
 return (
@@ -36,6 +37,7 @@ return (
                 <Route path="/mensajes" element={<Chat />} />
                 <Route path="/crear_propiedad" element={<AddProperty />} />
                 <Route path="/publicar" element={<MyPublish />} />
+                <Route path="/favoritos" element={<FavoriteProperties />} />
                 <Route path="/property/:id" element={<PropertyDetail />} />
                 <Route path="/nearby-properties" element={<NearbyPropertiesMap />} />
                 <Route path="/perfil/:userId" element={<OtherAccount />} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { propertyDetailStyles } from '../styles/useStyles';
 import { getPropertyById, deleteProperty } from '../hooks/usePropertyService';
-import { getUser, createContact, getContacts } from '../hooks/useUserService';
+import { getUser, createContact, getContacts, updateUser } from '../hooks/useUserService';
 import ChairIcon from "@mui/icons-material/Chair";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
@@ -24,6 +24,20 @@ const PropertyDetail = () => {
     const [property, setProperty] = useState(null);
     const [owner, setOwner] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await getUser(currentUserId, token);
+                setUser(userData);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, [currentUserId, token]);
 
     useEffect(() => {
         const fetchPropertyData = async () => {
@@ -73,6 +87,26 @@ const PropertyDetail = () => {
         }
     };
 
+    const handleFavoriteClick = async () => {
+        if (!user) return;
+        try {
+            const favoriteProperties = new Set(user.favoriteProperties);
+            favoriteProperties.add(property.id);
+
+            const updatedUserData = {
+                ...user,
+                favoriteProperties: Array.from(favoriteProperties)
+            };
+
+            await updateUser(updatedUserData, token);
+            setUser(updatedUserData);
+            console.log('Propiedad agregada a favoritos');
+        } catch (error) {
+            console.error('Error al agregar la propiedad a favoritos:', error);
+        }
+    };
+
+
     const renderIcon = () => {
         switch (property.category) {
             case 'Departamento':
@@ -114,7 +148,7 @@ const PropertyDetail = () => {
                                     <img src={editIcon} alt="Edit" className={classes.optionsIcon} />
                                 </div>
                             ) : (
-                                <img src={favoriteIcon} alt="Favorite" className={classes.optionsIcon} />
+                                <img onClick={handleFavoriteClick} src={favoriteIcon} alt="Favorite" className={classes.optionsIcon} />
                             )}
                         </div>
 
