@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { GoogleMap, Marker, InfoWindow, Autocomplete, useJsApiLoader } from '@react-google-maps/api';
 import markerMap2 from '../../assets/markerMap2.svg';
 import { parkMarker, restaurantMarker, schoolMarker } from '../../assets';
+import { CircularProgress } from '@mui/material';
 
 const libraries = ['drawing', 'places'];
 
@@ -332,7 +333,10 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
             )}
         </div>
     ) : (
-        <div>Loading map...</div>
+        <div style={{height:'90vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+            Loading map...
+            <CircularProgress />
+        </div>
     );
 };
 

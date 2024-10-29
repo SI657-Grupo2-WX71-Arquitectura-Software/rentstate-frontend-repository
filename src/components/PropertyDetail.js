@@ -10,7 +10,7 @@ import CottageIcon from "@mui/icons-material/Cottage";
 import { starIcon, favoriteIcon, trashIcon, editIcon, tentantIcon, googleMapsLogo } from '../../src/assets';
 import { Button } from './RentState Components/components';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
-import { IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import GoogleMapRentState from '../../src/components/RentState Components/GoogleMapRentState';
 import { DeletePropertyModal } from './Modals/DeletePropertyModal';
@@ -54,7 +54,9 @@ const PropertyDetail = () => {
     }, [id]);
 
     if (!property || !owner) {
-        return <div>Cargando...</div>;
+        return <div style={{height:'90vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <CircularProgress />
+        </div>;
     }
 
     const handleChatClick = async () => {
@@ -91,7 +93,11 @@ const PropertyDetail = () => {
         if (!user) return;
         try {
             const favoriteProperties = new Set(user.favoriteProperties);
-            favoriteProperties.add(property.id);
+            if (favoriteProperties.has(property.id)) {
+                favoriteProperties.delete(property.id);
+            } else {
+                favoriteProperties.add(property.id);
+            }
 
             const updatedUserData = {
                 ...user,
@@ -100,9 +106,9 @@ const PropertyDetail = () => {
 
             await updateUser(updatedUserData, token);
             setUser(updatedUserData);
-            console.log('Propiedad agregada a favoritos');
+            console.log('Propiedad actualizada en favoritos');
         } catch (error) {
-            console.error('Error al agregar la propiedad a favoritos:', error);
+            console.error('Error al actualizar la propiedad en favoritos:', error);
         }
     };
 

@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Select, MenuItem, InputLabel, FormControl, Skeleton } from '@mui/material';
+import { Select, MenuItem, InputLabel, FormControl, Skeleton, CircularProgress } from '@mui/material';
 import { doubleDraggerStyles, useStylesButtonComponent, useStylesInquilinoCard, useStylesPropertyCard, useStylesSearchBarComponent } from '../../styles/useStyles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -466,7 +466,7 @@ export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) 
     );
 };
 
-export const PropertyCard = ({ property, owner, onDelete }) => {
+export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate }) => {
     const classes = useStylesPropertyCard();
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('userId');
@@ -474,19 +474,23 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState(null);
+    const [userFetched, setUserFetched] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const userData = await getUser(currentUserId, token);
                 setUser(userData);
+                setUserFetched(true);
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
         };
 
-        fetchUser();
-    }, [currentUserId, token]);
+        if (!userFetched) {
+            fetchUser();
+        }
+    }, [currentUserId, token, userFetched]);
 
     const handleMapClick = (event) => {
         event.stopPropagation();
@@ -535,7 +539,11 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
 
         try {
             const favoriteProperties = new Set(user.favoriteProperties);
-            favoriteProperties.add(property.id);
+            if (favoriteProperties.has(property.id)) {
+                favoriteProperties.delete(property.id);
+            } else {
+                favoriteProperties.add(property.id);
+            }
 
             const updatedUserData = {
                 ...user,
@@ -544,9 +552,10 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
 
             await updateUser(updatedUserData, token);
             setUser(updatedUserData);
-            console.log('Propiedad agregada a favoritos');
+            console.log('Propiedad actualizada en favoritos');
+            onFavoriteUpdate();
         } catch (error) {
-            console.error('Error al agregar la propiedad a favoritos:', error);
+            console.error('Error al actualizar la propiedad en favoritos:', error);
         }
     };
 
@@ -598,7 +607,12 @@ export const PropertyCard = ({ property, owner, onDelete }) => {
                     location={property.location}
                 />
             )}
-            {isLoading && <div className={classes.loadingOverlay}>Cargando...</div>}
+            {isLoading && 
+                <div className={classes.loadingOverlay}>
+                <div style={{height:'90vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                    <CircularProgress />
+                </div>;
+                </div>}
         </div>
     );
 };
