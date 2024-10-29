@@ -383,7 +383,7 @@ export const chatStyles = makeStyles(() => ({
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'top',
         backgroundColor: '#F2F2F2',
     },
     chatDefaultText: {
@@ -397,19 +397,19 @@ export const chatStyles = makeStyles(() => ({
         
     },
     chatMessage: {
-        maxWidth: '70%',
-        padding: '10px',
-        borderRadius: '4px',
-        marginBottom: '10px',
+        borderRadius: '1.2rem',
+        margin: '0.5rem 0',
         '&.own': {
             alignSelf: 'flex-end',
-            backgroundColor: '#99baf3',
-            color: '#333',
+            backgroundColor: '#00283E',
+            color: '#FFFFFF',
+            padding: '0 1rem 0 1.2rem',
         },
-        '&:not(.own)': {
+        '&.notOwn': { 
             alignSelf: 'flex-start',
-            backgroundColor: '#f0f0f0',
-            color: '#333',
+            backgroundColor: '#FFFFFF',
+            color: '#6C6B6B',
+            padding: '0 1.2rem 0 1rem',
         },
     },
     bottom: {

@@ -30,6 +30,7 @@ function Chat() {
             if (userId && token) {
                 try {
                     const userData = await getUser(userId, token);
+                    console.log("User data fetched:", userData);
                     setUserName(userData.username);
 
                     const contactsUsernames = await getContacts(userId, token); 
@@ -150,10 +151,11 @@ function Chat() {
                 <div className={classes.center}>
                     {receiver ? (
                         messages.map((msg) => (
-                            <div key={msg.timestamp} className={`${classes.chatMessage} 
-                                ${msg.sender === userName ? classes.own : ""}`}
+                            <div 
+                                key={msg.timestamp} 
+                                className={`${classes.chatMessage} ${msg.sender === userName ? 'own' : 'notOwn'}`}
                             >
-                                <p>{msg.content}</p>
+                                <div style={{margin:'12px 0'}}>{msg.content}</div>
                             </div>
                         ))
                     ) : (
