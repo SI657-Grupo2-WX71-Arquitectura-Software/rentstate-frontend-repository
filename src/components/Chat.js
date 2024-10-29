@@ -11,6 +11,7 @@ function Chat() {
     const [message, setMessage] = useState("");
     const [receiver, setReceiver] = useState(null);
     const [userName, setUserName] = useState("");
+    const [ownerPhoto, setOwnerPhoto] = useState("");
     const [contacts, setContacts] = useState([]);
     const [loadingUser, setLoadingUser] = useState(true);
     const [loadingContacts, setLoadingContacts] = useState(false);
@@ -32,6 +33,7 @@ function Chat() {
                     const userData = await getUser(userId, token);
                     console.log("User data fetched:", userData);
                     setUserName(userData.username);
+                    setOwnerPhoto(userData.photoUrl);
 
                     const contactsUsernames = await getContacts(userId, token); 
                     await fetchContactDetails(contactsUsernames, token); 
@@ -150,20 +152,43 @@ function Chat() {
                 </div>
                 <div className={classes.center}>
                     {receiver ? (
-                        messages.map((msg) => (
-                            <div 
-                                key={msg.timestamp} 
-                                className={`${classes.chatMessage} ${msg.sender === userName ? 'own' : 'notOwn'}`}
-                            >
-                                <div style={{margin:'12px 0'}}>{msg.content}</div>
+                        messages.length > 0 ? (
+                            messages.map((msg) => {
+                                const isOwn = msg.sender === userName;
+                                return (
+                                    <div 
+                                        key={msg.timestamp} 
+                                        className={isOwn ? classes.messageContainerOwn : classes.messageContainerNotOwn}
+                                    >
+                                        <img 
+                                            src={isOwn ? ownerPhoto : receiver.photoUrl} 
+                                            alt={isOwn ? userName : receiver.username} 
+                                            className={classes.profileImageChat} 
+                                        />
+                                        <div 
+                                            className={`${classes.chatMessage} ${isOwn ? 'own' : 'notOwn'}`}
+                                        >
+                                            <div style={{ margin: '12px 0' }}>{msg.content}</div>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className={classes.chatDefaultText}>
+                                <img 
+                                    src="assets/LogoHeadLetters.png" 
+                                    alt="RentState"
+                                    style={{ width: '15rem' }}                         
+                                />
+                                No hay mensajes, ¡Inicia el chat!
                             </div>
-                        ))
+                        )
                     ) : (
                         <div className={classes.chatDefaultText}>
                             <img 
                                 src="assets/LogoHeadLetters.png" 
                                 alt="RentState"
-                                style={{width: '15rem'}}                         
+                                style={{ width: '15rem' }}                         
                             />
                             Selecciona un contacto para empezar a chatear
                         </div>
@@ -178,6 +203,11 @@ function Chat() {
                                 placeholder="Enviar Mensaje..." 
                                 value={message} 
                                 onChange={handleMessageChange} 
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter' && message.trim() && receiver) {
+                                        handleSendMessage();
+                                    }
+                                }}
                                 disabled={!receiver}
                                 className={classes.messageInput}
                             />
@@ -189,7 +219,7 @@ function Chat() {
                                 <img src={sendMessageIcon} alt="Enviar" />
                             </button>
                         </div>
-                    )}   
+                    )}
                 </div>
             </div>
         </div>

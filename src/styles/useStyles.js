@@ -365,7 +365,7 @@ export const chatStyles = makeStyles(() => ({
     },
     top: {
         backgroundColor: '#F6F6F6',
-        padding: '2rem 1rem',
+        padding: '1rem 1rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -385,7 +385,19 @@ export const chatStyles = makeStyles(() => ({
         flexDirection: 'column',
         justifyContent: 'top',
         backgroundColor: '#F2F2F2',
+        '&::-webkit-scrollbar': {
+            width: '12px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#D4D4D4',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#F0F0F0',
+            borderRadius: '10px',
+        },
     },
+   
     chatDefaultText: {
         color: '#646464',
         fontSize: '1.2rem',
@@ -394,19 +406,42 @@ export const chatStyles = makeStyles(() => ({
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        
+        height: '100%'
+    },
+    messageContainerOwn: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        alignItems: 'end',
+        gap: '10px',
+        marginLeft: 'auto',
+        maxWidth: '80%',
+        textAlign: 'right',
+    },
+    messageContainerNotOwn: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'end',
+        gap: '10px',
+        marginRight: 'auto',
+        maxWidth: '80%',
+        textAlign: 'left',
+    },
+    profileImageChat: {
+        borderRadius: '50%',
+        width: '30px',
+        height: '30px',
+        objectFit: 'cover',
+        margin: '0.5rem 0',
     },
     chatMessage: {
         borderRadius: '1.2rem',
         margin: '0.5rem 0',
         '&.own': {
-            alignSelf: 'flex-end',
             backgroundColor: '#00283E',
             color: '#FFFFFF',
             padding: '0 1rem 0 1.2rem',
         },
         '&.notOwn': { 
-            alignSelf: 'flex-start',
             backgroundColor: '#FFFFFF',
             color: '#6C6B6B',
             padding: '0 1.2rem 0 1rem',
