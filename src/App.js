@@ -12,6 +12,8 @@ import Register from './components/Register Account/Register';
 import MyAccount from './components/MyAccount/MyAccount';
 import OtherAccount from './components/OtherAccount';
 import { FavoriteProperties } from './components/FavoriteProperties';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function NotFound() {
 return (
@@ -45,6 +47,7 @@ return (
             </Routes>
             <Footer />
         </header>
+        <ToastContainer />
     </div>
     </Router>
 );
