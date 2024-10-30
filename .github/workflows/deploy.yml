@@ -58,6 +58,7 @@ jobs:
         cd /home/heyshaske/rentstate-frontend-repository &&
         git config --global credential.helper 'store --file=/tmp/git-credentials' &&
         echo 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}:x-oauth-basic' > /tmp/git-credentials &&
+        git reset --hard origin/develop &&
         git pull origin develop &&
         npm install --force &&
         npm run build &&
