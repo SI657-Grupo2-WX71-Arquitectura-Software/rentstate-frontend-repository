@@ -5,10 +5,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
 import PropertyService from '../hooks/usePropertyService';
-import PlaceIcon from "@mui/icons-material/Place";
-import { Link } from 'react-router-dom';
+import { PropertyCard } from './RentState Components/components';
 
-const MyPublish = () => {
+const PostProperty = () => {
     const [category, setCategory] = useState('');
     const [district, setDistrict] = useState('');
     const [location, setLocation] = useState('');
@@ -107,6 +106,23 @@ const MyPublish = () => {
             horizontal: 'left',
         },
         getContentAnchorEl: null
+    };
+
+    const property = {
+        cardimage: cardimage || 'https://via.placeholder.com/300x200?text=Imagen+de+Previsualización',
+        district: district || 'Distrito',
+        location: location || 'Locación',
+        characteristics: characteristics || 'Características',
+        price: price || 'Precio',
+        latitude: latitude || '0',
+        longitude: longitude || '0'
+    };
+
+    const owner = {
+        id: 0,
+        name: 'Propietario',
+        lastName: '',
+        photoUrl: 'https://via.placeholder.com/150'
     };
 
     return (
@@ -211,27 +227,14 @@ const MyPublish = () => {
                     </div>
                 </div>
 
-                <div style={{ width: '30rem', display: 'flex', justifyContent:'center', alignContent:'center', alignItems:'center' }}>
-                    <div key={1} className="card">
-                        <Link to="#" style={{ textDecoration: "none", color: "inherit" }}>
-                            <img 
-                                src={cardimage || 'https://via.placeholder.com/300x200?text=Imagen+de+Previsualización'} 
-                                alt="Property" 
-                            />
-                            <div className="card-details">
-                                <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.5rem"}}>
-                                    {district || 'Distrito'}
-                                </p>                                      
-                                <p>{location || 'Locación'}</p>
-                                <p>{characteristics || 'Características'}</p>
-                                <p style={{ color: "#7a7a7a" }}>S/ {price || 'Precio'}</p>
-                                <a href={`https://www.google.com/maps?q=${latitude || '0'},${longitude || '0'}`} target="_blank" rel="noopener noreferrer" >
-                                    Ver Mapa
-                                    <PlaceIcon style={{ fontSize: '1.2rem' }} />
-                                </a>
-                            </div>
-                        </Link>
-                    </div>
+                <div style={{ width: '30rem', display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+                    <PropertyCard
+                        property={property}
+                        owner={owner}
+                        onDelete={() => {}}
+                        onFavoriteUpdate={() => {}}
+                        isPreview={true}
+                    />
                 </div>
 
             </div>
@@ -249,4 +252,4 @@ const MyPublish = () => {
     );
 }
 
-export default MyPublish;
+export default PostProperty;

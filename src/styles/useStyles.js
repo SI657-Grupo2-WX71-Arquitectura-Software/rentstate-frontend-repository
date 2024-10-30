@@ -1,5 +1,53 @@
 import { makeStyles } from '@mui/styles';
 
+export const navbarStyles = makeStyles(() => ({
+    navbar: {
+        width: '100%',   
+        position: 'fixed',
+        top: 0,
+        backdropFilter: 'blur(5px)',
+        zIndex: 1000,
+        padding: '0.8em 0rem',
+        backgroundColor: 'rgba(5, 31, 44, 0.938)',
+        boxShadow: '3px 3px 10px rgba(0, 0, 0, 0.2)',
+        alignContent: 'center',
+        textAlign: 'center',
+    },
+    navbarContainer: {
+        display: 'flex',
+        gap: '2rem',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: '0 1.5rem',
+    },
+    iconButtonContainer: {
+        display: 'flex',
+        gap: '0.5rem',
+    },
+    logoButton: {
+        padding: 0,
+    },
+    logoImage: {
+        height: '2rem',
+        margin: 0,
+    },
+    iconLinkContainer: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    iconButton: {
+        fontSize: '2rem',
+        cursor: 'pointer',
+        marginRight: '0.3rem',
+    }, 
+    profileImage: {
+        width: '30px',
+        height: '30px',
+        borderRadius: '50%',
+        objectFit: 'cover'
+    }   
+}));
+
 export const useStylesLogin = makeStyles(() => ({
     container: {
         width: '100%',
@@ -208,136 +256,266 @@ export const useStylesButtonComponent = makeStyles(() => ({
     }
 }));
 
-export const useStylesChat = makeStyles(() => ({
+export const chatStyles = makeStyles(() => ({
     chat: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '80vw',
+        gap:'3rem',       
     },
-    contactList: {
-      width: '200px',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-      marginRight: '20px',
-      padding: '20px',
+    contactListContainer: {
+        //width: '20%',
+        width: '25rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius: '2rem',
+        padding: '1rem',
     },
-    contactImg: {
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      objectFit: 'cover',
-    },
-    receiverImg: {
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      objectFit: 'cover',
-    },
-    receiverInfo: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '10px',
-    },
-    receiverInfoImg: {
-      borderRadius: '50%',
-      width: '40px',
-      height: '40px',
-      objectFit: 'cover',
-    },
-    receiverInfoSpan: {
-      fontSize: '1.2rem',
-      fontWeight: 500,
-      color: 'white',
+    searchBarContainer: {
+        margin: '0.5rem 0 1rem 0'
     },
     contact: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '10px',
-      cursor: 'pointer',
-      borderRadius: '4px',
-      transition: 'background-color 0.2s',
-      '&:hover': {
-        backgroundColor: '#f0f0f0',
-      },
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#e8e8e8',
+        },
+        '&.active': {
+            backgroundColor: '#4b8af7',
+            color: 'white',
+        },
+        '&:not(:last-child)': {
+            borderBottom: '1px solid #E1E1E1',
+        },
+        '&:first-child': {         
+            '&:hover': {
+                borderTopLeftRadius: '1rem',
+                borderTopRightRadius: '1rem',
+            },
+            '&.active': {
+                borderTopLeftRadius: '1rem',
+                borderTopRightRadius: '1rem',
+            }
+        },
+        '&:last-child': {            
+            '&:hover': {
+                borderBottomLeftRadius: '1rem',
+                borderBottomRightRadius: '1rem',
+            },
+            '&.active': {
+                borderBottomLeftRadius: '1rem',
+                borderBottomRightRadius: '1rem',
+            }
+        }
     },
-    contactSelected: {
-      backgroundColor: '#4b8af7',
-      color: 'white',
+    contactImg: {
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    contactFullname: {
+        fontSize: '1rem',
+        fontWeight: '500',
+        color: '#626262',
+    },
+    contactUser: {
+        fontSize: '0.9rem',
+        fontWeight: 'light',
+        color: '#6C6B6B',
+    },
+    receiverImg: {
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    receiverInfo: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px',
+    },
+    receiverInfoImg: {
+        borderRadius: '50%',
+        width: '70px',
+        height: '70px',
+        objectFit: 'cover',
+    },
+    contactFullnameChat: {
+        fontSize: '1.2rem',
+        fontWeight: 'bolder',
+        color: '#626262',
+    },
+    contactUsernameChat: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#626262',
     },
     chatBox: {
-      width: '400px',
-      height: '500px',
-      backgroundColor: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      borderRadius: '8px',
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        width: '50%',
+        height: '60%',
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'column',  
     },
     top: {
-      backgroundColor: '#4b8af7',
-      padding: '10px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderTopLeftRadius: '8px',
-      borderTopRightRadius: '8px',
+        backgroundColor: '#F6F6F6',
+        padding: '1rem 1rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderTopLeftRadius: '2rem',
+        borderTopRightRadius: '2rem',
+    },
+    topText: {
+        color: '#626262',
+        fontSize:'1.2rem',
+        paddingLeft:'0.5rem'
     },
     center: {
-      flex: 1,
-      padding: '20px',
-      overflowY: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
+        flex: 1,
+        padding: '2rem 1rem',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'top',
+        backgroundColor: '#F2F2F2',
+        '&::-webkit-scrollbar': {
+            width: '12px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#D4D4D4',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#F0F0F0',
+            borderRadius: '10px',
+        },
     },
-    chatDefault: {
-      fontWeight: 600,
+   
+    chatDefaultText: {
+        color: '#646464',
+        fontSize: '1.2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%'
+    },
+    messageContainerOwn: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        alignItems: 'end',
+        gap: '10px',
+        marginLeft: 'auto',
+        maxWidth: '80%',
+        textAlign: 'right',
+    },
+    messageContainerNotOwn: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'end',
+        gap: '10px',
+        marginRight: 'auto',
+        maxWidth: '80%',
+        textAlign: 'left',
+    },
+    profileImageChat: {
+        borderRadius: '50%',
+        width: '30px',
+        height: '30px',
+        objectFit: 'cover',
+        margin: '0.5rem 0',
     },
     chatMessage: {
-      maxWidth: '70%',
-      padding: '10px',
-      borderRadius: '4px',
-      marginBottom: '10px',
-      alignSelf: 'flex-start',
-      backgroundColor: '#f0f0f0',
-      color: '#333',
-      '&.own': {
-        alignSelf: 'flex-end',
-        backgroundColor: '#99baf3',
-      },
+        borderRadius: '1.2rem',
+        margin: '0.5rem 0',
+        '&.own': {
+            backgroundColor: '#00283E',
+            color: '#FFFFFF',
+            padding: '0 1rem 0 1.2rem',
+        },
+        '&.notOwn': { 
+            backgroundColor: '#FFFFFF',
+            color: '#6C6B6B',
+            padding: '0 1.2rem 0 1rem',
+        },
     },
     bottom: {
-      borderTop: '1px solid #4b8af7',
-      padding: '10px 20px',
-      display: 'flex',
-      alignItems: 'center',
+        padding: '1rem 2rem 1.5rem 2rem',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#F2F2F2',
+        borderBottomLeftRadius: '2rem',
+        borderBottomRightRadius: '2rem',
     },
     bottomTextarea: {
-      flex: 1,
-      height: '40px',
-      border: 'none',
-      borderRadius: '4px',
-      padding: '10px',
-      resize: 'none',
+        flex: 1,
+        height: '40px',
+        border: 'none',
+        borderRadius: '4px',
+        padding: '10px',
+        resize: 'none',
     },
     bottomButton: {
-      marginLeft: '10px',
-      padding: '10px 20px',
-      backgroundColor: '#4b8af7',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
+        marginLeft: '10px',
+        padding: '10px 20px',
+        backgroundColor: '#4b8af7',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
     },
-    contactSpan: {
-      fontSize: '1rem',
-      fontWeight: 500,
-      color: 'black',
-    }
- }));
+    messageInputContainer: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '5rem',
+        padding: '0 0.5rem',
+        width: '100%',
+        justifyContent: 'center',
+    },
+    messageInput: {
+        flex: 1,
+        border: 'none',
+        outline: 'none',
+        padding: '0.5rem 1rem',
+        fontSize: '1rem',
+        color: '#7E7E7E',   
+        backgroundColor: 'transparent',
+        '&::placeholder': {
+            color: '#7E7E7E',
+        },
+    },
+    sendButton: {       
+        cursor: 'pointer',
+        margin: '0.8rem 0.5rem',
+        padding: 0, 
+        background: 'none', 
+        display: 'flex',
+        alignItems: 'center',     
+        '&:disabled': {
+            cursor: 'not-allowed',
+            opacity: 0.2,
+            background: 'none', 
+        },
+        '& img': {
+            width: '30px',  
+            background: 'none',           
+        },
+        '&:hover': {
+            background: 'none',           
+
+        }
+    }, 
+}));
 
 export const useStylesMyAccount = makeStyles(() => ({
     container: {
@@ -554,9 +732,9 @@ export const useStylesPropertyCard = makeStyles(() => ({
     cardContainer: {
         backgroundColor: '#F2F2F2',
         borderRadius: '20px',
-        margin: '15px',
+        margin: '0',
         overflow: 'hidden',
-        width: '300px',
+        width: '100%',
         position: 'relative',
         transition: 'background-color 0.2s ease',
         '&:hover': {
@@ -575,7 +753,7 @@ export const useStylesPropertyCard = makeStyles(() => ({
         top: '10px',
         right: '10px',
         gap: '10px',
-        zIndex: 1000,
+        zIndex: 999,
         display:'flex',  
         padding:'10px 0',
     },
@@ -654,12 +832,18 @@ export const useStylesMyProperties = makeStyles(() => ({
             display: 'none',
         },
     },
+    propertyGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gap: '1rem',
+        width: '100%',
+        padding: '1rem',
+    },
 }));
 
 export const useStylesMyTenants = makeStyles(() => ({
     scrollableDiv: {
         display: 'flex', 
-        flexWrap: 'wrap', 
         justifyContent: 'center', 
         width: '100%',
         maxHeight: '75vh',
@@ -729,6 +913,12 @@ export const deleteAccountModalStyles = makeStyles(() => ({
         '&:last-child': {
             backgroundColor: '#CC3434',
         },
+    },
+    closeIcon: {
+        display: 'flex',
+        justifyContent: 'right',
+        cursor: 'pointer',
+        width: '100%',
     },
 }));
 
@@ -908,41 +1098,6 @@ export const preciseNeedsModalStyles = makeStyles(() => ({
 
 }));
 
-
-export const chatStyles = makeStyles(() => ({
-    chatContainer: {
-        width: '100%',
-        height:'100vh', 
-        justifyContent:'center', 
-        alignContent:'center', 
-        display:'flex', 
-        gap:'2rem', 
-        alignItems:'center'
-    },
-    columnContacts: {
-        width: '20vw', 
-        height: '70vh', 
-        backgroundColor: '#F2F2F2', 
-        borderRadius: '2rem', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        gap: '1rem'
-    },
-    contactList: {
-        backgroundColor:'white', 
-        borderRadius:'20px', 
-        padding:'13.2vw 7vw'
-    },
-    columnChat: { 
-        width:'40vw', 
-        height:'70vh', 
-        backgroundColor:'#F2F2F2', 
-        borderRadius:'2rem'
-    }
-
-}));
-
 export const homeStyles = makeStyles(() => ({ 
     homeContainer: {
         maxWidth: '1400px',
@@ -1056,7 +1211,8 @@ export const propertyDetailStyles = makeStyles(() => ({
     },
     optionsIcon: {
         height:'25px',
-        boxShadow:'none'
+        boxShadow:'none',
+        cursor: 'pointer',
     },
     imageContainer: {
         width: '100%',
@@ -1147,8 +1303,208 @@ export const propertyDetailStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        cursor: 'pointer',
+    },
+
+    tenantElement: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '1.5rem 1rem',       
+        '&:not(:last-child)': {
+            borderBottom: '1px solid #E1E1E1',
+        },        
+    },
+    tenantCard: {
+        display:'flex',
+        gap:'1rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        width: '90%',
+        alignItems: 'left',
+        margin:'2rem 0 1rem 0', 
+        padding:'2rem 3rem',      
+        flexDirection:'column', 
+        textAlign:'left'
+    }, 
+    tenantImg: {
+        width: '50px',
+        height: '50px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    },
+    tenantFullname: {
+        fontSize: '1.2rem',
+        fontWeight: '500',
+        color: '#626262',
+    },
+    tenantUser: {
+        fontSize: '1rem',
+        fontWeight: 'light',
+        color: '#6C6B6B',
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        padding: '0.8rem 1.5rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
     }
-    
-    
-    
 }))
+
+export const filterPropertiesModalStyles = makeStyles(() => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        position: 'relative',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '60vh',
+    },
+    closeIcon: {
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem',
+        cursor: 'pointer',
+        width: '1.5rem',
+        height: '1.5rem',
+    },
+    title: {
+        color: '#434343',
+        fontWeight: 'bolder',
+        fontSize: '1.5rem',            
+    },
+    inputContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: '1rem 0',
+    },
+    inputWrapper: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#F2F2F2',
+        borderRadius: '10px',
+        padding: '0.5rem',
+        width: '45%',
+    },
+    currencySymbol: {
+        position: 'absolute',
+        left: '10px',
+        color: '#666',
+        fontSize: '0.9rem',
+    },
+    inputField: {
+        width: '100%',
+        padding: '0.5rem 1rem 0.5rem 2rem',
+        border: 'none',
+        background: 'transparent',
+        fontSize: '1rem',
+        color: '#333',
+        outline: 'none',
+    },
+    inputLabel: {
+        marginLeft: '5px',
+        color: '#666',
+        fontSize: '0.9rem',
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap: '1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent: 'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',     
+    },
+    cleanButton: {
+        fontWeight: 'bold', 
+        backgroundColor: 'transparent', 
+        color: '#00283E', 
+        border: '1px solid #00283E',
+        padding: '0.8rem 2rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',       
+    },
+}));
+
+
+export const doubleDraggerStyles = makeStyles(() => ({
+    draggerContainer: {
+        position: 'relative',
+        height: '10px',
+        borderRadius: '5px',
+        backgroundColor: '#BDBDBD',
+    },
+    draggerTrack: {
+        position: 'absolute',
+        height: '100%',
+        borderRadius: '5px',
+        backgroundColor: '#04476C',
+    },
+    draggerHandle: {
+        position: 'absolute',
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        backgroundColor: '#04476C',
+        cursor: 'pointer',
+        transform: 'translate(-50%, -50%)',
+        top: '50%',
+    },
+}));
+
+export const favoritePropertiesStyles = makeStyles(() => ({   
+    favContainer: {
+        minHeight: '90vh',
+        maxWidth: '1400px',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'top',
+        textAlign: 'center',
+        padding: '6rem 0',
+    },
+    searchBarContainer: {
+        margin: '1rem 0'
+    },
+    propertyGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gap: '1rem',
+        width: '100%',
+        padding: '1rem',
+    },
+    text: {
+        textAlign: 'center', 
+        color: '#6C6B6B', 
+        fontSize: '1.2rem',
+        margin: '3rem 0'
+        
+    }
+}));

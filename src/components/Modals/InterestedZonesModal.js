@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getUser, updateUser } from '../../../hooks/useUserService';
-import { interestedZonesModalStyles } from '../../../styles/useStyles';
-import { googleMapsLogo } from '../../../assets';
-import GoogleMapRentState from '../../RentState Components/GoogleMapRentState';
+import { interestedZonesModalStyles } from '../../styles/useStyles';
+import { getUser, updateUser } from '../../hooks/useUserService';
+import { googleMapsLogo } from '../../assets';
+import GoogleMapRentState from '../RentState Components/GoogleMapRentState';
 
 export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
     const classes = interestedZonesModalStyles(); 
@@ -11,8 +11,24 @@ export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        console.log("Estos son los polígonos actuales:", polygons.map(poly => poly.coordinates));
-    }, [polygons]);
+        const fetchUserData = async () => {
+            try {
+                const userData = await getUser(currentUserId, token);
+                if (userData.coverageAreaInterest) {
+                    const userPolygons = userData.coverageAreaInterest.map(polygon => ({
+                        coordinates: polygon.map(coord => ({ lat: coord.latitude, lng: coord.longitude }))
+                    }));
+                    setPolygons(userPolygons);
+                }
+            } catch (error) {
+                console.error('Error al obtener los datos del usuario:', error);
+            }
+        };
+
+        if (open) {
+            fetchUserData();
+        }
+    }, [open, currentUserId, token]);
 
     const handleSaveZones = async () => {
         try {
@@ -24,15 +40,25 @@ export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
                 }))
             );
 
-            const { id, name, lastName, gender, email, description, birthDate, district, photoUrl, role, latitude, longitude, department, city, address, dni, phone, premium, chatNewMessage, newPropertyNear, favoriteProperties, userNeeds } = userData;
-            const updatedUserData = { id, name, lastName, gender, email, description, birthDate, district, photoUrl, role, latitude, longitude, department, city, address, dni, phone, premium, chatNewMessage, newPropertyNear, coverageAreaInterest, favoriteProperties, userNeeds};
+            const updatedUserData = {
+                ...userData,
+                coverageAreaInterest: []
+            };
+
+            updatedUserData.coverageAreaInterest = coverageAreaInterest;
 
             await updateUser(updatedUserData, token);
             console.log('Zonas guardadas exitosamente');
+            handleClose()
         } catch (error) {
             console.error('Error al guardar las zonas:', error);
         }
     };
+
+    useEffect(() => {
+        console.log("Polígonos recibidos en el modal:", polygons);
+    }, [polygons]);
+    
 
     if (!open) return null;
 
@@ -51,8 +77,10 @@ export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
 
                 <div style={{margin:'10px 0'}}>
                     <GoogleMapRentState 
+                        key={open ? "open" : "closed"}
                         mapType="poligon"
-                        setPolygons={setPolygons} 
+                        setPolygons={setPolygons}
+                        initialPolygons={polygons}
                     />
                 </div>
 

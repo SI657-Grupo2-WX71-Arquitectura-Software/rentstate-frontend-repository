@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { preciseNeedsModalStyles } from '../../../styles/useStyles';
-import { needsIcon } from '../../../assets';
+import { preciseNeedsModalStyles } from '../../styles/useStyles';
+import { needsIcon } from '../../assets';
 
 export const PreciseNeedsModal = ({ open, handleClose, handleDelete }) => {
     const classes = preciseNeedsModalStyles(); 

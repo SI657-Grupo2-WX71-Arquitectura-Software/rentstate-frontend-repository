@@ -17,7 +17,10 @@ import tentantIcon from './tentantIcon.svg';
 import restaurantMarker from './restaurantMarker.svg';
 import parkMarker from './parkMarker.svg';
 import schoolMarker from './schoolMarker.svg';
-
+import closeIcon from './closeIcon.svg';
+import sendMessageIcon from './sendMessageIcon.svg';
+import greenCheckIcon from './greenCheckIcon.svg';
+import redXIcon from './redXIcon.svg';
 
 export {
     emailIcon,
@@ -38,6 +41,9 @@ export {
     tentantIcon,
     restaurantMarker,
     parkMarker,
-    schoolMarker
-
+    schoolMarker,
+    closeIcon,
+    sendMessageIcon,
+    greenCheckIcon,
+    redXIcon
 };

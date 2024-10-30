@@ -4,9 +4,9 @@ import SwitchRentstate from '../../RentState Components/SwitchRentstate';
 import { useNavigate } from "react-router-dom";
 import { warningIcon, googleMapsLogo, completedIcon, needsIcon } from '../../../assets';
 import { deleteUser } from '../../../hooks/useUserService';
-import { DeleteAccountModal } from "../Modals/DeleteAccountModal";
-import { InterestedZonesModal } from "../Modals/InterestedZonesModal";
-import { PreciseNeedsModal } from "../Modals/PreciseNeedsModal";
+import { DeleteAccountModal } from "../../Modals/DeleteAccountModal";
+import { InterestedZonesModal } from "../../Modals/InterestedZonesModal";
+import { PreciseNeedsModal } from "../../Modals/PreciseNeedsModal";
 
 const MyConfiguration = () => {
     const classes = useStylesMyAccount();
@@ -88,11 +88,11 @@ const MyConfiguration = () => {
             </div>
 
             <div className={classes.buttonsContainer}>
-                <div className={classes.button} onClick={handleLogout} style={{backgroundColor: '#00283E'}}> 
-                    Cerrar Sesión 
-                </div>
                 <div className={classes.button}  onClick={handleOpenDeleteModal} style={{backgroundColor: '#CC3434'}}> 
                     Eliminar Cuenta 
+                </div>
+                <div className={classes.button} onClick={handleLogout} style={{backgroundColor: '#00283E'}}> 
+                    Cerrar Sesión 
                 </div>
             </div>
 

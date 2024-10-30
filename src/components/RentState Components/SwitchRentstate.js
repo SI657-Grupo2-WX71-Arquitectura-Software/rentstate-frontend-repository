@@ -11,7 +11,7 @@ const Slider = styled.span`
     display: inline-block;
     width: 50px;
     height: 24px;
-    background-color: ${props => props.isOn ? '#04466A' : '#4D5153'};
+    background-color: ${props => props.$isOn ? '#04466A' : '#4D5153'};
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -24,9 +24,9 @@ const Slider = styled.span`
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background-color: ${props => props.isOn ? '#E5EAED' : '#B3B7B9'};
+        background-color: ${props => props.$isOn ? '#E5EAED' : '#B3B7B9'};
         transition: transform 0.3s;
-        transform: ${props => props.isOn ? 'translateX(26px)' : 'translateX(0)'};
+        transform: ${props => props.$isOn ? 'translateX(26px)' : 'translateX(0)'};
     }
 `;
 
@@ -39,7 +39,7 @@ export const SwitchRentstate = () => {
 
     return (
         <SwitchContainer onClick={toggleSwitch}>
-            <Slider isOn={isOn} />
+            <Slider $isOn={isOn} />
         </SwitchContainer>
     );
 };

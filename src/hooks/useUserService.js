@@ -40,6 +40,20 @@ export const getUser = async (userId, token) => {
     return response.data;
 };
 
+export const getAllUsers = async (token) => {
+    try {
+        const response = await userService.get(`/api/v1/users`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        throw error;
+    }
+};
+
 export const deleteUser = async (userId, token) => {
     try {
         const response = await userService.delete(`/api/v1/users/${userId}`, {
@@ -91,6 +105,23 @@ export const getContacts = async (userId, token) => {
         return response.data;
     } catch (error) {
         console.error('Error fetching contacts:', error);
+        throw error;
+    }
+};
+
+export const getContactDetails = async (usernames, token) => {
+    try {
+        const contactDetails = await Promise.all(usernames.map(async (username) => {
+            const response = await userService.get(`/api/v1/users/username/${username}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
+        }));
+        return contactDetails;
+    } catch (error) {
+        console.error('Error fetching contact details:', error);
         throw error;
     }
 };

@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { useStylesButtonComponent, useStylesInquilinoCard, useStylesPropertyCard, useStylesSearchBarComponent } from '../../styles/useStyles';
+import { Select, MenuItem, InputLabel, FormControl, Skeleton, CircularProgress } from '@mui/material';
+import { doubleDraggerStyles, useStylesButtonComponent, useStylesInquilinoCard, useStylesPropertyCard, useStylesSearchBarComponent } from '../../styles/useStyles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { searchIcon, peru, trashIcon, markerMap, editIcon, favoriteIcon } from '../../assets';
 import { useNavigate } from 'react-router-dom';
+import { deleteProperty } from '../../hooks/usePropertyService';
+import { DeletePropertyModal } from '../Modals/DeletePropertyModal';
+import { getUser, updateUser } from '../../hooks/useUserService';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -463,18 +466,41 @@ export const InquilinoCard = ({ photoUrl, name, lastName, isActive, property }) 
     );
 };
 
-export const PropertyCard = ({ property, owner }) => {
+export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate, isPreview }) => {
     const classes = useStylesPropertyCard();
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [userFetched, setUserFetched] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await getUser(currentUserId, token);
+                setUser(userData);
+                setUserFetched(true);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        if (!userFetched) {
+            fetchUser();
+        }
+    }, [currentUserId, token, userFetched]);
 
     const handleMapClick = (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         const mapUrl = `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
         window.open(mapUrl, '_blank');
     };
 
     const handleOwnerClick = (event) => {
+        if (isPreview) return;
         event.stopPropagation();
         if (String(owner?.id) === String(currentUserId)) {
             navigate('/perfil');
@@ -484,7 +510,58 @@ export const PropertyCard = ({ property, owner }) => {
     };
 
     const handleCardClick = () => {
+        if (isPreview) return;
         navigate(`/property/${property.id}`);
+    };
+
+    const handleDeleteClick = (event) => {
+        if (isPreview) return;
+        event.stopPropagation();
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    };
+
+    const handleDeleteProperty = async () => {
+        setIsLoading(true);
+        try {
+            await deleteProperty(property.id, token);
+            setIsDeleteModalOpen(false);
+            onDelete();
+        } catch (error) {
+            console.error('Error al eliminar la propiedad:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleFavoriteClick = async (event) => {
+        if (isPreview) return;
+        event.stopPropagation();
+        if (!user) return;
+
+        try {
+            const favoriteProperties = new Set(user.favoriteProperties);
+            if (favoriteProperties.has(property.id)) {
+                favoriteProperties.delete(property.id);
+            } else {
+                favoriteProperties.add(property.id);
+            }
+
+            const updatedUserData = {
+                ...user,
+                favoriteProperties: Array.from(favoriteProperties)
+            };
+
+            await updateUser(updatedUserData, token);
+            setUser(updatedUserData);
+            console.log('Propiedad actualizada en favoritos');
+            onFavoriteUpdate();
+        } catch (error) {
+            console.error('Error al actualizar la propiedad en favoritos:', error);
+        }
     };
 
     return (
@@ -493,11 +570,11 @@ export const PropertyCard = ({ property, owner }) => {
             <div className={classes.iconsContainer}>
                 {String(currentUserId) === String(owner?.id) ? (
                     <>
-                        <img src={trashIcon} alt="Delete" className={classes.icon} />
+                        <img src={trashIcon} alt="Delete" className={classes.icon} onClick={handleDeleteClick} />
                         <img src={editIcon} alt="Edit" className={classes.icon} />
                     </>
                 ) : (
-                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} />
+                    <img src={favoriteIcon} alt="Favorite" className={classes.icon} onClick={handleFavoriteClick} />
                 )}
             </div>
             <div className={classes.propertyDetails}>
@@ -526,8 +603,109 @@ export const PropertyCard = ({ property, owner }) => {
                     Ver en Mapa
                 </div>
             </div>
+            {isDeleteModalOpen && (
+                <DeletePropertyModal
+                    open={isDeleteModalOpen} 
+                    handleClose={handleCloseDeleteModal} 
+                    handleDelete={handleDeleteProperty} 
+                    district={property.district}
+                    location={property.location}
+                />
+            )}
+            {isLoading && <div className={classes.loadingOverlay}>Cargando...</div>}
         </div>
     );
 };
 
-export default PropertyCard;
+export const SkeletonPropertyCard = () => {
+    const classes = useStylesPropertyCard();
+
+    return (
+        <div className={classes.cardContainer}>
+            <Skeleton variant="rectangular" className={classes.propertyImage} height={180} />
+            <div className={classes.iconsContainer}>
+                <Skeleton variant="circular" className={classes.icon} width={24} height={24} />
+                <Skeleton variant="circular" className={classes.icon} width={24} height={24} />
+            </div>
+            <div className={classes.propertyDetails}>
+                <Skeleton variant="text" width="60%" />
+                <Skeleton variant="text" width="40%" />
+                <Skeleton variant="text" width="50%" />
+            </div>
+            <div className={classes.propertyBottom}>
+                <Skeleton variant="circular" className={classes.ownerImage} width={32} height={32} />
+                <Skeleton variant="text" width="30%" />
+                <Skeleton variant="text" width="20%" />
+            </div>
+        </div>
+    );
+};
+
+export const DoubleDragger = ({ min = 0, max = 1000000, width = '100%', onChange, leftValue = min, rightValue = max }) => {
+    const classes = doubleDraggerStyles();
+    const containerRef = useRef(null);
+    const [leftPos, setLeftPos] = useState((leftValue / max) * 100);
+    const [rightPos, setRightPos] = useState((rightValue / max) * 100);
+
+    useEffect(() => {
+        setLeftPos((leftValue / max) * 100);
+        setRightPos((rightValue / max) * 100);
+    }, [leftValue, rightValue, max]);
+
+    const updateValues = useCallback(() => {
+        const left = Math.round((leftPos / 100) * (max - min) + min);
+        const right = Math.round((rightPos / 100) * (max - min) + min);
+        onChange && onChange({ left, right });
+    }, [leftPos, rightPos, min, max, onChange]);
+
+    useEffect(() => {
+        updateValues();
+    }, [leftPos, rightPos, updateValues]);
+
+    const handleDrag = (event, setPosition, posValue, oppositePosValue, isLeft) => {
+        event.preventDefault();
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const startPos = event.clientX;
+        
+        const onMouseMove = (moveEvent) => {
+            const newPos = posValue + ((moveEvent.clientX - startPos) / containerRect.width) * 100;
+            const limitedPos = Math.max(0, Math.min(100, newPos));
+
+            if (isLeft && limitedPos < oppositePosValue) {
+                setPosition(limitedPos);
+            } else if (!isLeft && limitedPos > oppositePosValue) {
+                setPosition(limitedPos);
+            }
+        };
+
+        const onMouseUp = () => {
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+        };
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+    };
+
+    return (
+        <div ref={containerRef} className={classes.draggerContainer} style={{ width }}>
+            <div
+                className={classes.draggerTrack}
+                style={{
+                    left: `${leftPos}%`,
+                    right: `${100 - rightPos}%`
+                }}
+            ></div>
+            <div
+                className={classes.draggerHandle}
+                style={{ left: `${leftPos}%` }}
+                onMouseDown={(event) => handleDrag(event, setLeftPos, leftPos, rightPos, true)}
+            />
+            <div
+                className={classes.draggerHandle}
+                style={{ left: `${rightPos}%` }}
+                onMouseDown={(event) => handleDrag(event, setRightPos, rightPos, leftPos, false)}
+            />           
+        </div>
+    );
+};
