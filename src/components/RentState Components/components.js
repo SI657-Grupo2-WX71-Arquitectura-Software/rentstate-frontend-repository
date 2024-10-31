@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Select, MenuItem, InputLabel, FormControl, Skeleton, CircularProgress } from '@mui/material';
+import { Select, MenuItem, InputLabel, FormControl, Skeleton } from '@mui/material';
 import { doubleDraggerStyles, useStylesButtonComponent, useStylesInquilinoCard, useStylesPropertyCard, useStylesSearchBarComponent } from '../../styles/useStyles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteProperty } from '../../hooks/usePropertyService';
 import { DeletePropertyModal } from '../Modals/DeletePropertyModal';
 import { getUser, updateUser } from '../../hooks/useUserService';
+import ToastManager from './ToastManager';
 
 const theme = createTheme({
     palette: { primary: { main: '#ffffff' }},
@@ -530,8 +531,10 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate, isPr
             await deleteProperty(property.id, token);
             setIsDeleteModalOpen(false);
             onDelete();
+            ToastManager.success('Propiedad Eliminada con éxito');
         } catch (error) {
             console.error('Error al eliminar la propiedad:', error);
+            ToastManager.error('Error al eliminar la propiedad');
         } finally {
             setIsLoading(false);
         }
@@ -546,8 +549,10 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate, isPr
             const favoriteProperties = new Set(user.favoriteProperties);
             if (favoriteProperties.has(property.id)) {
                 favoriteProperties.delete(property.id);
+                ToastManager.success('Propiedad eliminada de Faviritos');
             } else {
                 favoriteProperties.add(property.id);
+                ToastManager.success('Propiedad agregada a Faviritos');
             }
 
             const updatedUserData = {

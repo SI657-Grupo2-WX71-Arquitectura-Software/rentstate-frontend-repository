@@ -3,6 +3,7 @@ import { interestedZonesModalStyles } from '../../styles/useStyles';
 import { getUser, updateUser } from '../../hooks/useUserService';
 import { googleMapsLogo } from '../../assets';
 import GoogleMapRentState from '../RentState Components/GoogleMapRentState';
+import ToastManager from '../RentState Components/ToastManager';
 
 export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
     const classes = interestedZonesModalStyles(); 
@@ -49,16 +50,13 @@ export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
 
             await updateUser(updatedUserData, token);
             console.log('Zonas guardadas exitosamente');
+            ToastManager.success('Zonas guardadas con éxito');
             handleClose()
         } catch (error) {
             console.error('Error al guardar las zonas:', error);
+            ToastManager.error('Error al guardar Zonas');
         }
-    };
-
-    useEffect(() => {
-        console.log("Polígonos recibidos en el modal:", polygons);
-    }, [polygons]);
-    
+    };   
 
     if (!open) return null;
 
