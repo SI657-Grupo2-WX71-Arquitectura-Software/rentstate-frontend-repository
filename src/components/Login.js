@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from '../hooks/api'; 
 import { useStylesLogin } from "../styles/useStyles";
 import { Button, FieldEdit, FieldEditPassword } from "./RentState Components/components";
+import ToastManager from "./RentState Components/ToastManager";
 
 const Login = () => {
     const classes = useStylesLogin();
@@ -22,9 +23,11 @@ const Login = () => {
             const { token, userId } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('userId', userId);
+            ToastManager.success('Bienvenido a RentState');
             navigate("/home");
         } catch (error) {
-            setAuthError("Credenciales incorrectas, intenta nuevamente.");
+            setAuthError("");
+            ToastManager.error('Credenciales incorrectas, intenta nuevamente');
             console.error("Login failed:", error);
         }
     };

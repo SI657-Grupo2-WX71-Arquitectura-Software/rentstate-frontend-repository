@@ -48,16 +48,23 @@ const PropertyDetail = () => {
             try {
                 const propertyData = await getPropertyById(id);
                 setProperty(propertyData);
+    
                 const ownerData = await getUser(propertyData.userId);
                 setOwner(ownerData);
+    
                 const uniqueInterestedUserIds = [...new Set(propertyData.interestedUserIds)];
                 const interestedUsersData = await Promise.all(
                     uniqueInterestedUserIds.map(async userId => {
-                        const user = await getUser(userId);
-                        return user;
+                        if (userId !== 2) {
+                            const user = await getUser(userId);
+                            return user;
+                        } else {
+                            console.log('Skipping fetch for userId 2');
+                            return null;
+                        }
                     })
-                );
-                setInterestedUsers(interestedUsersData);
+                );    
+                setInterestedUsers(interestedUsersData.filter(user => user !== null));
             } catch (error) {
                 console.error("Error al obtener los detalles de la propiedad o del propietario:", error);
             }

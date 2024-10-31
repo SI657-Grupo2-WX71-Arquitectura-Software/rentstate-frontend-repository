@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { deleteAccountModalStyles } from '../../styles/useStyles';
 import { closeIcon } from '../../assets';
 import { getProperty, addInterestToProperty, getPropertyById } from '../../hooks/usePropertyService';
+import ToastManager from '../RentState Components/ToastManager';
 
 export const SendInterestModal = ({ open, handleClose, owner, property }) => {
     const classes = deleteAccountModalStyles();
@@ -37,7 +38,8 @@ export const SendInterestModal = ({ open, handleClose, owner, property }) => {
             if (userId && token) {
                 const interestData = { userId: parseInt(userId) };
                 await addInterestToProperty(property.id, interestData, token);
-                console.log('Solicitud de interés enviada exitosamente.');
+                ToastManager.success('Solicitud de interés enviada exitosamente.');
+
                 setHasSentInterest(true);
             } else {
                 console.log('No se pudo obtener el ID del usuario o el token. Por favor, inicia sesión.');
@@ -45,6 +47,7 @@ export const SendInterestModal = ({ open, handleClose, owner, property }) => {
             handleClose();
         } catch (error) {
             console.error('Error al enviar la solicitud de interés:', error);
+            ToastManager.error('Error al enviar la solicitud de interés');
             handleClose();
         } finally {
             handleClose();
