@@ -30,9 +30,15 @@ jobs:
       run: npm install --force
 
     - name: Build the frontend
+      env:
+        REACT_APP_KEY_IA: ${{ secrets.KEY_IA }}
+        REACT_APP_TOKEN: ${{ secrets.TOKEN }}
       run: npm run build
 
     - name: Run tests
+      env:
+        REACT_APP_KEY_IA: ${{ secrets.KEY_IA }}
+        REACT_APP_TOKEN: ${{ secrets.TOKEN }}
       run: npm test -- --passWithNoTests
 
   deploy:
@@ -51,6 +57,9 @@ jobs:
         project_id: axial-canto-435822-c9  
 
     - name: Deploy to VM
+      env:
+        REACT_APP_KEY_IA: ${{ secrets.KEY_IA }}
+        REACT_APP_TOKEN: ${{ secrets.TOKEN }}
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
         # Asegurarse de que el repositorio tenga los permisos correctos
