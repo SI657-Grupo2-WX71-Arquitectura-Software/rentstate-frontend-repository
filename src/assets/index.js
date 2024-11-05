@@ -21,6 +21,7 @@ import closeIcon from './closeIcon.svg';
 import sendMessageIcon from './sendMessageIcon.svg';
 import greenCheckIcon from './greenCheckIcon.svg';
 import redXIcon from './redXIcon.svg';
+import renAssistantIcon from './renAssistantIcon.svg';
 
 export {
     emailIcon,
@@ -45,5 +46,6 @@ export {
     closeIcon,
     sendMessageIcon,
     greenCheckIcon,
-    redXIcon
+    redXIcon,
+    renAssistantIcon
 };
