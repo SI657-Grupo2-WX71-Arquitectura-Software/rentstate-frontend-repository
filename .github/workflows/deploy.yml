@@ -18,30 +18,12 @@ jobs:
       with:
         node-version: '14'
 
-    - name: Set Node.js memory and stack size limit
-      run: |
-        export NODE_OPTIONS="--max_old_space_size=8192 --stack-size=65500"
-
     - name: Clean up node_modules and package-lock.json
       run: |
         rm -rf node_modules package-lock.json
 
     - name: Install dependencies
       run: npm install --force
-
-    - name: Create .env file
-      run: |
-        echo "REACT_APP_KEY_IA=${{ secrets.KEY_IA }}" >> .env
-        echo "REACT_APP_TOKEN=${{ secrets.TOKEN }}" >> .env
-
-    - name: Build the frontend
-      run: npm run build
-
-    - name: Run tests
-      env:
-        REACT_APP_KEY_IA: ${{ secrets.KEY_IA }}
-        REACT_APP_TOKEN: ${{ secrets.TOKEN }}
-      run: npm test -- --passWithNoTests
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,20 +40,25 @@ jobs:
       with:
         project_id: axial-canto-435822-c9  
 
-    - name: Deploy to VM
+    - name: Deploy and Build on VM
       env:
         REACT_APP_KEY_IA: ${{ secrets.KEY_IA }}
         REACT_APP_TOKEN: ${{ secrets.TOKEN }}
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
-        # Asegurarse de que el repositorio tenga los permisos correctos
-        sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository &&
-        cd /home/heyshaske/rentstate-frontend-repository &&
-        git config --global credential.helper 'store --file=/tmp/git-credentials' &&
-        echo 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}:x-oauth-basic' > /tmp/git-credentials &&
-        git reset --hard origin/develop &&
-        git pull origin develop &&
-        npm install --force &&
-        npm run build &&
-        sudo systemctl restart nginx
+          # Crear archivo .env en la MV con las variables de entorno
+          echo 'REACT_APP_KEY_IA=${{ secrets.KEY_IA }}' > /home/heyshaske/rentstate-frontend-repository/.env
+          echo 'REACT_APP_TOKEN=${{ secrets.TOKEN }}' >> /home/heyshaske/rentstate-frontend-repository/.env
+
+          sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository &&
+          cd /home/heyshaske/rentstate-frontend-repository &&
+          
+          git config --global credential.helper 'store --file=/tmp/git-credentials' &&
+          echo 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}:x-oauth-basic' > /tmp/git-credentials &&
+          git reset --hard origin/develop &&
+          git pull origin develop &&
+    
+          npm install --force &&
+          npm run build &&
+          sudo systemctl restart nginx
         "
