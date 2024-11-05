@@ -14,6 +14,7 @@ import OtherAccount from './components/OtherAccount';
 import { FavoriteProperties } from './components/FavoriteProperties';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import RenAssistant from './components/RenAssistant';
 
 function NotFound() {
 return (
@@ -48,6 +49,7 @@ return (
             <Footer />
         </header>
         <ToastContainer />
+        <RenAssistant />
     </div>
     </Router>
 );
