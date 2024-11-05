@@ -12,9 +12,9 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
 
     const assistant_id = "asst_xREhNxsvgz6tpCuB8UZE7bwX";
     const thread_id = "thread_N0oAl37gazglcRrmPcSfmiT3";
-    const apikey = process.env.KEY_IA;
-    const token = process.env.TOKEN;
-    
+    const apikey = process.env.REACT_APP_KEY_IA;
+    const token = process.env.REACT_APP_TOKEN;
+
     const handleSendMessage = async () => {
         if (!inputText.trim()) return;
 
