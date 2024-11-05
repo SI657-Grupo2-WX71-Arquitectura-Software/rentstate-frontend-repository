@@ -46,10 +46,6 @@ jobs:
         REACT_APP_TOKEN: ${{ secrets.TOKEN }}
       run: |
         gcloud compute ssh --zone "us-central1-f" "rentstate-back" --project "axial-canto-435822-c9" --command "
-          echo 'REACT_APP_GOOGLE_MAPS_APIKEY=${{ secrets.KEY_MAPS }}' > /home/heyshaske/rentstate-frontend-repository/.env
-          echo 'REACT_APP_KEY_IA=${{ secrets.KEY_IA }}' >> /home/heyshaske/rentstate-frontend-repository/.env
-          echo 'REACT_APP_TOKEN=${{ secrets.TOKEN }}' >> /home/heyshaske/rentstate-frontend-repository/.env
-
           sudo chown -R $(whoami):$(whoami) /home/heyshaske/rentstate-frontend-repository &&
           cd /home/heyshaske/rentstate-frontend-repository &&
           
@@ -58,8 +54,14 @@ jobs:
           git reset --hard origin/develop &&
           git pull origin develop &&
           
+          echo 'REACT_APP_GOOGLE_MAPS_APIKEY=${{ secrets.GOOGLE_MAPS_APIKEY }}' > .env
+          echo 'REACT_APP_KEY_IA=${{ secrets.KEY_IA }}' >> .env
+          echo 'REACT_APP_TOKEN=${{ secrets.TOKEN }}' >> .env
+          
+          # Instalar dependencias y construir el proyecto con las variables de entorno de .env
           npm install --force &&
           npm run build &&
           
+          # Reiniciar Nginx para servir el nuevo build
           sudo systemctl restart nginx
         "
