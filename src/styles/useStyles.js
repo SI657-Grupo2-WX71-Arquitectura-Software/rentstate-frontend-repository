@@ -1508,3 +1508,169 @@ export const favoritePropertiesStyles = makeStyles(() => ({
         
     }
 }));
+
+export const renAssistantStyles = makeStyles(() => ({
+    renAssistant: {
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        width: '80px',
+        height: '80px',
+        backgroundColor: '#04476C',
+        borderRadius: '50%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+        cursor: 'pointer',
+        zIndex: 1000,
+    },
+    hidden: {
+        display: 'none',
+    },
+    icon: {
+        width: '50%',
+        height: '50%',
+    },   
+    chatContainer: {
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        width: '400px',
+        height: '600px',
+        backgroundColor: '#CDCDCD',
+        borderRadius: '15px',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 1001,
+    },
+    header: {
+        backgroundColor: '#E5E5E5',
+        borderTopLeftRadius: '15px',
+        borderTopRightRadius: '15px',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        gap:'20px',
+        padding: '20px 20px'
+    },
+    headerIcon: {
+        width: '50px',
+        height: '50px',
+    },
+    headerText: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    assistantName: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        color: '#626262',
+    },
+    assistantSubtitle: {
+        fontSize: '18px',
+        color: '#6C6B6B',
+    },
+    chatBody: {
+        flex: 1,
+        padding: '10px',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        '&::-webkit-scrollbar': {
+            width: '12px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#B3B3B3',
+            borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#F0F0F0',
+            borderRadius: '10px',
+        },
+    },
+    inputContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '10px',
+        backgroundColor: '#CDCDCD',
+        borderBottomLeftRadius: '15px',
+        borderBottomRightRadius: '15px',
+    },
+    input: {
+        flex: 1,
+        padding: '15px 20px',
+        borderRadius: '100px',
+        border: '1px solid #CDCDCD',
+        outline: 'none',
+        fontSize: '16px',
+        color: '#7E7E7E',
+        '&::placeholder': {
+        color: '#7E7E7E',
+        },
+    },
+    sendButton: {
+        marginLeft: '10px',
+        backgroundColor: '#04476C',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FFFFFF',
+        paddingLeft:'4px',
+        cursor: 'pointer',
+    },
+    assistantMessage: {
+        backgroundColor: "#FFFFFF",
+        color: "#333",
+        borderRadius: "10px",
+        margin: "5px 0",
+        alignSelf: "flex-start",
+        textAlign: 'left',
+        maxWidth: '80%',
+        width: 'fit-content',
+        marginRight: 'auto',
+        padding: '10px 15px'
+    },
+    userMessage: {
+        backgroundColor: "#00283E",
+        color: "#fff",
+        padding: "10px",
+        borderRadius: "10px",
+        margin: "5px 0",
+        alignSelf: "flex-end",
+        textAlign: 'right',
+        maxWidth: '80%',
+        width: 'fit-content',
+        marginLeft: 'auto',
+    },
+    
+    loadingContainer: {
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        marginTop: "5px",
+    },
+    chatDefaultText: {
+        color: '#646464',
+        fontSize: '1.1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        padding:'0 2rem'
+    },
+    minimizeIcon: {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        cursor: 'pointer',
+    },
+    
+}));
