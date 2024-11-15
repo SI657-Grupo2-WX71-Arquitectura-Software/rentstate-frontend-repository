@@ -571,7 +571,7 @@ export const PropertyCard = ({ property, owner, onDelete, onFavoriteUpdate, isPr
 
     return (
         <div className={classes.cardContainer} onClick={handleCardClick}>
-            <img src={property.cardimage} alt="Property" className={classes.propertyImage} />
+            <img src={property.cardimage[0]} alt="Property" className={classes.propertyImage} />
             <div className={classes.iconsContainer}>
                 {String(currentUserId) === String(owner?.id) ? (
                     <>
