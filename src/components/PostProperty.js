@@ -80,7 +80,7 @@ const PostProperty = () => {
                 position: 'top-right',
                 autoClose: 3000,
             });
-            navigate('/posts'); 
+            navigate('/home'); 
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
             toast.error('Error al crear la propiedad', {

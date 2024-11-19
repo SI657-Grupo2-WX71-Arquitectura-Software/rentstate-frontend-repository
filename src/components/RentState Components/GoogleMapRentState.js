@@ -108,7 +108,6 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
                 coordinates: poly.coordinates
             }));
     
-            // Comparamos antes de actualizar para evitar bucles infinitos
             if (JSON.stringify(newPolygons) !== JSON.stringify(initialPolygons)) {
                 setPolygons(newPolygons);
             }

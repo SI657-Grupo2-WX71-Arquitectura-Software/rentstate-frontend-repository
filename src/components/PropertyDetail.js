@@ -230,22 +230,28 @@ const PropertyDetail = () => {
 
                         <div style={{margin:'1rem 0'}}>
                             <div className={classes.imageContainer}>
-                                <img src={property.cardimage} alt="Property" className={classes.image} />
+                                <img src={property.cardimage[0]} alt="Property" className={classes.image} />
                             </div>
                             
                             <div className={classes.additionalImagesContainer}>
-                                <div className={classes.additionalImage}>
-                                    <img src={property.cardimage} alt="Additional Property 1" className={classes.additionalImageStyle} />
-                                </div>
-                                <div className={classes.additionalImage}>
-                                    <img src={property.cardimage} alt="Additional Property 2" className={classes.additionalImageStyle} />
-                                </div>
-                                <div className={classes.additionalImageBlur}>
-                                    <img src={property.cardimage} alt="Additional Property 3" className={classes.additionalImageStyle} />
-                                    <div className={classes.overlay}>
-                                        <span>+9</span>
+                                {property.cardimage[1] && (
+                                    <div className={classes.additionalImage}>
+                                        <img src={property.cardimage[1]} alt="Additional Property 1" className={classes.additionalImageStyle} />
                                     </div>
-                                </div>
+                                )}
+                                {property.cardimage[2] && (
+                                    <div className={classes.additionalImage}>
+                                        <img src={property.cardimage[2]} alt="Additional Property 2" className={classes.additionalImageStyle} />
+                                    </div>
+                                )}
+                                {property.cardimage[3] && (
+                                    <div className={classes.additionalImageBlur}>
+                                        <img src={property.cardimage[3]} alt="Additional Property 3" className={classes.additionalImageStyle} />
+                                        <div className={classes.overlay}>
+                                            <span>+9</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

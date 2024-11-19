@@ -1244,24 +1244,24 @@ export const propertyDetailStyles = makeStyles(() => ({
     additionalImagesContainer: {
         display: 'flex',
         gap: '10px',
-        width: '100%',
-        margin:'1rem 0'
+        width: '106%',
+        margin: '1rem 0'
     },
     additionalImage: {
-        flexGrow: 1,
+        width: '30%',
         aspectRatio: '16/14',
         borderRadius: '10px',
         overflow: 'hidden',
         position: 'relative',
-    },   
+    },
     additionalImageStyle: {
         width: '100%',
         height: '100%',
         objectFit: 'cover',
         objectPosition: 'center',
-    },    
+    },
     additionalImageBlur: {
-        flexGrow: 1,
+        width: '30%',
         aspectRatio: '16/14',
         borderRadius: '10px',
         overflow: 'hidden',
