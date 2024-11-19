@@ -55,7 +55,12 @@ const Login = () => {
                     {authError && <p style={{ color: 'red', margin: 0 }}>{authError}</p>}
                 </div>
                 <div className={classes.buttonContainer}>
-                    <Button disabled={!isLoginButtonEnabled}>Ingresar</Button>                   
+                    <Button 
+                        disabled={!isLoginButtonEnabled}
+                        width="20rem"
+                    >
+                        Ingresar
+                    </Button>                   
                 </div>
                 <p style={{ fontSize: '0.9rem', color: '#E8E8E8' }}>
                     ¿No tienes una cuenta?{" "}

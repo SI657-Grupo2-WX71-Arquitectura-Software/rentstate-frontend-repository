@@ -232,6 +232,21 @@ export const useStylesRegister = makeStyles(() => ({
         width: '100vw',
         height:'100vh'
     },
+    userTypeContainer: {
+        backgroundColor: '#5E5E5E',
+        borderRadius: '15px',
+        cursor: 'pointer',
+        width: '10rem',
+        height: '10rem',
+        alignContent: 'center',
+        transition: 'background-color 0.2s ease',
+        '&:hover': {
+            backgroundColor: '#00283E',
+        },
+    },
+    userTypeSelected: {
+        backgroundColor: '#00283E',
+    },
 }));
 
 export const useStylesButtonComponent = makeStyles(() => ({

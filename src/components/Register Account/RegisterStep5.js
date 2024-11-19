@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, ButtonUpload } from "../RentState Components/components";
 import { useStylesRegister } from "../../styles/useStyles";
@@ -7,29 +7,48 @@ import uploadIcon from '../../assets/uploadPhoto.svg';
 import uploadCloudIcon from '../../assets/uploadCloudIcon.svg'; 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { getAllUsers } from "../../hooks/useUserService";
 
-const RegisterStep5 = ({ prevStep, userData }) => {
+const RegisterStep5 = ({ prevStep }) => {
     const classes = useStylesRegister();    
     const [photoUploaded, setPhotoUploaded] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
+    const [userId, setUserId] = useState(null);
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const users = await getAllUsers();
+                const lastUser = users[users.length - 1];
+                setUserId(lastUser.id);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+
+        fetchUsers();
+    }, []);
    
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file && userId) {
             const formData = new FormData();
             formData.append('file', file);
 
             try {
-                const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/gateway-service/users/upload-profile-picture/${userData.id}`, formData, {
+                const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/gateway-service/api/v1/users/upload-profile-picture/${userId}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                setPhotoUploaded(true);
-                if (response.data) {
+                if (response.status === 200) {
+                    setPhotoUploaded(URL.createObjectURL(file));
                     setUploadSuccess(true);
+                } else {
+                    setUploadSuccess(false);
+                    console.error("Error subiendo la imagen:", response.statusText);
                 }
             } catch (error) {
                 console.error("Error subiendo la imagen:", error);
@@ -41,6 +60,7 @@ const RegisterStep5 = ({ prevStep, userData }) => {
     const handleClickUpload = () => {
         fileInputRef.current.click();
     };
+
     const finalizeRegistration = () => {
         if (uploadSuccess) {
             navigate('/login');

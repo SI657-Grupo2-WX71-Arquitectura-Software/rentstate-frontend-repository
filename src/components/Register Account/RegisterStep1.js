@@ -12,6 +12,7 @@ const RegisterStep1 = ({ nextStep, updateUserData }) => {
     const [email, setEmail] = useState("");
     const [gender, setGender] = useState("");
     const [emailError, setEmailError] = useState("");
+    const [birthdayError, setBirthdayError] = useState('');
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const isFormValid = !emailError && email.trim() && name.trim() && lastName.trim() && gender;
 
@@ -25,6 +26,27 @@ const RegisterStep1 = ({ nextStep, updateUserData }) => {
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    };
+
+    const validateAge = (date) => {
+        const today = new Date();
+        const birthDate = new Date(date);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age >= 18;
+    };
+
+    const handleDateChange = (date) => {
+        if (validateAge(date)) {
+            setSelectedDate(date);
+            updateUserData({ birthDate: date });
+            setBirthdayError('');
+        } else {
+            setBirthdayError('Usted es menor de edad.');
+        }
     };
 
     const handleEmailChange = (e) => {
@@ -76,14 +98,11 @@ const RegisterStep1 = ({ nextStep, updateUserData }) => {
                         value={email} 
                         onChange={handleEmailChange} 
                     />                  
-                    <FieldDatePicker 
+                     <FieldDatePicker 
                         id="birthdate" 
                         label="Fecha de Nacimiento"
                         selectedDate={selectedDate} 
-                        setSelectedDate={(date) => {
-                            setSelectedDate(date);
-                            updateUserData({ birthDate: date });
-                        }}
+                        setSelectedDate={handleDateChange}
                     />
                     <FieldSelect 
                         id="gender" 
@@ -96,7 +115,8 @@ const RegisterStep1 = ({ nextStep, updateUserData }) => {
                         options={genderOptions}
                     />
                 </div>    
-                {emailError && <p style={{ color: 'white', marginTop: '1rem', marginBottom: 0 }}>{emailError}</p>}           
+                {emailError && <p style={{ color: 'white', marginTop: '1rem', marginBottom: 0 }}>{emailError}</p>}
+                {birthdayError && <p style={{ color: 'white', marginTop: '1rem', marginBottom: 0 }}>{birthdayError}</p>}                      
                 <Button 
                     disabled={!isFormValid} 
                     onClick={nextStep}

@@ -26,19 +26,25 @@ const RegisterStep3 = ({ nextStep, prevStep, updateUserData }) => {
                 <h3 className={classes.title}>Crea tu cuenta</h3>
                 <h3 className={classes.subtitle}>Paso 3/5</h3>              
                 <h3 className={classes.subtitle} style={{marginTop:50}}>Tipo de Usuario</h3>
-                <div style={{display:'flex', gap:'2rem', color:'white', fontSize:'1.5rem', fontWeight:'lighter', marginBottom:50}}>                    
+                <div style={{display:'flex', gap:'2rem', color:'white', fontSize:'1.5rem', fontWeight:'lighter', marginBottom:50}}>
                     <div>
-                        <div onClick={() => handleSelectUserType('owner')} style={{backgroundColor:'#00283E', borderRadius:'15px', cursor:'pointer', width:'10rem', height:'10rem', alignContent:'center'}}>
+                        <div 
+                            onClick={() => handleSelectUserType('owner')} 
+                            className={`${classes.userTypeContainer} ${userType === 'owner' ? classes.userTypeSelected : ''}`}
+                        >
                             <img src={ownerIcon} alt="Propietario" style={{ height: '90px', margin: 0 }}/>
                         </div>
                         <h3 className={classes.subtitle} style={{fontSize:'1.1rem'}}>Propietario</h3>
                     </div>
                     <div>
-                        <div onClick={() => handleSelectUserType('tenant')} style={{backgroundColor:'#00283E', borderRadius:'15px', cursor:'pointer', width:'10rem', height:'10rem', alignContent:'center'}}>
+                        <div 
+                            onClick={() => handleSelectUserType('tenant')} 
+                            className={`${classes.userTypeContainer} ${userType === 'tenant' ? classes.userTypeSelected : ''}`}
+                        >
                             <img src={tenantIcon} alt="Inquilino" style={{ height: '90px', margin: 0 }}/>
                         </div>
                         <h3 className={classes.subtitle} style={{fontSize:'1.1rem'}}>Inquilino</h3>
-                    </div>
+                    </div>                                  
                 </div>
                 <Button
                     disabled={!isFormValid}
