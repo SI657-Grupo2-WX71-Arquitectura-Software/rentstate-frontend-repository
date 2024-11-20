@@ -6,6 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
 import PropertyService from '../hooks/usePropertyService';
 import { PropertyCard } from './RentState Components/components';
+import { getUser } from '../hooks/useUserService';
+import emailjs from 'emailjs-com'
+import ToastManager from './RentState Components/ToastManager';
 
 const PostProperty = () => {
     const [category, setCategory] = useState('');
@@ -21,7 +24,6 @@ const PostProperty = () => {
     const [openCredentials, setOpenCredentials] = useState(false);
     const [openUpload, setOpenUpload] = useState(false);
     const [createdPropertyId, setCreatedPropertyId] = useState(null);
-    const [credentials, setCredentials] = useState('');
     const userId = localStorage.getItem('userId');
 
     const districts = [
@@ -109,11 +111,49 @@ const PostProperty = () => {
         }
     };
 
-    const handleAccept = () => {
-        setOpen(false);
-        setCredentials('Su id del sensor es: 9, su contraseña es string');
-        setOpenCredentials(true); 
-    };
+    const handleAccept = async () => {
+        try {
+            const userId = localStorage.getItem('userId')
+            const token = localStorage.getItem('token')
+            const userData = await getUser(userId, token)
+    
+            const generatedId = Math.floor(1000 + Math.random() * 9000).toString()
+            const generatedPassword = Math.random().toString(36).substring(2, 10)
+    
+            const templateParams = {
+                NOMBRE_USUARIO: userData.name,
+                ID_GENERADO: generatedId,
+                CONTRA_GENERADA: generatedPassword,
+                email: userData.email,
+            }
+    
+            console.log('Datos que se enviarán al correo:', templateParams)
+    
+            emailjs
+                .send(
+                    'service_hdbkc1f', // Service ID
+                    'template_g3um7zo', // Template ID
+                    templateParams,
+                    'EwSLU0vhgjhRMLgY2' // Public Key
+                )
+                .then(
+                    (result) => {
+                        console.log('Correo enviado:', result.text)
+                        ToastManager.success('¡Correo enviado exitosamente!')
+                        setOpen(false)
+                        setOpenCredentials(true) // Abre el modal de credenciales
+                    },
+                    (error) => {
+                        console.error('Error al enviar correo:', error.text)
+                        ToastManager.error('Hubo un problema al enviar el correo.')
+                    }
+                )
+        } catch (error) {
+            console.error('Error al obtener datos del usuario o enviar correo:', error)
+            ToastManager.error('Hubo un problema al procesar su solicitud.')
+        }
+    }
+    
 
     const handleReject = () => {
         navigate('/home');
@@ -269,14 +309,7 @@ const PostProperty = () => {
                                 required
                                 fullWidth
                                 margin="normal"
-                            />
-                            <input
-                                type="file"
-                                multiple
-                                onChange={handleFileChange}
-                                required
-                                style={{ margin: '1rem 0' }}
-                            />
+                            />                           
                         </div>
                     </div>
                 </div>
@@ -298,7 +331,7 @@ const PostProperty = () => {
                     Cancelar
                 </Button>
                 <Button variant="contained" color="secondary" onClick={handleSubmit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
-                    Publicar
+                    Continuar
                 </Button>
             </div>
             <ToastContainer />
@@ -319,11 +352,19 @@ const PostProperty = () => {
                     <Button onClick={handleReject} color="primary">
                         No, gracias
                     </Button>
-                    <Button onClick={handleAccept} color="primary" autoFocus>
+                    <Button
+                        onClick={() => {
+                            setOpen(false)
+                            handleAccept()
+                        }}
+                        color="primary"
+                        autoFocus
+                    >
                         Aceptar
                     </Button>
                 </DialogActions>
             </Dialog>
+
 
             <Dialog
                 open={openCredentials}
@@ -334,7 +375,7 @@ const PostProperty = () => {
                 <DialogTitle id="credentials-dialog-title">{"Credenciales de RentState Security"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="credentials-dialog-description">
-                        {credentials}
+                        'Revise su correo, le hemos enviado las credenciales de RentState Security.'
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
