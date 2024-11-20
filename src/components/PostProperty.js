@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify'; 
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
 import PropertyService from '../hooks/usePropertyService';
-import { PropertyCard } from './RentState Components/components';
-import { getUser } from '../hooks/useUserService';
-import emailjs from 'emailjs-com'
 import ToastManager from './RentState Components/ToastManager';
+import { EmailIOTCredentials } from './EmailManagement/EmailIOTCredentials';
+import AskForSecurityModal from './Modals/AskForSecurityModal';
+import SecurityCredentialsModal from './Modals/SecurityCredentialsModal';
+import UploadPropertyPhotosModal from './Modals/UploadPropertyPhotosModal';
 
 const PostProperty = () => {
     const [category, setCategory] = useState('');
@@ -26,38 +26,7 @@ const PostProperty = () => {
     const [createdPropertyId, setCreatedPropertyId] = useState(null);
     const userId = localStorage.getItem('userId');
 
-    const districts = [
-        "Cercado de Lima",
-        "Ate",
-        "Barranco",
-        "Breña",
-        "Comas",
-        "Chorrillos",
-        "El Agustino",
-        "Jesús María",
-        "La Molina",
-        "La Victoria",
-        "Lince",
-        "Magdalena del Mar",
-        "Miraflores",
-        "Pueblo Libre",
-        "Puente Piedra",
-        "Rímac",
-        "San Isidro",
-        "Independencia",
-        "San Juan de Miraflores",
-        "San Luis",
-        "San Martín de Porres",
-        "San Miguel",
-        "Santiago de Surco",
-        "Surquillo",
-        "Villa María del Triunfo",
-        "San Juan de Lurigancho",
-        "Santa Rosa",
-        "Los Olivos",
-        "Villa El Salvador",
-        "Santa Anita"
-    ];
+    const districts = [ "Cercado de Lima", "Ate", "Barranco", "Breña", "Comas", "Chorrillos", "El Agustino", "Jesús María", "La Molina", "La Victoria", "Lince", "Magdalena del Mar", "Miraflores", "Pueblo Libre", "Puente Piedra", "Rímac", "San Isidro", "Independencia", "San Juan de Miraflores", "San Luis", "San Martín de Porres", "San Miguel", "Santiago de Surco", "Surquillo", "Villa María del Triunfo", "San Juan de Lurigancho", "Santa Rosa", "Los Olivos", "Villa El Salvador", "Santa Anita" ];
 
     const navigate = useNavigate();
 
@@ -95,65 +64,22 @@ const PostProperty = () => {
             }
 
             setCreatedPropertyId(createdProperty.id);
-            toast.success('Propiedad creada exitosamente', {
-                position: 'top-right',
-                autoClose: 3000,
-            });
 
-            setOpen(true); 
+            setOpen(true);
           
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
-            toast.error('Error al crear la propiedad', {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 3000,
-            });
+            ToastManager.error('Error al crear la propiedad');
         }
     };
 
     const handleAccept = async () => {
         try {
-            const userId = localStorage.getItem('userId')
-            const token = localStorage.getItem('token')
-            const userData = await getUser(userId, token)
-    
-            const generatedId = Math.floor(1000 + Math.random() * 9000).toString()
-            const generatedPassword = Math.random().toString(36).substring(2, 10)
-    
-            const templateParams = {
-                NOMBRE_USUARIO: userData.name,
-                ID_GENERADO: generatedId,
-                CONTRA_GENERADA: generatedPassword,
-                email: userData.email,
-            }
-    
-            console.log('Datos que se enviarán al correo:', templateParams)
-    
-            emailjs
-                .send(
-                    'service_hdbkc1f', // Service ID
-                    'template_g3um7zo', // Template ID
-                    templateParams,
-                    'EwSLU0vhgjhRMLgY2' // Public Key
-                )
-                .then(
-                    (result) => {
-                        console.log('Correo enviado:', result.text)
-                        ToastManager.success('¡Correo enviado exitosamente!')
-                        setOpen(false)
-                        setOpenCredentials(true) // Abre el modal de credenciales
-                    },
-                    (error) => {
-                        console.error('Error al enviar correo:', error.text)
-                        ToastManager.error('Hubo un problema al enviar el correo.')
-                    }
-                )
+            await EmailIOTCredentials(setOpen, setOpenCredentials)
         } catch (error) {
-            console.error('Error al obtener datos del usuario o enviar correo:', error)
-            ToastManager.error('Hubo un problema al procesar su solicitud.')
+            console.error('Error en handleAccept:', error)
         }
     }
-    
 
     const handleReject = () => {
         navigate('/home');
@@ -161,7 +87,7 @@ const PostProperty = () => {
 
     const handleContinue = () => {
         setOpenCredentials(false);
-        setOpenUpload(true); 
+        setOpenUpload(true);
     };
 
     const handleUploadImages = async () => {
@@ -170,7 +96,7 @@ const PostProperty = () => {
                 await PropertyService.uploadPropertyPhotos(createdPropertyId, cardimage);
                 console.log('Imágenes adicionales subidas exitosamente');
             }
-            toast.success('Imágenes adicionales subidas exitosamente', {
+            ToastManager.success('Imágenes adicionales subidas exitosamente', {
                 position: 'top-right',
                 autoClose: 3000,
             });
@@ -178,46 +104,11 @@ const PostProperty = () => {
             navigate('/home');
         } catch (error) {
             console.error('Error al subir las imágenes adicionales:', error);
-            toast.error('Error al subir las imágenes adicionales', {
-                position: toast.POSITION.TOP_RIGHT,
+            ToastManager.error('Error al subir las imágenes adicionales', {
+                position: ToastManager.POSITION.TOP_RIGHT,
                 autoClose: 3000,
             });
         }
-    };
-
-    const menuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: 224,
-                width: 250,
-            },
-        },
-        anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left',
-        },
-        transformOrigin: {
-            vertical: 'top',
-            horizontal: 'left',
-        },
-        getContentAnchorEl: null
-    };
-
-    const property = {
-        cardimage: cardimage.length > 0 ? URL.createObjectURL(cardimage[0]) : 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg',
-        district: district || 'Distrito',
-        location: location || 'Locación',
-        characteristics: characteristics || 'Características',
-        price: price || 'Precio',
-        latitude: latitude || '0',
-        longitude: longitude || '0'
-    };
-
-    const owner = {
-        id: 0,
-        name: 'Propietario',
-        lastName: '',
-        photoUrl: 'https://via.placeholder.com/150'
     };
 
     return (
@@ -251,7 +142,6 @@ const PostProperty = () => {
                                     onChange={(e) => setDistrict(e.target.value)}
                                     label="Distrito"
                                     required
-                                    MenuProps={menuProps}
                                 >
                                     {districts.map((district, index) => (
                                         <MenuItem key={index} value={district}>
@@ -314,16 +204,6 @@ const PostProperty = () => {
                     </div>
                 </div>
 
-                <div style={{ width: '30rem', display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-                    <PropertyCard
-                        property={property}
-                        owner={owner}
-                        onDelete={() => {}}
-                        onFavoriteUpdate={() => {}}
-                        isPreview={true}
-                    />
-                </div>
-
             </div>
 
             <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
@@ -333,89 +213,29 @@ const PostProperty = () => {
                 <Button variant="contained" color="secondary" onClick={handleSubmit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
                     Continuar
                 </Button>
+                <Button variant="contained" color="secondary" onClick={() => setOpenUpload(true)} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
+                    A ver modal 
+                </Button>
             </div>
-            <ToastContainer />
 
-            <Dialog
+            <AskForSecurityModal
                 open={open}
-                onClose={handleReject}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"¿Desea adquirir RentState Security?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Antes de ir a inicio, ¿desea adquirir RentState Security?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleReject} color="primary">
-                        No, gracias
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setOpen(false)
-                            handleAccept()
-                        }}
-                        color="primary"
-                        autoFocus
-                    >
-                        Aceptar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-
-            <Dialog
+                handleReject={handleReject}
+                handleAccept={handleAccept}
+            />
+            
+            <SecurityCredentialsModal
                 open={openCredentials}
-                onClose={handleReject}
-                aria-labelledby="credentials-dialog-title"
-                aria-describedby="credentials-dialog-description"
-            >
-                <DialogTitle id="credentials-dialog-title">{"Credenciales de RentState Security"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="credentials-dialog-description">
-                        'Revise su correo, le hemos enviado las credenciales de RentState Security.'
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleReject} color="primary">
-                        Cancelar
-                    </Button>
-                    <Button onClick={handleContinue} color="primary" autoFocus>
-                        Continuar
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                handleReject={handleReject}
+                handleContinue={handleContinue}
+            />
 
-            <Dialog
+            <UploadPropertyPhotosModal
                 open={openUpload}
-                onClose={() => setOpenUpload(false)}
-                aria-labelledby="upload-dialog-title"
-                aria-describedby="upload-dialog-description"
-            >
-                <DialogTitle id="upload-dialog-title">{"Un paso más"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="upload-dialog-description">
-                        Por favor, suba 5 o más imágenes para la propiedad.
-                    </DialogContentText>
-                    <input
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                        required
-                        style={{ margin: '1rem 0' }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenUpload(false)} color="primary">
-                        Cancelar
-                    </Button>
-                    <Button onClick={handleUploadImages} color="primary" autoFocus>
-                        Subir
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                handleClose={() => setOpenUpload(false)}
+                handleFileChange={handleFileChange}
+                handleUploadImages={handleUploadImages}
+            />
         </div>
     );
 }
