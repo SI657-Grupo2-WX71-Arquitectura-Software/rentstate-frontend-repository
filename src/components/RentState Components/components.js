@@ -79,7 +79,7 @@ const theme = createTheme({
     },
 });
   
-export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) => {
+export const FieldEdit = ({ id, label, type, value, onChange, endAdornment, multiline = false, rows = 1 }) => {
     const [focused, setFocused] = useState(false);
 
     const handleFocus = () => {
@@ -92,10 +92,26 @@ export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) =>
         }
     };
 
+    const handleChange = (e) => {
+        const newValue = e.target.value;
+        if (type === 'price') {
+            // Permitir solo números positivos
+            if (/^\d*$/.test(newValue)) {
+                onChange(e);
+            }
+        } else {
+            onChange(e);
+        }
+    };
+
     const InputProps = {
         endAdornment: endAdornment,
         style: { backgroundColor: 'white', borderRadius: 10, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }
     };
+
+    if (type === 'price') {
+        InputProps.startAdornment = <InputAdornment position="start">S/.</InputAdornment>;
+    }
 
     const inputLabelStyles = {
         position: 'absolute',
@@ -118,9 +134,9 @@ export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) =>
                 variant="outlined"
                 id={id}
                 label={label}
-                type={type}
+                type={type === 'price' ? 'number' : type}
                 value={value}
-                onChange={onChange}
+                onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 InputProps={InputProps}
@@ -128,6 +144,9 @@ export const FieldEdit = ({ id, label, type, value, onChange, endAdornment }) =>
                     style: inputLabelStyles,
                     shrink: focused || value,
                 }}
+                inputProps={type === 'price' ? { min: 0 } : {}}
+                multiline={multiline}
+                rows={rows}
             />
         </ThemeProvider>
     );

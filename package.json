@@ -36,6 +36,7 @@
     "room-rest-frontend": "file:",
     "sockjs-client": "^1.6.1",
     "styled-components": "^5.3.11",
+    "twilio": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {

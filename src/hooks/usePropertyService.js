@@ -109,6 +109,20 @@ export const renewPropertyAvailability = async (propertyId, token) => {
     }
 };
 
+export const uploadPropertyPhotos = async (propertyId, files) => {
+    const formData = new FormData();
+    files.forEach(file => {
+        formData.append('files', file);
+    });
+
+    const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/gateway-service/api/v1/properties/${propertyId}/images`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return response.data;
+};
+
 export default {
     getAllProperties,
     getPropertyById,
@@ -117,5 +131,6 @@ export default {
     createProperty,
     addInterestToProperty,
     markPropertyUnavailable,
-    renewPropertyAvailability
+    renewPropertyAvailability,
+    uploadPropertyPhotos
 };

@@ -45,6 +45,7 @@ const RegisterStep4 = ({ nextStep, prevStep, userData, updateUserData }) => {
                 <Button
                     type="submit"
                     //disabled={!isFormValid}
+                    width="20rem"
                 >
                     Siguiente
                 </Button>

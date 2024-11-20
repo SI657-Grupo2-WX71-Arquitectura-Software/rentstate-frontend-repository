@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Booking.css';
@@ -16,7 +16,12 @@ const PostProperty = () => {
     const [description, setDescription] = useState('');
     const [characteristics, setCharacteristics] = useState('');
     const [price, setPrice] = useState('');
-    const [cardimage, setCardImage] = useState('');
+    const [cardimage, setCardImage] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [openCredentials, setOpenCredentials] = useState(false);
+    const [openUpload, setOpenUpload] = useState(false);
+    const [createdPropertyId, setCreatedPropertyId] = useState(null);
+    const [credentials, setCredentials] = useState('');
     const userId = localStorage.getItem('userId');
 
     const districts = [
@@ -58,6 +63,11 @@ const PostProperty = () => {
         navigate('/');
     };
 
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files);
+        setCardImage(files);
+    };
+
     const handleSubmit = async () => {
         try {
             const propertyData = {
@@ -69,21 +79,66 @@ const PostProperty = () => {
                 description,
                 characteristics,
                 price,
-                cardimage,
+                cardimage: [], 
                 userId: parseInt(userId), 
                 available: true, 
             };
 
             const createdProperty = await PropertyService.createProperty(propertyData, userId);
             console.log('Propiedad creada:', createdProperty);
+
+            if (cardimage.length > 0) {
+                await PropertyService.uploadPropertyPhotos(createdProperty.id, cardimage);
+                console.log('Imágenes subidas exitosamente');
+            }
+
+            setCreatedPropertyId(createdProperty.id);
             toast.success('Propiedad creada exitosamente', {
                 position: 'top-right',
                 autoClose: 3000,
             });
-            navigate('/home'); 
+
+            setOpen(true); 
+          
         } catch (error) {
             console.error('Error al crear la propiedad:', error);
             toast.error('Error al crear la propiedad', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+        }
+    };
+
+    const handleAccept = () => {
+        setOpen(false);
+        setCredentials('Su id del sensor es: 9, su contraseña es string');
+        setOpenCredentials(true); 
+    };
+
+    const handleReject = () => {
+        navigate('/home');
+    };
+
+    const handleContinue = () => {
+        setOpenCredentials(false);
+        setOpenUpload(true); 
+    };
+
+    const handleUploadImages = async () => {
+        try {
+            if (cardimage.length > 0) {
+                await PropertyService.uploadPropertyPhotos(createdPropertyId, cardimage);
+                console.log('Imágenes adicionales subidas exitosamente');
+            }
+            toast.success('Imágenes adicionales subidas exitosamente', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
+            setOpenUpload(false);
+            navigate('/home');
+        } catch (error) {
+            console.error('Error al subir las imágenes adicionales:', error);
+            toast.error('Error al subir las imágenes adicionales', {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
             });
@@ -109,7 +164,7 @@ const PostProperty = () => {
     };
 
     const property = {
-        cardimage: cardimage || 'https://via.placeholder.com/300x200?text=Imagen+de+Previsualización',
+        cardimage: cardimage.length > 0 ? URL.createObjectURL(cardimage[0]) : 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg',
         district: district || 'Distrito',
         location: location || 'Locación',
         characteristics: characteristics || 'Características',
@@ -215,13 +270,12 @@ const PostProperty = () => {
                                 fullWidth
                                 margin="normal"
                             />
-                            <TextField
-                                label="Imagen URL"
-                                value={cardimage}
-                                onChange={(e) => setCardImage(e.target.value)}
+                            <input
+                                type="file"
+                                multiple
+                                onChange={handleFileChange}
                                 required
-                                fullWidth
-                                margin="normal"
+                                style={{ margin: '1rem 0' }}
                             />
                         </div>
                     </div>
@@ -248,6 +302,79 @@ const PostProperty = () => {
                 </Button>
             </div>
             <ToastContainer />
+
+            <Dialog
+                open={open}
+                onClose={handleReject}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"¿Desea adquirir RentState Security?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Antes de ir a inicio, ¿desea adquirir RentState Security?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleReject} color="primary">
+                        No, gracias
+                    </Button>
+                    <Button onClick={handleAccept} color="primary" autoFocus>
+                        Aceptar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openCredentials}
+                onClose={handleReject}
+                aria-labelledby="credentials-dialog-title"
+                aria-describedby="credentials-dialog-description"
+            >
+                <DialogTitle id="credentials-dialog-title">{"Credenciales de RentState Security"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="credentials-dialog-description">
+                        {credentials}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleReject} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleContinue} color="primary" autoFocus>
+                        Continuar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openUpload}
+                onClose={() => setOpenUpload(false)}
+                aria-labelledby="upload-dialog-title"
+                aria-describedby="upload-dialog-description"
+            >
+                <DialogTitle id="upload-dialog-title">{"Un paso más"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="upload-dialog-description">
+                        Por favor, suba 5 o más imágenes para la propiedad.
+                    </DialogContentText>
+                    <input
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
+                        required
+                        style={{ margin: '1rem 0' }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenUpload(false)} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleUploadImages} color="primary" autoFocus>
+                        Subir
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

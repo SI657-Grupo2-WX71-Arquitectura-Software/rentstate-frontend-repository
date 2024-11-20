@@ -114,6 +114,7 @@ const RegisterStep5 = ({ prevStep }) => {
                         <Button
                             disabled={!uploadSuccess}
                             onClick={finalizeRegistration}
+                            width="20rem"
                         >
                             Registrar
                         </Button>

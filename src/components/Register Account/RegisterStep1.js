@@ -120,6 +120,7 @@ const RegisterStep1 = ({ nextStep, updateUserData }) => {
                 <Button 
                     disabled={!isFormValid} 
                     onClick={nextStep}
+                    width="20rem"
                 >
                     Siguiente
                 </Button>
