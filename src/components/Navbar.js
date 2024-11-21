@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -7,6 +6,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { navbarStyles } from "../styles/useStyles";
 import { getUser } from "../hooks/useUserService";
+import { IconButton } from "@mui/material";
 
 const Navbar = () => {
     const classes = navbarStyles();
