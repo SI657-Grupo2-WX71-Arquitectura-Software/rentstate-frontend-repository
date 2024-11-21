@@ -53,7 +53,7 @@ const Navbar = () => {
                             </IconButton>
                         </Link>
 
-                       {user.role === 'owner' && (
+                        {user && user.role === 'owner' && (
                             <Link to="/publicar">
                                 <IconButton aria-label="publicar" className={classes.iconButton}>
                                     <AddBoxIcon style={{ color: '#E0E0E0' }} />

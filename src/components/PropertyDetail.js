@@ -467,11 +467,11 @@ const PropertyDetail = () => {
                             <strong>General</strong>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column',}}>
-                            {Object.entries(property.propertyFeatures.general).map(([key, value]) => (
-                                <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
-                                    {formatFeature(key, value)}
-                                </div>
-                            ))}
+                        {property.propertyFeatures && property.propertyFeatures.general && Object.entries(property.propertyFeatures.general).map(([key, value]) => (
+                            <div key={key} style={{ backgroundColor: '#F2F2F2', color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
+                                {formatFeature(key, value, property.propertyFeatures.general)}
+                            </div>
+                        ))}
                         </div>
                     </div>
                     <div className={classes.featureBox}>
@@ -479,7 +479,7 @@ const PropertyDetail = () => {
                             <strong>Costos</strong>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column',  }}>
-                            {Object.entries(property.propertyFeatures.costos).map(([key, value]) => (
+                            {property.propertyFeatures && property.propertyFeatures.costos && Object.entries(property.propertyFeatures.costos).map(([key, value]) => (
                                 <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
                                     {formatFeature(key, value)}
                                 </div>
@@ -491,7 +491,7 @@ const PropertyDetail = () => {
                             <strong>Amenidades</strong>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column',  }}>
-                            {Object.entries(property.propertyFeatures.amenidades).map(([key, value]) => (
+                            {property.propertyFeatures && property.propertyFeatures.amenidades && Object.entries(property.propertyFeatures.amenidades).map(([key, value]) => (
                                 <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
                                     {formatFeature(key, value)}
                                 </div>
@@ -503,7 +503,7 @@ const PropertyDetail = () => {
                             <strong>Sobre el Inmueble</strong>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column',}}>
-                            {Object.entries(property.propertyFeatures.sobreElEdificio).map(([key, value]) => (
+                            {property.propertyFeatures && property.propertyFeatures.sobreElEdificio && Object.entries(property.propertyFeatures.sobreElEdificio).map(([key, value]) => (
                                 <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
                                     {formatFeature(key, value)}
                                 </div>
