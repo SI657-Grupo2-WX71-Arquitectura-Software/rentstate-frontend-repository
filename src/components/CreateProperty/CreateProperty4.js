@@ -68,8 +68,7 @@ const CreateProperty4 = ({ onNext, updateData }) => {
             return updatedFeatures
         })
     }
-    
-    
+
     const toggleCheckbox = (section, field) => {
         setPropertyFeatures((prev) => {
             const updatedFeatures = {
@@ -83,26 +82,22 @@ const CreateProperty4 = ({ onNext, updateData }) => {
             return updatedFeatures
         })
     }
-    
-    
 
     const handleNextStep = () => {
-        updateData({ propertyFeatures }) // Envía propertyFeatures al padre
-        console.log('Enviando al padre:', propertyFeatures) // Confirma que los datos están correctos
-        onNext() // Llama al siguiente paso
+        updateData({ propertyFeatures }) 
+        console.log('Enviando al padre:', propertyFeatures)
+        onNext()
     }
-    
-      
 
     return (
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
-            <form className={classes.formContainer} style={{ maxWidth:'90vw'}}>
+            <form className={classes.formContainer} style={{ maxWidth: '90vw' }}>
                 <h3 className={classes.step}>Paso 4/6</h3>
                 <h3 className={classes.title}>Características del Inmueble</h3>
                 <h3 className={classes.subtitle}>Ingrese todas las características de su inmueble</h3>
 
-                <div className={classes.formContainerStep4}>                 
+                <div className={classes.formContainerStep4}>
                     {/* General */}
                     <div className={classes.featureBox}>
                         <h4 className={classes.featureTitle}>General</h4>    
@@ -242,10 +237,10 @@ const CreateProperty4 = ({ onNext, updateData }) => {
                             </label>
                         </div>
                     </div>
+
                     {/* Costos y Sobre el Edificio combinados */}
                     <div className={classes.featureBox}>
                         <h4 className={classes.featureTitle}>Costos</h4>
-
                         {/* Campos con entrada de datos (Costos) */}
                         <div className={classes.inputGroup}>
                             <div className={classes.inputRow}>
@@ -471,14 +466,12 @@ const CreateProperty4 = ({ onNext, updateData }) => {
                         </div>
                     </div>
                 </div>
-
                 <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
                     <Button onClick={handleNextStep} width="20rem">
                         Continuar
                     </Button>
                 </div>
             </form>
-           
         </div>
     )
 }

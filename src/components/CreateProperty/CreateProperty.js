@@ -3,9 +3,9 @@ import CreateProperty1 from './CreateProperty1';
 import CreateProperty2 from './CreateProperty2';
 import CreateProperty3 from './CreateProperty3';
 import CreateProperty4 from './CreateProperty4';
+import CreateProperty5 from './CreateProperty5';
 import ToastManager from '../RentState Components/ToastManager';
 import { createProperty } from '../../hooks/usePropertyService';
-import CreateProperty5 from './CreateProperty5';
 
 const CreateProperty = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -29,7 +29,7 @@ const CreateProperty = () => {
     });
 
     const handleNext = () => {
-        if (activeStep === 3) {
+        if (activeStep === 4) {
             handleCreateProperty();
         } else {
             setActiveStep((prevStep) => prevStep + 1);
@@ -54,9 +54,9 @@ const CreateProperty = () => {
     const handleCreateProperty = async () => {
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
-
+    
         console.log('Datos antes de crear la propiedad:', propertyData);
-
+    
         if (
             !propertyData.propertyFeatures ||
             Object.keys(propertyData.propertyFeatures).length === 0
@@ -64,16 +64,18 @@ const CreateProperty = () => {
             ToastManager.error('Error: Datos incompletos para la creación de la propiedad.');
             return;
         }
-
+    
         try {
             const createdProperty = await createProperty(propertyData, userId, token);
             ToastManager.success('¡Propiedad creada exitosamente!');
-            console.log('Propiedad creada:', createdProperty);       
+            console.log('Propiedad creada:', createdProperty);
+            window.location.href = '/subirFotos';
         } catch (error) {
             ToastManager.error('Hubo un error al crear la propiedad.');
             console.error('Error en la creación de la propiedad:', error);
         }
     };
+    
 
     const renderStepContent = (step) => {
         switch (step) {
@@ -111,12 +113,11 @@ const CreateProperty = () => {
             case 4:
                 return (
                     <CreateProperty5
-                        onNext={handleNext}
+                        onNext={handleCreateProperty}
                         onBack={handleBack}
                         propertyData={propertyData}
                     />
-                )
-                
+                );
             default:
                 return <div>Error: Paso desconocido</div>;
         }

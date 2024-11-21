@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import RenAssistant from './components/RenAssistant';
 import CreateProperty from './components/CreateProperty/CreateProperty';
+import CreateProperty6 from './components/CreateProperty/CreateProperty6';
 
 function NotFound() {
     return (
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/mensajes" element={<Chat />} />
                     <Route path="/publicar" element={<CreateProperty />} />
+                    <Route path="/subirFotos" element={<CreateProperty6 />} />
                     <Route path="/favoritos" element={<FavoriteProperties />} />
                     <Route path="/property/:id" element={<PropertyDetail />} />
                     <Route path="/perfil/:userId" element={<OtherAccount />} />

@@ -15,15 +15,43 @@ const CreateProperty1 = ({ onNext, updateData }) => {
     const isFormValid = category.trim() && district.trim() && price.trim() && description.trim()
 
     const districts = [
-        { value: 'cercado_de_lima', label: 'Cercado de Lima' },
-        { value: 'ate', label: 'Ate' },
-        { value: 'barranco', label: 'Barranco' }
-    ]
+        { value: "Cercado de Lima", label: "Cercado de Lima" },
+        { value: "Ate", label: "Ate" },
+        { value: "Barranco", label: "Barranco" },
+        { value: "Breña", label: "Breña" },
+        { value: "Comas", label: "Comas" },
+        { value: "Chorrillos", label: "Chorrillos" },
+        { value: "El Agustino", label: "El Agustino" },
+        { value: "Jesús María", label: "Jesús María" },
+        { value: "La Molina", label: "La Molina" },
+        { value: "La Victoria", label: "La Victoria" },
+        { value: "Lince", label: "Lince" },
+        { value: "Magdalena del Mar", label: "Magdalena del Mar" },
+        { value: "Miraflores", label: "Miraflores" },
+        { value: "Pueblo Libre", label: "Pueblo Libre" },
+        { value: "Puente Piedra", label: "Puente Piedra" },
+        { value: "Rímac", label: "Rímac" },
+        { value: "San Isidro", label: "San Isidro" },
+        { value: "Independencia", label: "Independencia" },
+        { value: "San Juan de Miraflores", label: "San Juan de Miraflores" },
+        { value: "San Luis", label: "San Luis" },
+        { value: "San Martín de Porres", label: "San Martín de Porres" },
+        { value: "San Miguel", label: "San Miguel" },
+        { value: "Santiago de Surco", label: "Santiago de Surco" },
+        { value: "Surquillo", label: "Surquillo" },
+        { value: "Villa María del Triunfo", label: "Villa María del Triunfo" },
+        { value: "San Juan de Lurigancho", label: "San Juan de Lurigancho" },
+        { value: "Santa Rosa", label: "Santa Rosa" },
+        { value: "Los Olivos", label: "Los Olivos" },
+        { value: "Villa El Salvador", label: "Villa El Salvador" },
+        { value: "Santa Anita", label: "Santa Anita" }
+    ];
+    
     const categories = [
-        { value: 'departamento', label: 'Departamento' },
-        { value: 'casa', label: 'Casa' },
-        { value: 'oficina', label: 'Oficina' },
-        { value: 'habitacion', label: 'Habitación' }
+        { value: 'Departamento', label: 'Departamento' },
+        { value: 'Casa', label: 'Casa' },
+        { value: 'Oficina', label: 'Oficina' },
+        { value: 'Habitación', label: 'Habitación' }
     ]
 
     const nextStep = () => {

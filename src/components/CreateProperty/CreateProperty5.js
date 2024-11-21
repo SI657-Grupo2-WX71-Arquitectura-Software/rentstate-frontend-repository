@@ -1,15 +1,9 @@
-import React from 'react'
-import 'react-toastify/dist/ReactToastify.css'
-import { createPropertyStyles } from '../../styles/useStyles'
-import { Button } from '../RentState Components/components'
+import React from 'react';
+import { Button } from '@mui/material';
+import { createPropertyStyles } from '../../styles/useStyles';
 
 const CreateProperty5 = ({ onNext, onBack, propertyData }) => {
     const classes = createPropertyStyles()
-
-    const handleNextStep = () => {
-        console.log('Datos finales para crear la propiedad:', propertyData)
-        onNext()
-    }
 
     return (
         <div className={classes.container}>
@@ -35,25 +29,17 @@ const CreateProperty5 = ({ onNext, onBack, propertyData }) => {
                     </pre>
                 </div>
 
-                <div
-                    className="formActions"
-                    style={{
-                        gap: '1rem',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        margin: '2rem',
-                    }}
-                >
-                    <Button onClick={onBack} width="20rem">
-                        Atrás
-                    </Button>
-                    <Button onClick={handleNextStep} width="20rem">
-                        Continuar
-                    </Button>
-                </div>
+                <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
+                <Button onClick={onBack} sx={{ textTransform: 'none' }} style={{ color: "grey", padding: "0.5rem 1rem", backgroundColor: "#EEEE" }}>
+                    Anterior
+                </Button>
+                <Button variant="contained" color="secondary" onClick={onNext} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
+                    Continuar
+                </Button>
+            </div>
             </form>
         </div>
-    )
-}
-
-export default CreateProperty5
+      
+    );
+};
+export default CreateProperty5;
