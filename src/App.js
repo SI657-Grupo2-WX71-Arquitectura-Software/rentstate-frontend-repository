@@ -6,8 +6,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import Login from './components/Login';
 import PropertyDetail from './components/PropertyDetail';
 import Chat from './components/Chat';
-import AddProperty from './components/AddProperty';
-import PostProperty from './components/PostProperty';
 import Register from './components/Register Account/Register';
 import MyAccount from './components/MyAccount/MyAccount';
 import OtherAccount from './components/OtherAccount';
@@ -15,7 +13,7 @@ import { FavoriteProperties } from './components/FavoriteProperties';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import RenAssistant from './components/RenAssistant';
-import PropertyStep1 from './components/CreateProperty/PropertyStep1';
+import CreateProperty from './components/CreateProperty/CreateProperty';
 
 function NotFound() {
     return (
@@ -39,8 +37,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/mensajes" element={<Chat />} />
-                    <Route path="/crear_propiedad" element={<PropertyStep1 />} />
-                    <Route path="/publicar" element={<PostProperty />} />
+                    <Route path="/publicar" element={<CreateProperty />} />
                     <Route path="/favoritos" element={<FavoriteProperties />} />
                     <Route path="/property/:id" element={<PropertyDetail />} />
                     <Route path="/perfil/:userId" element={<OtherAccount />} />

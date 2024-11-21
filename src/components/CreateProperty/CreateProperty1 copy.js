@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
-import '../styles/Booking.css';
-import PropertyService from '../hooks/usePropertyService';
-import ToastManager from './RentState Components/ToastManager';
-import { EmailIOTCredentials } from './EmailManagement/EmailIOTCredentials';
-import AskForSecurityModal from './Modals/AskForSecurityModal';
-import SecurityCredentialsModal from './Modals/SecurityCredentialsModal';
-import UploadPropertyPhotosModal from './Modals/UploadPropertyPhotosModal';
+import '../../styles/Booking.css';
+import { useNavigate } from 'react-router-dom';
+import usePropertyService from '../../hooks/usePropertyService';
+import ToastManager from '../RentState Components/ToastManager';
+import PropertyService from '../../hooks/usePropertyService';
+import { EmailIOTCredentials } from '../EmailManagement/EmailIOTCredentials';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import AskForSecurityModal from '../Modals/AskForSecurityModal';
+import SecurityCredentialsModal from '../Modals/SecurityCredentialsModal';
+import UploadPropertyPhotosModal from '../Modals/UploadPropertyPhotosModal';
 
-const PostProperty = () => {
+const CreateProperty1 = () => {
     const [category, setCategory] = useState('');
     const [district, setDistrict] = useState('');
     const [location, setLocation] = useState('');
@@ -55,7 +56,7 @@ const PostProperty = () => {
                 available: true, 
             };
 
-            const createdProperty = await PropertyService.createProperty(propertyData, userId);
+            const createdProperty = await usePropertyService.createProperty(propertyData, userId);
             console.log('Propiedad creada:', createdProperty);
 
             if (cardimage.length > 0) {
@@ -212,10 +213,10 @@ const PostProperty = () => {
                 </Button>
                 <Button variant="contained" color="secondary" onClick={handleSubmit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
                     Continuar
-                </Button>
-                <Button variant="contained" color="secondary" onClick={() => setOpenUpload(true)} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
-                    A ver modal 
-                </Button>
+                </Button> 
+                <Button variant="contained" color="secondary" onClick={handleSubmit} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
+                    Siguiente paso
+                </Button>                 
             </div>
 
             <AskForSecurityModal
@@ -223,7 +224,7 @@ const PostProperty = () => {
                 handleReject={handleReject}
                 handleAccept={handleAccept}
             />
-            
+
             <SecurityCredentialsModal
                 open={openCredentials}
                 handleReject={handleReject}
@@ -240,4 +241,4 @@ const PostProperty = () => {
     );
 }
 
-export default PostProperty;
+export default CreateProperty1;

@@ -3,7 +3,7 @@ import ToastManager from '../RentState Components/ToastManager'
 import { getUser } from '../../hooks/useUserService'
 import { createSensor } from '../../hooks/useIOTService'
 
-export const EmailIOTCredentials = async (setOpen, setOpenCredentials) => {
+export const EmailIOTCredentials = async () => {
     try {
         const userId = localStorage.getItem('userId')
         const token = localStorage.getItem('token')
@@ -34,8 +34,6 @@ export const EmailIOTCredentials = async (setOpen, setOpenCredentials) => {
 
         console.log('Correo enviado exitosamente.')
         ToastManager.success('¡Correo enviado exitosamente!')
-        setOpen(false)
-        setOpenCredentials(true)
     } catch (error) {
         console.error('Error al procesar la solicitud:', error)
         ToastManager.error('Hubo un problema al registrar el dispositivo o enviar el correo.')

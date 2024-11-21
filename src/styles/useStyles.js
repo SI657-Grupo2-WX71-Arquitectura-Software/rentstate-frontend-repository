@@ -1770,3 +1770,249 @@ export const renAssistantStyles = makeStyles(() => ({
     },
     
 }));
+
+export const createPropertyStyles = makeStyles(() => ({
+    container: {
+        width: '99.1vw',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        gap: '20px',
+        backgroundImage: 'url("/assets/background-login.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+    },
+    darkOverlay: {
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        zIndex: 1
+    },
+    formContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 2,
+        padding: '20px',
+        width: '80%',
+        maxWidth:'700px'
+    },
+    inputField: { 
+        width: '100%',
+        maxWidth: '400px',
+        minWidth: '250px',
+    },
+    buttonContainer: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    button: { 
+        minWidth: '100px', 
+        maxWidth: '300px',
+        width: '50%',
+    },
+    buttonContainerBase: {
+        display: 'flex', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '280px',
+        color: '#FFFFFF',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        borderRadius: 20,
+        padding: '15px 0',
+        minWidth: '2rem',
+        maxWidth: 'none',
+    },    
+    buttonContainerEnabled: {
+        backgroundColor: '#00283E',
+        cursor: 'pointer',
+    },
+    buttonContainerDisabled: {
+        backgroundColor: '#7E7E7E',
+        cursor: 'not-allowed',
+    },
+    title: {
+        color: 'white', fontWeight: 'lighter', fontSize: '2rem', textAlign: 'center', margin: 0 
+    },
+    step: {
+        color: 'white', fontWeight: 'lighter', fontSize: '1.3rem', textAlign: 'center', margin: 0
+    },
+    subtitle: {
+        color: 'white', fontWeight: 'lighter', fontSize: '1rem', textAlign: 'center', margin: '5px 0 25px 0'
+    },
+    fieleditscontainer: {
+        display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' 
+    },
+    returnButton: {
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        position: 'absolute',
+        top: 60,
+        left: 20,
+        zIndex: 1000,
+        width: 25,
+        height: 25,
+        padding: 0,
+        margin: '30px 10px',
+        '&:hover': {
+            background: 'none',
+            textDecoration: 'none'
+        }
+    },
+    formContainerStep3: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 2,
+        padding: '20px',
+        maxWidth: '1200px',
+        minWidth: '300px',
+        width: '80%',
+    },
+    
+    userTypeContainer: {
+        backgroundColor: '#5E5E5E',
+        borderRadius: '15px',
+        cursor: 'pointer',
+        width: '10rem',
+        height: '10rem',
+        alignContent: 'center',
+        transition: 'background-color 0.2s ease',
+        '&:hover': {
+            backgroundColor: '#00283E',
+        },
+    },
+    userTypeSelected: {
+        backgroundColor: '#00283E',
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap:'1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent:'center',
+    },
+    formContainerStep4: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)', // Cambiamos a tres columnas
+        gap: '1.5rem', // Reducimos el gap entre las columnas para mayor compactación
+        width: '100%',
+        marginTop: '2rem',
+        zIndex: 2,
+    },
+    featureBox: {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '8px',
+        padding: '15px', // Reducimos el padding
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '8px', // Reducimos el espacio interno
+        position: 'relative',
+        minHeight: '250px', // Ajustamos la altura mínima para uniformidad
+    },
+    checkboxGroup: {
+        display: 'grid',
+        gridTemplateColumns: '1fr', // Cada checkbox ocupa una fila
+        gap: '5px', // Espaciado más ajustado entre checkboxes
+    },
+    inputGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px', // Compactamos el espaciado
+        marginTop: '8px',
+    },
+    inputRow: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '4px 0', // Reducimos el padding
+        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+    },
+    inputLabel: {
+        fontSize: '0.9rem', // Reducimos ligeramente el tamaño de fuente
+        color: '#434343',
+        fontWeight: '500',
+    },
+    inputField: {
+        width: '100%',
+        maxWidth: '150px', // Ajustamos el ancho máximo
+        padding: '5px',
+        fontSize: '0.9rem',
+        borderRadius: '5px',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+    },
+    selectField: {
+        width: '100%',
+        maxWidth: '160px',
+        padding: '5px',
+        fontSize: '0.9rem',
+        borderRadius: '5px',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+    },
+    featureTitle: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#00283E',
+        marginBottom: '10px',
+    },
+    checkboxLabel: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        fontSize: '1rem',
+        color: '#434343',
+    },
+    editButton: {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        backgroundColor: '#00283E',
+        color: '#fff',
+        borderRadius: '5px',
+        padding: '5px 10px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        '&:hover': {
+            backgroundColor: '#004f7c',
+        },
+    },
+    modalContent: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#fff',
+        borderRadius: '10px',
+        padding: '20px',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+    },
+   
+    modalActions: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: '1rem',
+    },
+    inputAction: {
+        fontSize: '1rem',
+        color: '#00283E',
+        fontWeight: '600',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+}));

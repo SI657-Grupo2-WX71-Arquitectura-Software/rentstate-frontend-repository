@@ -6,7 +6,7 @@ import { CircularProgress } from '@mui/material';
 
 const libraries = ['drawing', 'places'];
 
-const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons, initialPolygons }) => {
+const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons, initialPolygons, onLocationSelected  }) => {
     const containerStyle = { height, width };
     const validLatitude = latitude ? parseFloat(latitude) : -12.0714419;
     const validLongitude = longitude ? parseFloat(longitude) : -77.06724849999999;
@@ -222,6 +222,14 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
             const location = place.geometry.location.toJSON();
+            const address = place.formatted_address || place.vicinity;     
+            if (onLocationSelected) {
+                onLocationSelected({
+                    latitude: location.lat,
+                    longitude: location.lng,
+                    address
+                });
+            }    
             setMapCenter(location);
             setMarkerPosition(location);
         }
