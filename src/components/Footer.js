@@ -8,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import "../styles/Footer.css";
 import { DialogTitle } from "@mui/material";
+import rentstateLogoBlue from '../assets/rentstateLogoBlue.png';
 
 const Footer = () => {
     
@@ -40,7 +41,7 @@ const Footer = () => {
                  <div className="footer_high">
                     <div className="footer-tittle">
                         <img 
-                            src="assets/LogoHeadLetters.png" 
+                            src={rentstateLogoBlue} 
                             alt="RentState"                            
                         />
                     </div>

@@ -16,6 +16,7 @@ import GoogleMapRentState from '../../src/components/RentState Components/Google
 import { DeletePropertyModal } from './Modals/DeletePropertyModal';
 import { SendInterestModal } from './Modals/SendInterestModal';
 import ToastManager from './RentState Components/ToastManager';
+import { PropertyPhotosModal } from './Modals/PropertyPhotosModal';
 
 const PropertyDetail = () => {
     const classes = propertyDetailStyles();
@@ -29,6 +30,7 @@ const PropertyDetail = () => {
     const [user, setUser] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [interestedUsers, setInterestedUsers] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -125,6 +127,14 @@ const PropertyDetail = () => {
         setIsDeleteModalOpen(false);
     };
 
+    const handleOpenModalPhoto = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModalPhoto = () => {
+        setIsModalOpen(false);
+    };
+
     const handleDeleteProperty = async () => {
         try {
             await deleteProperty(property.id, token);
@@ -194,8 +204,81 @@ const PropertyDetail = () => {
         setModalOpen(false);
     };
 
-    console.log('interestedUsers:', interestedUsers);
-
+    const formatFeature = (key, value) => {
+        const labels = {
+            tipo: 'Tipo',
+            areaTotal: 'Área Total',
+            dormitorios: 'Dormitorios',
+            antiguedad: 'Antigüedad',
+            antiguedadUnidad: 'Unidad de Antigüedad',
+            banos: 'Baños',
+            balcon: 'Balcón',
+            terraza: 'Terraza',
+            pisos: 'Pisos',
+            estacionamiento: 'Estacionamiento',
+            ruido: 'Ruido',
+            iluminacion: 'Iluminación',
+            vista: 'Vista',
+            alquiler: 'Alquiler',
+            mantenimiento: 'Mantenimiento',
+            incluyeLuz: 'Incluye Luz',
+            incluyeAgua: 'Incluye Agua',
+            incluyeInternet: 'Incluye Internet',
+            petFriendly: 'Pet Friendly',
+            ascensor: 'Ascensor',
+            intercomunicador: 'Intercomunicador',
+            servicioLimpieza: 'Servicio de Limpieza',
+            servicioVigilancia: 'Servicio de Vigilancia',
+            recepcion: 'Recepción',
+            areasVerdes: 'Áreas Verdes',
+            piscina: 'Piscina',
+            gimnasio: 'Gimnasio',
+            salaEntretenimiento: 'Sala de Entretenimiento',
+            areaCoworking: 'Área Coworking',
+            terrazaCompartida: 'Terraza Compartida',
+            zonaBBQ: 'Zona BBQ',
+            salaReuniones: 'Sala de Reuniones',
+            canchaDeporte: 'Cancha de Deporte',
+            saunaSpa: 'Sauna/Spa',
+            juegosInfantiles: 'Juegos Infantiles',
+            bodega: 'Bodega',
+            cafeteria: 'Cafetería',
+            accesoDiscapacidad: 'Acceso para Discapacitados'
+        };
+    
+        const label = labels[key] || key;
+    
+        if (typeof value === 'boolean') {
+            return (
+                <span>
+                    <strong>{label}:</strong> {value ? 'Sí' : 'No'}
+                </span>
+            );
+        }
+    
+        if (key === 'areaTotal') {
+            return (
+                <span>
+                    <strong>{label}:</strong> {value} m²
+                </span>
+            );
+        }
+    
+        if (key === 'antiguedad') {
+            return (
+                <span>
+                    <strong>{label}:</strong> {value} años
+                </span>
+            );
+        }
+    
+        return (
+            <span>
+                <strong>{label}:</strong> {value}
+            </span>
+        );
+    };
+    
     return (
         <div className={classes.container}> 
             <div className={classes.containerTopDivisor}>
@@ -244,13 +327,16 @@ const PropertyDetail = () => {
                                         <img src={property.cardimage[2]} alt="Additional Property 2" className={classes.additionalImageStyle} />
                                     </div>
                                 )}
-                                {property.cardimage[3] && (
-                                    <div className={classes.additionalImageBlur}>
+                               {property.cardimage[3] && (
+                                    <div className={classes.additionalImageBlur} onClick={handleOpenModalPhoto} style={{cursor:'pointer'}}>
                                         <img src={property.cardimage[3]} alt="Additional Property 3" className={classes.additionalImageStyle} />
                                         <div className={classes.overlay}>
-                                            <span>+9</span>
+                                            <span>+{property.cardimage.length - 3}</span>
                                         </div>
                                     </div>
+                                )}
+                                 {isModalOpen && (
+                                    <PropertyPhotosModal property={property} handleClose={handleCloseModalPhoto} />
                                 )}
                             </div>
                         </div>
@@ -262,7 +348,7 @@ const PropertyDetail = () => {
                                     Alquílalo a S/.{formatNumber(property.price)}      
                                 </div>
                                 <div className={classes.subtitle} >
-                                    {property.category} · {property.characteristics}         
+                                    Tipo de inmueble: {property.category}     
                                 </div>
                             </div>
 
@@ -325,47 +411,105 @@ const PropertyDetail = () => {
                                     />
                                 </div>
                             ) : (
+                                <div>
+                                    <div className={classes.tenantCard}>
+                                        <div className={classes.title} style={{fontWeight:'normal', paddingBottom:'1rem'}}>Usuarios <strong>Interesados</strong> en esta Propiedad</div>                   
+                                        <div style={{display:'flex', flexDirection:'column', backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
+                                            {interestedUsers.length === 0 ? (
+                                                <div style={{backgroundColor:'#F2F2F2', color: '#626262'}}>Aun no cuenta con ningun interesado</div>
+                                            ) : (
+                                                interestedUsers.map(interestedUser => (
+                                                    <div key={interestedUser.id} className={classes.tenantElement} style={{display:'flex', justifyContent:'space-between'}}>
+                                                        <div style={{display:'flex', gap:'10px'}}>
+                                                            <img 
+                                                                src={interestedUser.photoUrl ? interestedUser.photoUrl : "https://via.placeholder.com/40"} 
+                                                                alt={interestedUser.username} 
+                                                                className={classes.tenantImg} 
+                                                            />
+                                                            <div style={{display:'flex', flexDirection:'column', alignContent:'center', justifyContent:'left', textAlign:'left'}}>
+                                                                <span className={classes.tenantFullname}> {interestedUser.name} {interestedUser.lastName}</span>
+                                                                <span className={classes.tenantUser}>{interestedUser.username}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{display:'flex', gap:'10px'}}>
+                                                            <img src={greenCheckIcon} alt="Green Check" style={{ width: '1.8rem' }} />
+                                                            <img src={redXIcon} alt="Red X" style={{ width: '1.8rem' }} />
 
-                                <div className={classes.tenantCard}>
-                                    <div className={classes.title} style={{fontWeight:'normal', paddingBottom:'1rem'}}>Usuarios <strong>Interesados</strong> en esta Propiedad</div>                   
-                                    <div style={{display:'flex', flexDirection:'column', backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
-                                        {interestedUsers.length === 0 ? (
-                                            <div style={{backgroundColor:'#F2F2F2', color: '#626262'}}>Aun no cuenta con ningun interesado</div>
-                                        ) : (
-                                            interestedUsers.map(interestedUser => (
-                                                <div key={interestedUser.id} className={classes.tenantElement} style={{display:'flex', justifyContent:'space-between'}}>
-                                                    <div style={{display:'flex', gap:'10px'}}>
-                                                        <img 
-                                                            src={interestedUser.photoUrl ? interestedUser.photoUrl : "https://via.placeholder.com/40"} 
-                                                            alt={interestedUser.username} 
-                                                            className={classes.tenantImg} 
-                                                        />
-                                                        <div style={{display:'flex', flexDirection:'column', alignContent:'center', justifyContent:'left', textAlign:'left'}}>
-                                                            <span className={classes.tenantFullname}> {interestedUser.name} {interestedUser.lastName}</span>
-                                                            <span className={classes.tenantUser}>{interestedUser.username}</span>
+                                                            <div className={classes.buttonContainer} onClick={() => handleChatTenantsClick(interestedUser)}>                                                         
+                                                                <div className={classes.button} style={{backgroundColor: '#00283E', display:'flex', gap:'5px', justifyContent:'center' }}> 
+                                                                    <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
+                                                                        <MarkUnreadChatAltIcon />
+                                                                    </IconButton>
+                                                                    ¡Chatear!
+                                                                </div>      
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div style={{display:'flex', gap:'10px'}}>
-                                                        <img src={greenCheckIcon} alt="Green Check" style={{ width: '1.8rem' }} />
-                                                        <img src={redXIcon} alt="Red X" style={{ width: '1.8rem' }} />
-
-                                                        <div className={classes.buttonContainer} onClick={() => handleChatTenantsClick(interestedUser)}>                                                         
-                                                            <div className={classes.button} style={{backgroundColor: '#00283E', display:'flex', gap:'5px', justifyContent:'center' }}> 
-                                                                <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
-                                                                    <MarkUnreadChatAltIcon />
-                                                                </IconButton>
-                                                                ¡Chatear!
-                                                            </div>      
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))
-                                        )}
+                                                ))
+                                            )}
+                                        </div>
                                     </div>
+
+                                    <div className={classes.tenantCard}>
+                                        <div className={classes.title} style={{fontWeight:'normal', paddingBottom:'1rem'}}><strong>Descripción de la Propiedad</strong></div>                   
+                                        <div style={{display:'flex', flexDirection:'column', backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
+                                            <div style={{backgroundColor:'#F2F2F2', color: '#626262'}}>{property.description}</div>      
+                                        </div>
+                                    </div>                                    
                                 </div>
                             )}
+                    </div>                  
+                </div>
+                <div className={classes.containerDivisorFeatures}>
+                    <div className={classes.featureBox}>
+                        <div className={classes.title} style={{ fontWeight: 'normal', paddingBottom: '1rem' }}>
+                            <strong>General</strong>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column',}}>
+                            {Object.entries(property.propertyFeatures.general).map(([key, value]) => (
+                                <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
+                                    {formatFeature(key, value)}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>              
+                    <div className={classes.featureBox}>
+                        <div className={classes.title} style={{ fontWeight: 'normal', paddingBottom: '1rem' }}>
+                            <strong>Costos</strong>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column',  }}>
+                            {Object.entries(property.propertyFeatures.costos).map(([key, value]) => (
+                                <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
+                                    {formatFeature(key, value)}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={classes.featureBox}>
+                        <div className={classes.title} style={{ fontWeight: 'normal', paddingBottom: '1rem' }}>
+                            <strong>Amenidades</strong>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column',  }}>
+                            {Object.entries(property.propertyFeatures.amenidades).map(([key, value]) => (
+                                <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
+                                    {formatFeature(key, value)}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={classes.featureBox}>
+                        <div className={classes.title} style={{ fontWeight: 'normal', paddingBottom: '1rem' }}>
+                            <strong>Sobre el Inmueble</strong>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column',}}>
+                            {Object.entries(property.propertyFeatures.sobreElEdificio).map(([key, value]) => (
+                                <div key={key} style={{ color: '#626262', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
+                                    {formatFeature(key, value)}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
             <DeletePropertyModal 
                 open={isDeleteModalOpen} 

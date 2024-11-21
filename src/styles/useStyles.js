@@ -949,7 +949,7 @@ export const interestedZonesModalStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1000,
-        backdropFilter: 'blur(6px)', 
+        backdropFilter: 'blur(6px)',
     },
     modal: {
         backgroundColor: '#FFFFFF',
@@ -957,43 +957,70 @@ export const interestedZonesModalStyles = makeStyles(() => ({
         padding: '2rem 2rem',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'left',
-        textAlign: 'left',
+        alignItems: 'center',
+        textAlign: 'center',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        width: '100vh',
+        width: '80%',
+        maxWidth: '800px',
     },
-    textTopContainer: {
+    closeIcon: {
         display: 'flex',
-        gap: '1rem',
+        justifyContent: 'flex-end',
+        cursor: 'pointer',
+        width: '100%',
+        marginBottom: '2rem',
+    },
+    carouselContainer: {
+        position: 'relative',
+        width: '100%',
+        textAlign: 'center',
+    },
+    carouselStatus: {
+        position: 'absolute',
+        top: '15px',
+        right: '15px',
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: '#333',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        padding: 'px 10px',
+        borderRadius: '10px',
+        zIndex: 2,
+    },
+    thumbsWrapper: {
+        display: 'flex',
         justifyContent: 'center',
-        alignContent: 'center',
+        marginTop: '15px',
+    },
+    thumbs: {
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '10px',
+    },
+    arrowButton: {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        cursor: 'pointer',
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
     },
-    title: {
-        color: '#434343',
-        fontWeight:'bolder',
-        fontSize: '1.5rem',            
+    arrowLeft: {
+        left: '10px',
     },
-    buttonsContainer: {
-        display: 'flex',
-        gap:'1rem',
-        width: '100%',
-        marginTop: '20px',
-        justifyContent:'center',
-    },
-    button: {
-        padding: '0.8rem 3rem',
-        borderRadius: '1.5rem',
-        cursor: 'pointer',
-        color: 'white',
-        '&:first-child': {
-            backgroundColor: '#00283E',
-        },
-        '&:last-child': {
-            backgroundColor: '#CC3434',
-        },
+    arrowRight: {
+        right: '10px',
     },
 }));
+
 
 export const preciseNeedsModalStyles = makeStyles(() => ({
     overlay: {
@@ -1368,7 +1395,27 @@ export const propertyDetailStyles = makeStyles(() => ({
         borderRadius: '1.5rem',
         cursor: 'pointer',
         color: 'white',
-    }
+    },
+    containerDivisorFeatures: {
+        display: 'flex',
+        gap: '2rem',
+        justifyContent: 'flex-start',
+        padding: '0 0 2rem 2rem',
+        width: '99%',
+    },   
+    featureBox: {
+        display:'flex',
+        gap:'1rem',
+        backgroundColor: '#F2F2F2',
+        borderRadius:'1rem',
+        width: '90%',
+        alignItems: 'left',
+        margin:'2rem 0 1rem 0', 
+        padding:'2rem 3rem',      
+        flexDirection:'column', 
+        textAlign:'left'
+    }, 
+    
 }))
 
 export const filterPropertiesModalStyles = makeStyles(() => ({
