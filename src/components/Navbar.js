@@ -52,11 +52,14 @@ const Navbar = () => {
                                 <FavoriteIcon style={{ color: '#E0E0E0' }} />
                             </IconButton>
                         </Link>
-                        <Link to="/publicar">
-                            <IconButton aria-label="publicar" className={classes.iconButton}>
-                                <AddBoxIcon style={{ color: '#E0E0E0' }} />
-                            </IconButton>
-                        </Link>
+
+                       {user.role === 'owner' && (
+                            <Link to="/publicar">
+                                <IconButton aria-label="publicar" className={classes.iconButton}>
+                                    <AddBoxIcon style={{ color: '#E0E0E0' }} />
+                                </IconButton>
+                            </Link>
+                        )}
 
                         <Link to="/mensajes">
                             <IconButton aria-label="mensajes" className={classes.iconButton}>

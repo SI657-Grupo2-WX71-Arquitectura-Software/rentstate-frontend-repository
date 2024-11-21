@@ -8,9 +8,10 @@ import MyTenants from "./Tabs/MyTenants";
 import MyProperties from "./Tabs/MyProperties";
 import { emailIcon, phoneIcon, dniIcon, editIcon, passwordIcon} from '../../assets';
 import GoogleMapRentState from "../RentState Components/GoogleMapRentState";
+
 const MyAccount = () => {
     const classes = useStylesMyAccount();
-    const [selectedTab, setSelectedTab] = useState('myProperties');
+    const [selectedTab, setSelectedTab] = useState('myConfiguration');
     const [avatarImage, setAvatarImage] = useState(""); 
     const [user, setUser] = useState({
         id: '',
@@ -192,12 +193,16 @@ const MyAccount = () => {
                 </div>
                 <div className={classes.tabsSection}>
                     <div className={classes.tabsButtons}>
-                        <div className={`${classes.tabButton} ${selectedTab === 'myProperties' ? classes.tabButtonSelected : ''}`} onClick={() => setSelectedTab('myProperties')}> Mis Propiedades </div>
-                        <div className={`${classes.tabButton} ${selectedTab === 'myTenants' ? classes.tabButtonSelected : ''}`} onClick={() => setSelectedTab('myTenants')}> Mis Inquilinos </div>
+                        {user.role === 'owner' && (
+                            <>
+                                <div className={`${classes.tabButton} ${selectedTab === 'myProperties' ? classes.tabButtonSelected : ''}`} onClick={() => setSelectedTab('myProperties')}> Mis Propiedades </div>
+                                <div className={`${classes.tabButton} ${selectedTab === 'myTenants' ? classes.tabButtonSelected : ''}`} onClick={() => setSelectedTab('myTenants')}> Mis Inquilinos </div>
+                            </>
+                        )}
                         <div className={`${classes.tabButton} ${selectedTab === 'myConfiguration' ? classes.tabButtonSelected : ''}`} onClick={() => setSelectedTab('myConfiguration')}> Configuración </div>
                     </div>
 
-                    <div className={classes.tabContent}>                        
+                    <div className={classes.tabContent}>
                         {renderTabContent()}
                     </div>
                 </div>

@@ -1021,6 +1021,63 @@ export const interestedZonesModalStyles = makeStyles(() => ({
     },
 }));
 
+export const interestedZonesModalStyles2 = makeStyles(() => ({
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)', 
+    },
+    modal: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '30px',
+        padding: '2rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        textAlign: 'left',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        width: '100vh',
+    },
+    textTopContainer: {
+        display: 'flex',
+        gap: '1rem',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        color: '#434343',
+        fontWeight:'bolder',
+        fontSize: '1.5rem',            
+    },
+    buttonsContainer: {
+        display: 'flex',
+        gap:'1rem',
+        width: '100%',
+        marginTop: '20px',
+        justifyContent:'center',
+    },
+    button: {
+        padding: '0.8rem 3rem',
+        borderRadius: '1.5rem',
+        cursor: 'pointer',
+        color: 'white',
+        '&:first-child': {
+            backgroundColor: '#00283E',
+        },
+        '&:last-child': {
+            backgroundColor: '#CC3434',
+        },
+    },
+}));
 
 export const preciseNeedsModalStyles = makeStyles(() => ({
     overlay: {
@@ -1091,7 +1148,7 @@ export const preciseNeedsModalStyles = makeStyles(() => ({
         borderRadius:'1rem',
         textAlign:'left',
         width:'100%',
-        height:'40vh',
+        height:'45vh',
     },
     titleCard: {
         color: '#6C6B6B',
@@ -1136,7 +1193,8 @@ export const preciseNeedsModalStyles = makeStyles(() => ({
     subtitleCard: {
         margin: '5px 0',
         color: '#6C6B6B',
-    }
+    },
+    
 
 }));
 

@@ -7,7 +7,7 @@ import ChairIcon from "@mui/icons-material/Chair";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import CottageIcon from "@mui/icons-material/Cottage";
-import { starIcon, favoriteIcon, trashIcon, editIcon, tentantIcon, redXIcon, greenCheckIcon } from '../../src/assets';
+import { starIcon, favoriteIcon, trashIcon, editIcon, tentantIconDark, redXIcon, greenCheckIcon } from '../../src/assets';
 import { Button } from './RentState Components/components';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { CircularProgress, IconButton } from '@mui/material';
@@ -204,7 +204,7 @@ const PropertyDetail = () => {
         setModalOpen(false);
     };
 
-    const formatFeature = (key, value) => {
+    const formatFeature = (key, value, additionalData = {}) => {
         const labels = {
             tipo: 'Tipo',
             areaTotal: 'Área Total',
@@ -265,9 +265,10 @@ const PropertyDetail = () => {
         }
     
         if (key === 'antiguedad') {
+            const unidad = additionalData.antiguedadUnidad || 'años';
             return (
                 <span>
-                    <strong>{label}:</strong> {value} años
+                    <strong>{label}:</strong> {value} {unidad}
                 </span>
             );
         }
@@ -399,7 +400,7 @@ const PropertyDetail = () => {
                                     </div>
             
                                     <div className={classes.interestButton} onClick={handleOpenModal}>
-                                        <img src={tentantIcon} alt="Interested" style={{ height: '3.5rem', fill: '#8E8E8E' }} />
+                                        <img src={tentantIconDark} alt="Interested" style={{ height: '3.5rem', fill: '#8E8E8E' }} />
                                         <div>¡Me interesa!</div>
                                     </div>
 

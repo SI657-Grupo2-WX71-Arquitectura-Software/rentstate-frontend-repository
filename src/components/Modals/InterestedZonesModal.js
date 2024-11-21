@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { interestedZonesModalStyles } from '../../styles/useStyles';
+import { interestedZonesModalStyles2 } from '../../styles/useStyles';
 import { getUser, updateUser } from '../../hooks/useUserService';
 import { googleMapsLogo } from '../../assets';
 import GoogleMapRentState from '../RentState Components/GoogleMapRentState';
 import ToastManager from '../RentState Components/ToastManager';
 
 export const InterestedZonesModal = ({ open, handleClose, handleDelete }) => {
-    const classes = interestedZonesModalStyles(); 
+    const classes = interestedZonesModalStyles2(); 
     const [polygons, setPolygons] = useState([]);
     const currentUserId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
