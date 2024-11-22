@@ -6,7 +6,7 @@ import { CircularProgress } from '@mui/material';
 
 const libraries = ['drawing', 'places'];
 
-const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons, initialPolygons, onLocationSelected  }) => {
+const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitude, longitude, setPolygons, initialPolygons, onLocationSelected }) => {
     const containerStyle = { height, width };
     const validLatitude = latitude ? parseFloat(latitude) : -12.0714419;
     const validLongitude = longitude ? parseFloat(longitude) : -77.06724849999999;
@@ -18,11 +18,11 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [placeType, setPlaceType] = useState('restaurant');
     const centerRef = useRef({ lat: validLatitude, lng: validLongitude });
-    const [mapCenter, setMapCenter] = useState(centerRef.current);
+    const [mapCenter, setMapCenter] = useState({ lat: validLatitude, lng: validLongitude });
     const [markerPosition, setMarkerPosition] = useState(mapCenter);
     const autocompleteRef = useRef(null);
     const inputRef = useRef(null);
-    const [localPolygons, updatePolygons] = useState([]);    
+    const [localPolygons, updatePolygons] = useState([]);
     const initialPolygonsDrawnRef = useRef(false);
 
     const baseMapOptions = useMemo(() => ({
@@ -93,26 +93,35 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         }
     }, [isLoaded, map, mapType, drawInitialPolygons]);
 
-    useEffect(() => {
-        if (isLoaded && map) {
-            setMarkerIcon({
-                url: markerMap2,
-                scaledSize: new window.google.maps.Size(40, 40)
-            });
-        }
-    }, [isLoaded, map]);
 
     useEffect(() => {
         if (mapType === 'poligon') {
             const newPolygons = localPolygons.map(poly => ({
                 coordinates: poly.coordinates
             }));
-    
+
             if (JSON.stringify(newPolygons) !== JSON.stringify(initialPolygons)) {
                 setPolygons(newPolygons);
             }
         }
     }, [localPolygons, mapType, setPolygons, initialPolygons]);
+
+    useEffect(() => {
+        if (isLoaded) {
+            setMarkerIcon({
+                url: markerMap2,
+                scaledSize: new window.google.maps.Size(40, 40),
+            });
+        }
+    }, [isLoaded]);
+
+    useEffect(() => {
+        if (latitude && longitude) {
+            const updatedCenter = { lat: validLatitude, lng: validLongitude };
+            setMapCenter(updatedCenter);
+            setMarkerPosition(updatedCenter);
+        }
+    }, [latitude, longitude, validLatitude, validLongitude]);
 
     const searchNearbyPlaces = useCallback(() => {
         if (!window.google || !window.google.maps || !window.google.maps.places) {
@@ -182,6 +191,8 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         }
     }, [isLoaded, map, polygonOptions, mapType]);
 
+  
+
     useEffect(() => {
         if (isLoaded && map && mapType === 'propertyMarker') {
             searchNearbyPlaces();
@@ -222,14 +233,16 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
             const location = place.geometry.location.toJSON();
-            const address = place.formatted_address || place.vicinity;     
+            const address = place.formatted_address || place.vicinity;
+            console.log('Place selected:', place);
+
             if (onLocationSelected) {
                 onLocationSelected({
                     latitude: location.lat,
                     longitude: location.lng,
                     address
                 });
-            }    
+            }
             setMapCenter(location);
             setMarkerPosition(location);
         }
@@ -254,29 +267,35 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
         }
     };
 
+    useEffect(() => {
+        setMapCenter({ lat: validLatitude, lng: validLongitude });
+        setMarkerPosition({ lat: validLatitude, lng: validLongitude });
+    }, [validLatitude, validLongitude]);
+
     if (loadError) {
         return <div>Error loading maps</div>;
     }
+    
 
     return isLoaded ? (
         <div>
             {(mapType === 'propertyMarker') && markerIcon && (
-               <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '10px' }}>
                     <button onClick={() => handlePlaceTypeChange('restaurant')}>Restaurantes</button>
                     <button onClick={() => handlePlaceTypeChange('school')}>Escuelas</button>
                     <button onClick={() => handlePlaceTypeChange('park')}>Parques</button>
                 </div>
-            )}       
+            )}
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 zoom={mapType === 'marker' || mapType === 'finder' || mapType === 'propertyMarker' ? 15 : 10}
-                center={mapType === 'finder' || mapType === 'propertyMarker' ? mapCenter : centerRef.current}
+                center={mapType === 'finder' || mapType === 'propertyMarker' ? mapCenter : { lat: validLatitude, lng: validLongitude }}
                 options={baseMapOptions}
                 onLoad={setMap}
             >
-                {(mapType === 'marker' || mapType === 'finder' || mapType === 'propertyMarker') && markerIcon && (
+               {(mapType === 'marker' || mapType === 'finder' || mapType === 'propertyMarker') && markerIcon && (
                     <Marker
-                        position={mapType === 'finder' || mapType === 'propertyMarker' ? markerPosition : centerRef.current}
+                        position={mapType === 'finder' || mapType === 'propertyMarker' ? markerPosition : mapCenter}
                         icon={markerIcon}
                     />
                 )}
