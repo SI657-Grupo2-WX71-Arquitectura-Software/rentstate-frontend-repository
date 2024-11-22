@@ -17,6 +17,7 @@ import { DeletePropertyModal } from './Modals/DeletePropertyModal';
 import { SendInterestModal } from './Modals/SendInterestModal';
 import ToastManager from './RentState Components/ToastManager';
 import { PropertyPhotosModal } from './Modals/PropertyPhotosModal';
+import EditPropertyModal from './Modals/EditPropertyModal';
 
 const PropertyDetail = () => {
     const classes = propertyDetailStyles();
@@ -31,6 +32,7 @@ const PropertyDetail = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [interestedUsers, setInterestedUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditPropertyModalOpen, setIsEditPropertyModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -196,6 +198,15 @@ const PropertyDetail = () => {
         return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
     };
 
+
+    const handleEditPropertyModalOpen = () => {
+        setIsEditPropertyModalOpen(true);
+    };
+
+    const handleEditPropertyModalClose = () => {
+        setIsEditPropertyModalOpen(false);
+    };
+
     const handleOpenModal = () => {
         setModalOpen(true);
     };
@@ -291,12 +302,13 @@ const PropertyDetail = () => {
                             {String(currentUserId) === String(property.userId) ? (
                                 <div style={{display:'flex', justifyContent:'center', gap:'10px'}}>
                                     <img src={trashIcon} alt="Delete" className={classes.optionsIcon} onClick={handleDeleteClick} />
-                                    <img src={editIcon} alt="Edit" className={classes.optionsIcon} />
+                                    <img src={editIcon} alt="Edit" className={classes.optionsIcon} onClick={handleEditPropertyModalOpen} />
                                 </div>
                             ) : (
                                 <img onClick={handleFavoriteClick} src={favoriteIcon} alt="Favorite" className={classes.optionsIcon} />
                             )}
                         </div>
+                        <EditPropertyModal open={isEditPropertyModalOpen} handleClose={handleEditPropertyModalClose} />
 
                         <div style={{display:'flex', gap:'10px', alignItems:'center'}}>
                             {renderIcon()}
@@ -366,50 +378,63 @@ const PropertyDetail = () => {
 
 
                             {String(currentUserId) !== String(property.userId) ? (
-                                <div className={classes.optionsContainer}>
 
-                                    <div className={classes.contactCard}>
-            
-                                        <div style={{padding:'0rem 1rem', display:'flex', alignItems:'center'}}>
-                                            <img src={owner.photoUrl} alt="Owner" style={{width: '100px', height: '100px', borderRadius: '50%', objectFit:'cover', objectPosition: 'center'}} />
-                                        </div>  
-            
-                                        <div style={{display:'flex', flexDirection:'column', textAlign:'left', justifyContent:'center', gap:0, alignItems:'center'}}>
-                                            
-                                            <div style={{color:'#6C6B6B', fontSize:'1.2rem', margin:'0.5rem 0'}}>
-                                                Publicado por <span style={{fontWeight:'bold'}}>{owner.name} {owner.lastName}</span>
-                                            </div>
-            
-                                            <div style={{display:'flex', gap:'10px', margin:'0.5rem 0'}}>
-                                                <Button width="auto" onClick={handleChatClick} style={{display:'flex', gap:'5px', margin:0}}>
-                                                    <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
-                                                        <MarkUnreadChatAltIcon />
-                                                    </IconButton>
-                                                    Chatea
-                                                </Button>
-                                                <Button width="auto" onClick={handleWhatsAppClick} style={{display:'flex', gap:'5px',margin:0}}>
-                                                    <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
-                                                        <WhatsAppIcon />
-                                                    </IconButton>
-                                                    WhatsApp
-                                                </Button>    
-                                            </div>
-            
+                                <div>
+
+                                    <div className={classes.tenantCard}>
+                                        <div className={classes.title} style={{fontWeight:'normal', paddingBottom:'1rem'}}><strong>Descripción de la Propiedad</strong></div>                   
+                                        <div style={{display:'flex', flexDirection:'column', backgroundColor: '#FFFFFF', borderRadius:'1rem'}}>
+                                            <div style={{backgroundColor:'#F2F2F2', color: '#626262'}}>{property.description}</div>      
                                         </div>
-            
-                                    </div>
-            
-                                    <div className={classes.interestButton} onClick={handleOpenModal}>
-                                        <img src={tentantIconDark} alt="Interested" style={{ height: '3.5rem', fill: '#8E8E8E' }} />
-                                        <div>¡Me interesa!</div>
-                                    </div>
+                                    </div>      
+                                
+                                    <div className={classes.optionsContainer}>
 
-                                    <SendInterestModal
-                                        open={modalOpen}
-                                        handleClose={handleCloseModal}
-                                        owner={owner}
-                                        property={property}
-                                    />
+                                        <div className={classes.contactCard}>
+                
+                                            <div style={{padding:'0rem 1rem', display:'flex', alignItems:'center'}}>
+                                                <img src={owner.photoUrl} alt="Owner" style={{width: '100px', height: '100px', borderRadius: '50%', objectFit:'cover', objectPosition: 'center'}} />
+                                            </div>  
+                
+                                            <div style={{display:'flex', flexDirection:'column', textAlign:'left', justifyContent:'center', gap:0, alignItems:'center'}}>
+                                                
+                                                <div style={{color:'#6C6B6B', fontSize:'1.2rem', margin:'0.5rem 0'}}>
+                                                    Publicado por <span style={{fontWeight:'bold'}}>{owner.name} {owner.lastName}</span>
+                                                </div>
+                
+                                                <div style={{display:'flex', gap:'10px', margin:'0.5rem 0'}}>
+                                                    <Button width="auto" onClick={handleChatClick} style={{display:'flex', gap:'5px', margin:0}}>
+                                                        <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
+                                                            <MarkUnreadChatAltIcon />
+                                                        </IconButton>
+                                                        Chatea
+                                                    </Button>
+                                                    <Button width="auto" onClick={handleWhatsAppClick} style={{display:'flex', gap:'5px',margin:0}}>
+                                                        <IconButton aria-label="mensajes" style={{ color: "#e0e0e0", fontSize: "2rem", cursor: "pointer", padding:0 }}>
+                                                            <WhatsAppIcon />
+                                                        </IconButton>
+                                                        WhatsApp
+                                                    </Button>    
+                                                </div>
+                
+                                            </div>
+                
+                                        </div>
+                
+                                        <div className={classes.interestButton} onClick={handleOpenModal}>
+                                            <img src={tentantIconDark} alt="Interested" style={{ height: '3.5rem', fill: '#8E8E8E' }} />
+                                            <div>¡Me interesa!</div>
+                                        </div>
+
+                                        <SendInterestModal
+                                            open={modalOpen}
+                                            handleClose={handleCloseModal}
+                                            owner={owner}
+                                            property={property}
+                                        />
+                                        
+
+                                    </div>
                                 </div>
                             ) : (
                                 <div>

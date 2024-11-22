@@ -8,6 +8,7 @@ import MyTenants from "./Tabs/MyTenants";
 import MyProperties from "./Tabs/MyProperties";
 import { emailIcon, phoneIcon, dniIcon, editIcon, passwordIcon} from '../../assets';
 import GoogleMapRentState from "../RentState Components/GoogleMapRentState";
+import EditAccountModal from "../Modals/EditAccountModal";
 
 const MyAccount = () => {
     const classes = useStylesMyAccount();
@@ -40,6 +41,15 @@ const MyAccount = () => {
         favoriteProperties: [],
         userNeeds: null,
     });
+    const [isEditAccountModalOpen, setIsEditAccountModalOpen] = useState(false);
+
+    const handleEditAccountModal = () => {
+        setIsEditAccountModalOpen(true);
+    };
+
+    const handleCloseEditAccountModal = () => {
+        setIsEditAccountModalOpen(false);
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -128,8 +138,16 @@ const MyAccount = () => {
             <div className={classes.containerDivisor}>
                 <div className={classes.profileCard}>
                     <div style={{display:'flex', width:'100%', justifyContent:'right', marginRight:'-10px'}}>
-                        <img src={editIcon} alt="edit" className={classes.icon} style={{height: '16px'}}/>
+                        <img 
+                            src={editIcon} 
+                            alt="edit" 
+                            className={classes.icon} 
+                            style={{height: '16px', cursor: 'pointer'}} 
+                            onClick={handleEditAccountModal}
+                        />
                     </div>
+                    <EditAccountModal open={isEditAccountModalOpen} handleClose={handleCloseEditAccountModal} />
+        
                     <div>
                         <input
                             accept="image/*"

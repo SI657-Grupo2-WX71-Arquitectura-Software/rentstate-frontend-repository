@@ -1653,6 +1653,11 @@ export const filterPropertiesModalStyles = makeStyles(() => ({
         gap: '1rem',
         marginTop: '1rem',
     },
+    fieldBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap:' 1rem'
+    }
 }));
 
 export const doubleDraggerStyles = makeStyles(() => ({

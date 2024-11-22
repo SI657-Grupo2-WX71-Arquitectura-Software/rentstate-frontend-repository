@@ -26,8 +26,12 @@ const HomeRentState = () => {
     };
 
     const handleCategoryClick = (category) => {
-        setSelectedCategory((prevCategory) => prevCategory === category ? null : category);
-    };
+        const normalizedCategory = category.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        setSelectedCategory((prevCategory) => {
+            const normalizedPrevCategory = prevCategory ? prevCategory.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : null;
+            return normalizedPrevCategory === normalizedCategory ? null : category;
+        });
+    };  
 
     const handleOpenFilterModal = () => {
         setIsFilterModalOpen(true);
@@ -116,7 +120,7 @@ const HomeRentState = () => {
                     <CottageIcon />
                     Casa
                 </div>
-                <div className={classes.optionButton} onClick={() => handleCategoryClick("Habitacion")}>
+                <div className={classes.optionButton} onClick={() => handleCategoryClick("Habitación")}>
                     <ChairIcon />
                     Habitación
                 </div>

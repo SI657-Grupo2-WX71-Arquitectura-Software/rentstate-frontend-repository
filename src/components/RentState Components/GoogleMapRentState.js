@@ -231,6 +231,7 @@ const GoogleMapRentState = ({ mapType, height = '400px', width = '100%', latitud
 
     const onPlaceSelected = () => {
         const place = autocompleteRef.current.getPlace();
+        console.log('Place selected:', place);
         if (place && place.geometry) {
             const location = place.geometry.location.toJSON();
             const address = place.formatted_address || place.vicinity;

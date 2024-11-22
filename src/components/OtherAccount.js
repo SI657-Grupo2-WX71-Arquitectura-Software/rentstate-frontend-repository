@@ -141,9 +141,7 @@ const MyAccount = () => {
                         <div className={classes.text} style={{textAlign:'left'}}>
                             ¡Cuenta con <span style={{fontWeight:'bold', margin:'0 5px'}}>{propertyCount}</span> Propiedades en RentState!                          
                         </div>
-                        <div className={classes.text} style={{textAlign:'left'}}>
-                            Tiene <span style={{fontWeight:'bold', margin:'0 5px'}}>3</span> inquilinos activos                         
-                        </div>     
+                         
                     </div>
 
 

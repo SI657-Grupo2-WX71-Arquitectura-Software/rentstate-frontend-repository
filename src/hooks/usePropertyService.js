@@ -39,6 +39,17 @@ export const getPropertiesByUserId = async (userId) => {
     }
 };
 
+export const updateProperty = async (propertyId, propertyData) => {
+    try {
+        const response = await propertyService.put(`/api/v1/properties/update/${propertyId}`, propertyData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error al actualizar la propiedad con ID ${propertyId}:`, error);
+        throw error;
+    }
+};
+
+
 export const deleteProperty = async (propertyId, token) => {
     try {
         await propertyService.delete(`/api/v1/properties/${propertyId}`, {

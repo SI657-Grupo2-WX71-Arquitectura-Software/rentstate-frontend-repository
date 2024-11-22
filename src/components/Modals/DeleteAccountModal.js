@@ -26,14 +26,7 @@ export const DeleteAccountModal = ({ open, handleClose, handleDelete }) => {
                 <div className={classes.title}>Eliminar Cuenta</div>
                 <p style={{ color: '#434343' }}>¿Está seguro que desea eliminar su cuenta de forma permanente? Todos sus chats e información será eliminada.</p>
                 <div style={{margin:'1rem 0'}}>
-                <FieldEditPassword
-                    id="password"
-                    label="Confirma tu Contraseña"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    backgroundColor="#F8F8F8"
-                    boxShadow="none"
-                />
+              
                 </div>
                 <div className={classes.buttonsContainer}>                   
                     <div className={classes.button} onClick={handleDelete} style={{ backgroundColor: '#CC3434' }}>
