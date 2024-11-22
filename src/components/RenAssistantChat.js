@@ -3,6 +3,7 @@ import { renAssistantStyles } from "../styles/useStyles"
 import { renAssistantIcon } from '../assets'
 import { CircularProgress } from "@mui/material"
 import MinimizeIcon from '@mui/icons-material/Minimize'
+import ReactMarkdown from 'react-markdown'
 import { getUser } from "../hooks/useUserService"
 import { getAllProperties } from "../hooks/usePropertyService"
 
@@ -17,7 +18,7 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
     const assistant_id = "asst_xREhNxsvgz6tpCuB8UZE7bwX"
     const thread_id = "thread_YpeMdSCl213F40eXJnFvm4eM"
     const apikey = process.env.REACT_APP_KEY_IA;
-    const token = process.env.REACT_APP_TOKEN;
+    const token = process.env.REACT_APP_TOKEN;  
     
     useEffect(() => {
         const fetchUser = async () => {
@@ -25,7 +26,6 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
             try {
                 const data = await getUser(userId)
                 setUserData(data)
-                formatUserNeeds(data)
             } catch (error) {
                 console.error("Error al obtener los datos del usuario:", error)
             }
@@ -47,7 +47,7 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
                     price: property.price,
                     userId: property.userId,
                     propertyFeatures: property.propertyFeatures,
-                    link: `https://rentstate.antarticdonkeys.com/property/${property.id}`
+                    link: `https://rentstate.antarticdonkeys.com/property/${property.id}`,
                 }))
                 setProperties(filteredProperties)
                 console.log("Filtered Properties:", filteredProperties)
@@ -56,54 +56,27 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
             }
         }
         fetchProperties()
-    }, [])
-
-    const formatUserNeeds = (data) => {
-        if (!data || !data.userNeeds) return
-
-        const { name } = data
-        const { general, amenidades, costos, sobreElEdificio } = data.userNeeds
-        const generalInfo = `El nombre de este usuario es ${name}, y está buscando un ${general.tipo}, con un área total aproximada de ${general.areaTotal}m², 
-                                precio aproximado de ${costos.alquiler} soles, mantenimiento aproximado de ${costos.mantenimiento} soles, 
-                                ${general.dormitorios} dormitorios, un aproximado de ${general.antiguedad} ${general.antiguedadUnidad} de antigüedad, 
-                                ${general.banos} baños, ${general.pisos} pisos, ${general.estacionamiento} estacionamientos, un ruido ${general.ruido}, 
-                                ${general.iluminacion} iluminación, y vista ${general.vista}.`
-        const amenities = []
-        Object.entries({ ...general, ...amenidades, ...costos, ...sobreElEdificio }).forEach(([key, value]) => {
-            if (typeof value === "boolean" && value) {
-                amenities.push(formatLabel(key))
-            }
-        })
-
-        const amenitiesText = amenities.length > 0
-            ? ` El usuario desea que cuente con ${amenities.join(", ")}.`
-            : ""
-
-        const finalText = generalInfo + amenitiesText
-        console.log(finalText)
-    }
-
-    const formatLabel = (label) => {
-        return label
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (str) => str.toUpperCase())
-            .trim()
-    }
+    }, [])    
 
     const handleSendMessage = async () => {
         if (!inputText.trim()) return
-
+    
         setMessages(prev => [...prev, { text: inputText, sender: "user" }])
         setInputText("")
         setIsLoading(true)
-
+    
         try {
-            const context = {
-                user: userData ? (({ name, longitude, latitude, district, userNeeds, address }) => 
-                    ({ name, longitude, latitude, district, userNeeds, address }))(userData) : null,
-                properties: properties
+            const filteredUserData = userData
+                ? (({ name, longitude, latitude, district, userNeeds, address }) => 
+                    ({ name, longitude, latitude, district, userNeeds, address }))(userData)
+                : null
+    
+            if (!filteredUserData) {
+                throw new Error("No se pudo obtener la información del usuario")
             }
-
+    
+            const textWithContext = `Consulta del usuario:\n\n${inputText}\n\nContexto del usuario:\n\n${JSON.stringify(filteredUserData, null, 2)}\n\nPropiedades disponibles:\n\n${JSON.stringify(properties, null, 2)}`
+    
             const response = await fetch("https://documentgptapi.laraigo.com/assistants/messages", {
                 method: "POST",
                 headers: {
@@ -111,18 +84,16 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    text: `${inputText}`,
+                    text: textWithContext,
                     assistant_id,
                     thread_id,
                     sources: true,
-                    apikey,
-                    context
+                    apikey
                 })
             })
-
+    
             const responseData = await response.json()
             let assistantMessage = responseData.data.response
-            assistantMessage = assistantMessage.replace(/【[^】]*】/g, "").trim()
             setMessages(prev => [...prev, { text: assistantMessage, sender: "assistant" }])
         } catch (error) {
             console.error("Error al enviar el mensaje:", error)
@@ -160,13 +131,24 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
                     </div>
                 ) : (
                     messages.map((msg, index) => (
-                        <div key={index} className={msg.sender === "user" ? classes.userMessage : classes.assistantMessage}>
-                            {msg.text.split('\n').map((line, i) => (
-                                <React.Fragment key={i}>
-                                    {line}
-                                    <br />
-                                </React.Fragment>
-                            ))}
+                        <div 
+                            key={index} 
+                            className={msg.sender === "user" ? classes.userMessage : classes.assistantMessage}
+                        >
+                         {msg.sender === "assistant" ? (
+                            <div>
+                                <ReactMarkdown>
+                                    {msg.text
+                                        .replace(/\[imagen:.*?\]/g, '')
+                                        .replace(/【[^】]*】/g, '') 
+                                        .replace(/^\s*[-*]\s*$/gm, '') 
+                                        .trim()
+                                    }
+                                </ReactMarkdown>
+                            </div>
+                        ) : (
+                            msg.text
+                        )}
                         </div>
                     ))
                 )}
@@ -177,6 +159,7 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
                     </div>
                 )}
             </div>
+
             <div className={classes.inputContainer}>
                 <input
                     type="text"
