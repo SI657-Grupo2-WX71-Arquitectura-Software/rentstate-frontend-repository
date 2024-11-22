@@ -98,7 +98,7 @@ const CreateProperty1 = ({ onNext, updateData }) => {
                         label="Descripción"
                         value={description}
                         multiline
-                        rows={4}
+                        rows={6}
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
