@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const propertyService = axios.create({
-    baseURL: 'https://rentstate.antarticdonkeys.com/api/gateway-service',
+    baseURL: 'https://rentstate.dmtsg.com/api/gateway-service',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -126,7 +126,7 @@ export const uploadPropertyPhotos = async (propertyId, files) => {
         formData.append('files', file);
     });
 
-    const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/gateway-service/api/v1/properties/${propertyId}/images`, formData, {
+    const response = await axios.post(`https://rentstate.dmtsg.com/api/gateway-service/api/v1/properties/${propertyId}/images`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

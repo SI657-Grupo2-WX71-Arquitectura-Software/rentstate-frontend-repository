@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://rentstate.antarticdonkeys.com/api/gateway-service'; 
+const BASE_URL = 'https://rentstate.dmtsg.com/api/gateway-service'; 
 
 const PostService = {
     getAllPosts: async () => {

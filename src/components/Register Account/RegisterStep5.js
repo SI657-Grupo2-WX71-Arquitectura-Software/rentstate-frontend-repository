@@ -38,7 +38,7 @@ const RegisterStep5 = ({ prevStep }) => {
             formData.append('file', file);
 
             try {
-                const response = await axios.post(`https://rentstate.antarticdonkeys.com/api/gateway-service/api/v1/users/upload-profile-picture/${userId}`, formData, {
+                const response = await axios.post(`https://rentstate.dmtsg.com/api/gateway-service/api/v1/users/upload-profile-picture/${userId}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
