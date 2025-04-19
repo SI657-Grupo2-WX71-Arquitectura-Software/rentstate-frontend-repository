@@ -47,7 +47,7 @@ const RenAssistantChat = ({ messages, setMessages, onClose }) => {
                     price: property.price,
                     userId: property.userId,
                     propertyFeatures: property.propertyFeatures,
-                    link: `https://rentstate.dmtsg.com/property/${property.id}`,
+                    link: `https://rentstate.netlify.app/property/${property.id}`,
                 }))
                 setProperties(filteredProperties)
                 console.log("Filtered Properties:", filteredProperties)
