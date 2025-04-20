@@ -123,21 +123,19 @@ function Chat() {
             return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
         };
     
-        const meetingData = [
-            {
-                mail: receiver.email,
-                subject: 'Alguien está interesado en visitar tu propiedad',
-                message: message,
-                start: formatDateToICS(startTime),
-                end: formatDateToICS(endTime),
-                summary: 'Reunión para ver la propiedad',
-                renter: {
-                    name: `${user.name.trim()} ${user.lastName.trim()}`,
-                    email: user.email,
-                },
-                property_address: 'Meet',
+        const meetingData = {
+            mail: receiver.email,
+            subject: `${user.name.trim()} ${user.lastName.trim()} está interesado en visitar tu propiedad`,            
+            message: message,
+            start: formatDateToICS(startTime),
+            end: formatDateToICS(endTime),
+            summary: 'Reunión para ver la propiedad',
+            renter: {
+                name: `${user.name.trim()} ${user.lastName.trim()}`,
+                email: user.email,
             },
-        ];
+            property_address: 'Meet',
+        };
     
         fetch('https://marpellic.app.n8n.cloud/webhook/webos-con-aceite', {
             method: 'POST',
