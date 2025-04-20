@@ -68,7 +68,7 @@ const CreateProperty6 = () => {
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
             <form className={classes.formContainer} style={{ maxWidth: '90vw' }}>
-                <h3 className={classes.step}>Paso 6/6</h3>
+                <h3 className={classes.step}>Paso 5/5</h3>
                 <h3 className={classes.title}>Subir Imágenes de la Propiedad</h3>
                 <h3 className={classes.subtitle}>
                     Por favor, suba al menos una imagen antes de publicar su propiedad.

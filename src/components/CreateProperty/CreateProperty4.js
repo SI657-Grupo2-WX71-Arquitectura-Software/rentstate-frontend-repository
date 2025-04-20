@@ -3,12 +3,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import { createPropertyStyles } from '../../styles/useStyles'
 import { Button } from '../RentState Components/components'
 
-const CreateProperty4 = ({ onNext, updateData }) => {
+const CreateProperty4 = ({ onNext, updateData, propertyData }) => {
     const classes = createPropertyStyles()
 
     const [propertyFeatures, setPropertyFeatures] = useState({
         general: {
-            tipo: '',
+            tipo: propertyData.category,
             areaTotal: '',
             dormitorios: '',
             antiguedad: '',
@@ -39,7 +39,7 @@ const CreateProperty4 = ({ onNext, updateData }) => {
             accesoDiscapacidad: false
         },
         costos: {
-            alquiler: '',
+            alquiler: propertyData.price,
             mantenimiento: '',
             incluyeLuz: false,
             incluyeAgua: false,
@@ -93,7 +93,7 @@ const CreateProperty4 = ({ onNext, updateData }) => {
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
             <form className={classes.formContainer} style={{ maxWidth: '90vw' }}>
-                <h3 className={classes.step}>Paso 4/6</h3>
+                <h3 className={classes.step}>Paso 3/5</h3>
                 <h3 className={classes.title}>Características del Inmueble</h3>
                 <h3 className={classes.subtitle}>Ingrese todas las características de su inmueble</h3>
 
@@ -101,7 +101,6 @@ const CreateProperty4 = ({ onNext, updateData }) => {
                     {/* General */}
                     <div className={classes.featureBox}>
                         <h4 className={classes.featureTitle}>General</h4>    
-                        {/* Campos directamente editables */}
                         <div className={classes.inputGroup}>
                             <div className={classes.inputRow}>
                                 <span className={classes.inputLabel}>Tipo:</span>
@@ -172,9 +171,9 @@ const CreateProperty4 = ({ onNext, updateData }) => {
                                 />
                             </div>
                             <div className={classes.inputRow}>
-                                <span className={classes.inputLabel}>Estacionamiento:</span>
+                                <span className={classes.inputLabel}>Estacionamientos:</span>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className={classes.inputField}
                                     value={propertyFeatures.general.estacionamiento}
                                     onChange={(e) => handleInputChange('general', 'estacionamiento', e.target.value)}
@@ -182,30 +181,45 @@ const CreateProperty4 = ({ onNext, updateData }) => {
                             </div>
                             <div className={classes.inputRow}>
                                 <span className={classes.inputLabel}>Ruido:</span>
-                                <input
-                                    type="text"
-                                    className={classes.inputField}
+                                <select
+                                    className={classes.selectField}
                                     value={propertyFeatures.general.ruido}
                                     onChange={(e) => handleInputChange('general', 'ruido', e.target.value)}
-                                />
+                                >
+                                    <option value="">Seleccione</option>
+                                    <option value="Bajo">Bajo</option>
+                                    <option value="Medio">Medio</option>
+                                    <option value="Alto">Alto</option>
+                                </select>
                             </div>
                             <div className={classes.inputRow}>
                                 <span className={classes.inputLabel}>Iluminación:</span>
-                                <input
-                                    type="text"
-                                    className={classes.inputField}
+                                <select
+                                    className={classes.selectField}
                                     value={propertyFeatures.general.iluminacion}
                                     onChange={(e) => handleInputChange('general', 'iluminacion', e.target.value)}
-                                />
+                                >
+                                    <option value="">Seleccione</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Baja">Baja</option>
+                                </select>
                             </div>
                             <div className={classes.inputRow}>
                                 <span className={classes.inputLabel}>Vista:</span>
-                                <input
-                                    type="text"
-                                    className={classes.inputField}
+                                <select
+                                    className={classes.selectField}
                                     value={propertyFeatures.general.vista}
                                     onChange={(e) => handleInputChange('general', 'vista', e.target.value)}
-                                />
+                                >
+                                    <option value="">Seleccione</option>
+                                    <option value="Al parque">Al parque</option>
+                                    <option value="A la playa">A la playa</option>
+                                    <option value="A edificios">A edificios</option>
+                                    <option value="A la calle">A la calle</option>
+                                    <option value="A montañas">A montañas</option>
+                                    <option value="Interior">Interior</option>
+                                </select>
                             </div>
                         </div>
 

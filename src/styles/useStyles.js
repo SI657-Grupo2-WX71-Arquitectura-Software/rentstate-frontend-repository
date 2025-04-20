@@ -530,6 +530,21 @@ export const chatStyles = makeStyles(() => ({
 
         }
     }, 
+    scheduleButton: {
+        backgroundColor: '#053F5F',
+        color: 'white',
+        display: 'flex',        
+        alignItems: 'center',
+        padding: '10px 20px',
+        fontSize: '14px',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+        '&:hover': {
+            backgroundColor: '#00283E',
+        },
+    },
 }));
 
 export const useStylesMyAccount = makeStyles(() => ({

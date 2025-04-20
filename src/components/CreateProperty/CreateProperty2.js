@@ -32,7 +32,7 @@ const CreateProperty2 = ({ onNext, updateData }) => {
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
             <form className={classes.formContainer}>
-                <h3 className={classes.step}>Paso 2/6</h3>
+                <h3 className={classes.step}>Paso 2/5</h3>
                 <h3 className={classes.title}>Dirección del Inmueble</h3>
                 <h3 className={classes.subtitle}>Ubica tu propiedad en el mapa</h3>
 

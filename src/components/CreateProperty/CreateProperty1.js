@@ -65,7 +65,7 @@ const CreateProperty1 = ({ onNext, updateData }) => {
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
             <form className={classes.formContainer}>
-                <h3 className={classes.step}>Paso 1/6</h3>
+                <h3 className={classes.step}>Paso 1/5</h3>
                 <h3 className={classes.title}>Publica con RentState</h3>
                 <h3 className={classes.subtitle}>Ingrese los datos generales de su inmueble</h3>
 
@@ -89,6 +89,7 @@ const CreateProperty1 = ({ onNext, updateData }) => {
                     <FieldEdit
                         id="price"
                         label="Precio"
+                        type="number" 
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                     />

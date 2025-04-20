@@ -40,7 +40,7 @@ const CreateProperty5 = ({ onNext, onBack, propertyData }) => {
         <div className={classes.container}>
             <div className={classes.darkOverlay}></div>
             <form className={classes.formContainer} style={{ maxWidth: '90vw' }}>
-                <h3 className={classes.step}>Paso 5/6</h3>
+                <h3 className={classes.step}>Paso 4/5</h3>
                 <h3 className={classes.title}>Confirmar y Validar Datos</h3>
                 <h3 className={classes.subtitle}>
                     Revise los datos finales antes de crear la propiedad.
@@ -50,10 +50,7 @@ const CreateProperty5 = ({ onNext, onBack, propertyData }) => {
                     {renderPropertyData()}
                 </div>
 
-                <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>
-                    <Button onClick={onBack} sx={{ textTransform: 'none' }} style={{ color: "grey", padding: "0.5rem 1rem", backgroundColor: "#EEEE" }}>
-                        Anterior
-                    </Button>
+                <div className="formActions" style={{ gap: '1rem', display: 'flex', justifyContent: 'center', margin: '2rem' }}>                   
                     <Button variant="contained" color="secondary" onClick={onNext} sx={{ textTransform: 'none' }} style={{ color: "white", backgroundColor: "#225E7C", padding: "0.5rem 1rem" }}>
                         Continuar
                     </Button>

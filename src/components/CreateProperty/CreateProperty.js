@@ -75,8 +75,6 @@ const CreateProperty = () => {
             console.error('Error en la creación de la propiedad:', error);
         }
     };
-    
-
     const renderStepContent = (step) => {
         switch (step) {
             case 0:
@@ -96,21 +94,14 @@ const CreateProperty = () => {
                 );
             case 2:
                 return (
-                    <CreateProperty3
-                        onNext={handleNext}
-                        onBack={handleBack}
-                        updateData={updatePropertyData}
-                    />
-                );
-            case 3:
-                return (
                     <CreateProperty4
                         onNext={handleNext}
                         onBack={handleBack}
                         updateData={updatePropertyData}
+                        propertyData={propertyData}
                     />
                 );
-            case 4:
+            case 3:
                 return (
                     <CreateProperty5
                         onNext={handleCreateProperty}

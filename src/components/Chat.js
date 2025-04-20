@@ -5,6 +5,9 @@ import useMessageService from '../hooks/useMessageService';
 import { chatStyles } from '../styles/useStyles';
 import { SearchBar } from '../components/RentState Components/components'
 import { sendMessageIcon } from "../assets";
+import { ScheduleMeetingModal } from "./Modals/ScheduleMeetingModal";
+import ToastManager from "./RentState Components/ToastManager";
+import EventIcon from '@mui/icons-material/Event';
 
 function Chat() {
     const classes = chatStyles();
@@ -17,12 +20,31 @@ function Chat() {
     const [loadingContacts, setLoadingContacts] = useState(false);
     const messagesEndRef = useRef(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [openScheduleModal, setOpenScheduleModal] = useState(false);
+    const isAuthenticated = !!localStorage.getItem('token');
+    const [user, setUser] = useState(null);
 
     const { messages, loading: loadingMessages, sendMessage } = useMessageService(userName, receiver);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (isAuthenticated) {
+                const userId = localStorage.getItem('userId');
+                try {
+                    const userData = await getUser(userId);
+                    setUser(userData);
+                } catch (error) {
+                    console.error("Error al obtener los datos del usuario:", error);
+                }
+            }
+        };
+
+        fetchUser();
+    }, [isAuthenticated]);
 
     useEffect(() => {
         const fetchUserNameAndContacts = async () => {
@@ -95,6 +117,43 @@ function Chat() {
         </div>;
     }
 
+    const handleScheduleMeeting = ({ startTime, endTime, message }) => {
+        const formatDateToICS = (dateString) => {
+            const date = new Date(dateString);
+            return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+    
+        const meetingData = [
+            {
+                mail: receiver.email,
+                subject: 'Alguien está interesado en visitar tu propiedad',
+                message: message,
+                start: formatDateToICS(startTime),
+                end: formatDateToICS(endTime),
+                summary: 'Reunión para ver la propiedad',
+                renter: {
+                    name: `${user.name.trim()} ${user.lastName.trim()}`,
+                    email: user.email,
+                },
+                property_address: 'Meet',
+            },
+        ];
+    
+        fetch('https://marpellic.app.n8n.cloud/webhook/webos-con-aceite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(meetingData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                ToastManager.success('Reunión Agendada con éxito!');
+
+            })
+            .catch((error) => {
+                console.error('Error al agendar la reunión:', error);
+            });
+    };
+
     return (
         <div className={classes.chat}>
            <div className={classes.contactListContainer}>               
@@ -149,7 +208,26 @@ function Chat() {
                     ) : (
                         <div className={classes.topText}>Bienvenido a Chats de <strong>RentState</strong></div>
                     )}
+
+                    {receiver && (
+                        <div>
+                            <button
+                                className={classes.scheduleButton}
+                                onClick={() => setOpenScheduleModal(true)}
+                            >
+                                <EventIcon style={{ marginRight: '8px' }} />
+                                Agendar Reunión
+                            </button>    
+                        </div>
+                    )}
                 </div>
+
+                <ScheduleMeetingModal
+                    open={openScheduleModal}
+                    handleClose={() => setOpenScheduleModal(false)}
+                    handleScheduleMeeting={handleScheduleMeeting}
+                />
+
                 <div className={classes.center}>
                     {receiver ? (
                         messages.length > 0 ? (
