@@ -3,11 +3,12 @@ import { CircularProgress } from "@mui/material";
 import { getUser, getContacts, getContactDetails } from '../hooks/useUserService';
 import useMessageService from '../hooks/useMessageService';
 import { chatStyles } from '../styles/useStyles';
-import { SearchBar } from '../components/RentState Components/components'
+import { SearchBar } from './RentState Components/components'
 import { sendMessageIcon } from "../assets";
 import { ScheduleMeetingModal } from "./Modals/ScheduleMeetingModal";
 import ToastManager from "./RentState Components/ToastManager";
 import EventIcon from '@mui/icons-material/Event';
+import {getPropertiesByUserId} from "../hooks/usePropertyService";
 
 function Chat() {
     const classes = chatStyles();
@@ -15,6 +16,9 @@ function Chat() {
     const [receiver, setReceiver] = useState(null);
     const [userName, setUserName] = useState("");
     const [ownerPhoto, setOwnerPhoto] = useState("");
+    const [ownerId, setOwnerId] = useState(Number.NaN);
+    const [ownerProperties, setOwnerProperties] = useState([]);
+
     const [contacts, setContacts] = useState([]);
     const [loadingUser, setLoadingUser] = useState(true);
     const [loadingContacts, setLoadingContacts] = useState(false);
@@ -42,7 +46,6 @@ function Chat() {
                 }
             }
         };
-
         fetchUser();
     }, [isAuthenticated]);
 
@@ -56,6 +59,8 @@ function Chat() {
                     console.log("User data fetched:", userData);
                     setUserName(userData.username);
                     setOwnerPhoto(userData.photoUrl);
+                    if(userData.role === "owner")
+                        setOwnerId(userData.id);
 
                     const contactsUsernames = await getContacts(userId, token); 
                     await fetchContactDetails(contactsUsernames, token); 
@@ -93,7 +98,13 @@ function Chat() {
     };
 
     const handleReceiverChange = (contact) => {
+        if(contact.role === "owner")
+            setOwnerId(contact.id);
         setReceiver(contact);
+        setOwnerProperties([]);
+        getPropertiesByUserId(ownerId).then((res) => {
+            setOwnerProperties(res);
+        });
     };
 
     const handleSendMessage = () => {
@@ -117,7 +128,7 @@ function Chat() {
         </div>;
     }
 
-    const handleScheduleMeeting = ({ startTime, endTime, message }) => {
+    const handleScheduleMeeting = ({ startTime, endTime, message, property }) => {
         const formatDateToICS = (dateString) => {
             const date = new Date(dateString);
             return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -128,16 +139,26 @@ function Chat() {
             subject: `${user.name.trim()} ${user.lastName.trim()} está interesado en visitar tu propiedad`,            
             message: message,
             start: formatDateToICS(startTime),
+            startEpoch: new Date(startTime).getTime(),
             end: formatDateToICS(endTime),
-            summary: 'Reunión para ver la propiedad',
+            endEpoch: new Date(endTime).getTime(),
+            summary: 'Reunión para ver la propiedad ubicada en ' + property.location,
             renter: {
+                id: user.id,
                 name: `${user.name.trim()} ${user.lastName.trim()}`,
-                email: user.email,
+                email: user.email
             },
-            property_address: 'Meet',
+            owner: {
+                id: receiver.id,
+                name: `${receiver.name.trim()} ${receiver.lastName.trim()}`,
+                email: receiver.email
+            },
+            property_address: property.location,
+            property_id: property.id,
         };
+        console.log("Meeting data to be sent:", meetingData);
     
-        fetch('https://marpellic.app.n8n.cloud/webhook/webos-con-aceite', {
+        fetch('https://misheli.app.n8n.cloud/webhook/send-calendar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(meetingData),
@@ -145,7 +166,6 @@ function Chat() {
             .then((response) => response.json())
             .then((data) => {
                 ToastManager.success('Reunión Agendada con éxito!');
-
             })
             .catch((error) => {
                 console.error('Error al agendar la reunión:', error);
@@ -207,7 +227,7 @@ function Chat() {
                         <div className={classes.topText}>Bienvenido a Chats de <strong>RentState</strong></div>
                     )}
 
-                    {receiver && (
+                    {receiver && receiver.role === "owner" && (
                         <div>
                             <button
                                 className={classes.scheduleButton}
@@ -222,6 +242,7 @@ function Chat() {
 
                 <ScheduleMeetingModal
                     open={openScheduleModal}
+                    properties={ownerProperties}
                     handleClose={() => setOpenScheduleModal(false)}
                     handleScheduleMeeting={handleScheduleMeeting}
                 />
